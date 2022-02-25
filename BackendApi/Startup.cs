@@ -1,3 +1,4 @@
+using Application.Catalog;
 using Application.System.Users;
 using Data.EF;
 using Data.Entities;
@@ -95,7 +96,8 @@ namespace BackendApi
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 
             services.AddTransient<IUserService, UserService>();
-            // services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IDepartmentService, DepartmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

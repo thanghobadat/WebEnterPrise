@@ -31,6 +31,7 @@ namespace BackendApi
             services.AddDbContext<WebEnterpriseDbcontext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("WebEnterPriseDbContext")));
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<WebEnterpriseDbcontext>().AddDefaultTokenProviders();
             services.AddControllers();
+            services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()); });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Login", Version = "v1" });
@@ -115,6 +116,7 @@ namespace BackendApi
 
             app.UseAuthorization();
             app.UseSwagger();
+            app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Login");

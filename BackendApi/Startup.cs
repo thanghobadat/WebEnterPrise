@@ -30,6 +30,7 @@ namespace BackendApi
         {
             services.AddDbContext<WebEnterpriseDbcontext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("WebEnterPriseDbContext")));
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<WebEnterpriseDbcontext>().AddDefaultTokenProviders();
+            services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()); });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -112,6 +113,7 @@ namespace BackendApi
             app.UseAuthentication();
 
             app.UseRouting();
+            app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthorization();
             app.UseSwagger();

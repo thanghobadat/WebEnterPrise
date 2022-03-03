@@ -1,0 +1,18 @@
+/** @format */
+
+.ListUser {
+  margin-top: 50px;
+  padding: 50px;
+  box-shadow: 0px 4px 10px gray;
+  &__title {
+    margin: 7px auto;
+  }
+  & h2 {
+    margin-left: 100px;
+  }
+  &__table {
+    border: 1px solid black;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}

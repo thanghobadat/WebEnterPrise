@@ -1,11 +1,10 @@
+/** @format */
+
 import React from 'react';
-import './header.scss'
+
+import './header.scss';
 
 function Header() {
-  return (
-    <div className="Header">
-      <h1>Hello Word!</h1>
-    </div>
-  );
+  return <div className='Header '></div>;
 }
 export default Header;

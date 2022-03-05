@@ -27,27 +27,25 @@
 }
 
 .btn-edit {
-  width: 50px;
+  width: 100px;
   border: none;
   outline: none;
   background: transparent;
-  color: orange;
 
   &:hover {
     background-color: transparent !important;
-    color: orange !important;
+    color: white !important;
   }
 }
 
 .btn-delete {
-  width: 50px;
+  width: 100px;
   border: none;
   outline: none;
   background: transparent;
-  color: red;
 
   &:hover {
     background-color: transparent !important;
-    color: red !important;
+    color: white !important;
   }
 }

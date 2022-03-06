@@ -7,9 +7,9 @@ import Pagination from '../../../../components/Pagination';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
+
 function CategoryList() {
   const navigate = useNavigate();
-  
   const [categoryList, setCategoryList] = useState([]);
   const [pagination, setPagination] = useState({
     pageIndex: 1,
@@ -25,18 +25,15 @@ function CategoryList() {
     async function getCategoryList(){
       try{
         const paramsString = queryString.stringify(filters);
-        const requestUrl = `http://192.168.1.4:5001/api/Categories/GetCategoryPaging?${paramsString}`;
-        const response = await fetch(requestUrl);
-        const responseJSON = await response.json();
-        console.log({responseJSON});
-        const {resultObj} = responseJSON;
-        setCategoryList(resultObj.items);
+        const res = await axios.get(`${global.config.var_env}/api/Categories/GetCategoryPaging?${paramsString}`);
+        console.log(res);
+        const data = res.data.resultObj;
+        setCategoryList(res.data.resultObj.items);
         setPagination({
-          pageIndex: resultObj.pageIndex,
-          pageSize: resultObj.pageSize,
-          totalRecords : resultObj.totalRecords,
+          pageIndex: data.pageIndex,
+          pageSize: data.pageSize,
+          totalRecords : data.totalRecords,
         });
-        
       }
       catch(error){
         console.log('Failed to fetch category list', error.message);
@@ -56,26 +53,21 @@ function CategoryList() {
   }
 
   const handleUpdate = async (id) => {
-		const  res  = await axios.get(
-			`http://192.168.1.4:5001/api/Categories/GetById?categoryId=${id}`
-			
-		)
+		const  res  = await axios.get(`${global.config.var_env}/api/Categories/GetById?categoryId=${id}`)
     console.log(res);
-    navigate('/update');
+    navigate(`/update-category?id=${id}`);
 	};
 
-//   const handleDelete = async (id) => {
-// 		const  res  = await axios.delete(
-// 			`http://192.168.1.4:5001/api/Departments/DeleteDepartment?id=${id}`
-			
-// 		)
-//     console.log(res);
-//     navigate('/');
-// 	};
+  function handleCreate(){
+    navigate('/create-category')
+  }
   
   return (
     <div className="users-container">
-      <div className='title text-center'>Manager Category</div>
+      <div className='title text-center'>
+        Manager Category
+        <Button  onClick={() => handleCreate()} variant="primary">Add</Button>
+        </div>
       <div className='users-table mt-3 mx-1'></div>
     <table id="customers">
       <tr>

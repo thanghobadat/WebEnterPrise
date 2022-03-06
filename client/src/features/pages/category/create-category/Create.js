@@ -2,7 +2,9 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import './create.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const Create = () => {
+	const navigate = useNavigate();
 	const onFinish = (values) => {
 		console.log('Success:', values);
 		const {name, description } = values;
@@ -16,10 +18,11 @@ const Create = () => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
 		const { data } = await axios.post(
-			'http://192.168.98.192:5001/api/Departments/CreateDepartment',
+			`${global.config.var_env}/api/Departments/CreateDepartment`,
 			{ name, description },
 			config
 		)
+		navigate('/list-department');
 	}
 	return (
 		<div className="create">

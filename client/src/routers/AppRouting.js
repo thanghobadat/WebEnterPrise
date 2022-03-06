@@ -10,8 +10,9 @@ function AppRouting() {
     <Routes>
     <Route path="/list-department" element={<DepartmentList/>} />
     <Route path="/list-category" element={<CategoryList/>} />    
-    <Route path="/update" element={<Update/>} />
-    <Route path="/create" element={<Create/>} />
+    <Route path="/update-category" element={<Update/>} />
+    <Route path="/update-department" element={<Update/>} />
+    <Route path="/create-category" element={<Create/>} />
     </Routes>
 
   )

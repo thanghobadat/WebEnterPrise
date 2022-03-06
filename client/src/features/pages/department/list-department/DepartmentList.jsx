@@ -7,9 +7,10 @@ import Pagination from '../../../../components/Pagination';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
+import config from '../../../../config';
+
 function DepartmentList() {
   const navigate = useNavigate();
-  
   const [departmentList, setDepartmentList] = useState([]);
   const [pagination, setPagination] = useState({
     pageIndex: 1,
@@ -25,24 +26,20 @@ function DepartmentList() {
     async function getDepartmentList(){
       try{
         const paramsString = queryString.stringify(filters);
-        const requestUrl = `http://192.168.1.4:5001/api/Departments/GetDepartmentPaging?${paramsString}`;
-        const response = await fetch(requestUrl);
-        const responseJSON = await response.json();
-        console.log({responseJSON});
-        const {resultObj} = responseJSON;
-        setDepartmentList(resultObj.items);
+        const res = await axios.get(`${global.config.var_env}/api/Departments/GetDepartmentPaging?${paramsString}`);
+        console.log(res);
+        const data = res.data.resultObj;
+        setDepartmentList(res.data.resultObj.items);
         setPagination({
-          pageIndex: resultObj.pageIndex,
-          pageSize: resultObj.pageSize,
-          totalRecords : resultObj.totalRecords,
-        });
-        
+          pageIndex: data.pageIndex,
+          pageSize: data.pageSize,
+          totalRecords : data.totalRecords,
+        })
       }
       catch(error){
         console.log('Failed to fetch department list', error.message);
       }
-      }
-    
+    }
     console.log('Department list effect');
     getDepartmentList();
   }, [filters]);
@@ -56,26 +53,31 @@ function DepartmentList() {
   }
 
   const handleUpdate = async (id) => {
-		const  res  = await axios.get(
-			`http://192.168.1.4:5001/api/Departments/GetDepartmentById?id=${id}`
-			
-		)
+		const  res  = await axios.get(`${global.config.var_env}/api/Departments/GetDepartmentById?id=${id}`)
     console.log(res);
-    navigate('/update');
-	};
+    navigate(`/update-department?id=${id}`);
+	}
 
   const handleDelete = async (id) => {
+    
 		const  res  = await axios.delete(
-			`http://192.168.1.4:5001/api/Departments/DeleteDepartment?id=${id}`
+			`${global.config.var_env}/api/Departments/DeleteDepartment?id=${id}`
 			
 		)
     console.log(res);
-    navigate('/');
-	};
-  
+    navigate('/list-department');
+	}
+
+  function handleCreate(){
+    navigate('/create-department')
+  }
+
   return (
     <div className="users-container">
-      <div className='title text-center'>Manager Department</div>
+      <div className='title text-center'>
+        Manager Department
+        <Button  onClick={() => handleCreate()} variant="primary">Add</Button>
+        </div>
       <div className='users-table mt-3 mx-1'></div>
     <table id="customers">
       <tr>
@@ -89,9 +91,9 @@ function DepartmentList() {
             <td>{department.name}</td>
             <td>{department.description}</td>
             <td>
-              <Button className='btn-edit' onClick={() => handleUpdate(department.id)} variant="warning">Edit</Button>
+              <Button onClick={() => handleUpdate(department.id)} variant="warning">Edit</Button>
               
-              <Button className='btn-delete' onClick={() => handleDelete(department.id)} onPageChange={handlePageChange} variant="danger">Delete</Button>
+              <Button onClick={() => handleDelete(department.id)} onPageChange={handlePageChange} variant="danger">Delete</Button>
             </td>
           </tr>
         )

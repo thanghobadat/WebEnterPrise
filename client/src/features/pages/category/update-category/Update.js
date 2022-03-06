@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import '../create-category/create.css';
 import axios from 'axios';
+import config from '../../../../config';
+
 const Update = () => {
 	const onFinish = (values) => {
 		console.log('Success:', values);
@@ -16,7 +18,7 @@ const Update = () => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
 		const { data } = await axios.put(
-			'http://192.168.1.4:5001/api/Departments/UpdateDepartment',
+			`${config.var_env}/api/Departments/UpdateDepartment`,
 			{ name, description },
 			config
 		)

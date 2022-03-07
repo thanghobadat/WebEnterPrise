@@ -22,6 +22,8 @@ namespace Data.EF
             modelBuilder.ApplyConfiguration(new IdeaCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new IdeaConfiguration());
             modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+            modelBuilder.ApplyConfiguration(new MailSettingConfiguration());
+
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
@@ -30,11 +32,14 @@ namespace Data.EF
             modelBuilder.Seed();
         }
 
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Idea> Ideas { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<IdeaCategory> IdeaCategories { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<MailSetting> MailSettings { get; set; }
+
 
 
     }

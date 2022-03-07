@@ -90,7 +90,7 @@ namespace Application.System.Users
             }
             var reult = await _userManager.DeleteAsync(user);
             if (reult.Succeeded)
-                return new ApiSuccessResult<bool>();
+                return new ApiSuccessResult<bool>(true);
 
             return new ApiErrorResult<bool>("Delete failed");
         }

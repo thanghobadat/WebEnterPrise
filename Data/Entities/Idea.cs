@@ -16,5 +16,8 @@ namespace Data.Entities
         public DateTime FinalDate { get; set; }
         public bool IsAnonymously { get; set; }
         public List<IdeaCategory> IdeaCategories { get; set; }
+        public List<Comment> Comments { get; set; }
+        public Guid UserId { get; set; }
+        public AppUser User { get; set; }
     }
 }

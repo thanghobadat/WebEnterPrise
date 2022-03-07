@@ -3,14 +3,16 @@ import { Form, Input, Button } from 'antd';
 import '../create-category/create.css';
 import axios from 'axios';
 import config from '../../../../config';
+import { useParams } from 'react-router-dom';
 
 const Update = () => {
+	const { id } = useParams();
 	const onFinish = (values) => {
 		console.log('Success:', values);
         const {name, description } = values;
 		Submit(name, description);
 	};
-
+	console.log(id)
 	const onFinishFailed = (errorInfo) => {
 		console.log('Failed:', errorInfo);
 	};
@@ -18,10 +20,13 @@ const Update = () => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
 		const { data } = await axios.put(
-			`${config.var_env}/api/Departments/UpdateDepartment`,
+			`${global.config.var_env}/api/Categories/UpdateCategory`,
 			{ name, description },
 			config
 		)
+		
+		// console.log(data)
+		// return data;
 	}
 
 	return (

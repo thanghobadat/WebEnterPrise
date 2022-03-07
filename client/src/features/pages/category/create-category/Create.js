@@ -18,11 +18,12 @@ const Create = () => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
 		const { data } = await axios.post(
-			`${global.config.var_env}/api/Departments/CreateDepartment`,
+			`${global.config.var_env}/api/Categories/CreateCategory`,
 			{ name, description },
 			config
 		)
-		navigate('/list-department');
+		
+		navigate('/list-category');
 	}
 	return (
 		<div className="create">

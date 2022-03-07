@@ -27,7 +27,7 @@ function DepartmentList() {
       try{
         const paramsString = queryString.stringify(filters);
         const res = await axios.get(`${global.config.var_env}/api/Departments/GetDepartmentPaging?${paramsString}`);
-        console.log(res);
+        // console.log(res);
         const data = res.data.resultObj;
         setDepartmentList(res.data.resultObj.items);
         setPagination({
@@ -58,16 +58,15 @@ function DepartmentList() {
     navigate(`/update-department?id=${id}`);
 	}
 
-  const handleDelete = async (id) => {
-    
+  const handleDelete = async (id, pageIndex) => {
 		const  res  = await axios.delete(
 			`${global.config.var_env}/api/Departments/DeleteDepartment?id=${id}`
-			
-		)
+		).then(navigate(`/`))
     console.log(res);
-    navigate('/list-department');
+    
+    
 	}
-
+  
   function handleCreate(){
     navigate('/create-department')
   }

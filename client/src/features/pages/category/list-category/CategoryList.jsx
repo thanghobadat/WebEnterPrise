@@ -40,7 +40,7 @@ function CategoryList() {
       }
       }
     
-    console.log('Category list effect');
+    // console.log('Category list effect');
     getCategoryList();
   }, [filters]);
 
@@ -53,9 +53,9 @@ function CategoryList() {
   }
 
   const handleUpdate = async (id) => {
-		const  res  = await axios.get(`${global.config.var_env}/api/Categories/GetById?categoryId=${id}`)
-    console.log(res);
-    navigate(`/update-category?id=${id}`);
+		// const  res  = await axios.get(`${global.config.var_env}/api/Categories/GetById?categoryId=${id}`)
+    // console.log(res);
+    navigate(`/update-category?id=:id`);
 	};
 
   function handleCreate(){

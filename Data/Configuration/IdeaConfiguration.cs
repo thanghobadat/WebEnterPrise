@@ -23,6 +23,8 @@ namespace Data.Configuration
             builder.Property(x => x.CreatedAt).IsRequired().HasDefaultValue(DateTime.Now);
             builder.Property(x => x.EditDate).IsRequired().HasDefaultValue(DateTime.Now.AddDays(7));
             builder.Property(x => x.FinalDate).IsRequired().HasDefaultValue(DateTime.Now.AddDays(11));
+            builder.HasOne(t => t.User).WithMany(pc => pc.Ideas)
+              .HasForeignKey(pc => pc.UserId);
         }
     }
 }

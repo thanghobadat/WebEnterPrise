@@ -40,7 +40,27 @@ namespace Application.Catalog
             return new ApiSuccessResult<bool>();
         }
 
+        public async Task<ApiResult<bool>> DeleteCategory(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return new ApiErrorResult<bool>("Department doesn't exist");
+            }
 
+            var categoriesInIdea = await _context.IdeaCategories.Where(x => x.CategoryId == id).ToListAsync();
+            if (categoriesInIdea.Count > 0)
+            {
+                return new ApiErrorResult<bool>("You cannot delete this category because it is assigned to at least 1 idea");
+            }
+            _context.Categories.Remove(category);
+            var result = await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                return new ApiErrorResult<bool>("An error occurred, please try again");
+            }
+            return new ApiSuccessResult<bool>();
+        }
 
         public async Task<ApiResult<CategoryViewModel>> GetById(int id)
         {

@@ -18,6 +18,8 @@ namespace Data.Configuration
             builder.Property(x => x.IsAnonymously).IsRequired().HasDefaultValue(false);
             builder.HasOne(t => t.User).WithMany(pc => pc.Comments)
               .HasForeignKey(pc => pc.UserId);
+            builder.HasOne(t => t.Idea).WithMany(pc => pc.Comments)
+              .HasForeignKey(pc => pc.IdeaId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

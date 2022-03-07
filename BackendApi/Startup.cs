@@ -1,4 +1,5 @@
 using Application.Catalog;
+using Application.Common;
 using Application.System.Users;
 using Data.EF;
 using Data.Entities;
@@ -99,6 +100,9 @@ namespace BackendApi
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
+            services.AddTransient<IIDeaService, IDeaService>();
+            services.AddTransient<IStorageService, FileStorageService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -19,17 +19,59 @@ export const getListUserApi = createAsyncThunk(
     return res.data.resultObj;
   },
 );
+export const postRegisterUserApi = createAsyncThunk(
+  'user/postRegisterUserApi',
+  async (payload) => {
+    await axios
+      .post(`https://localhost:5001/api/Users/Register`, {
+        userName: payload.userName,
+        email: payload.email,
+        role: payload.role,
+        phoneNumber: payload.phoneNumber,
+        department: payload.department,
+        password: payload.password,
+      })
+      .then((res) => {
+        // console.log('.listUserApi ~ res', res.data.resultObj);
+        return res;
+      })
+      .catch((e) => {
+        console.log('e', e);
+      });
+  },
+);
+export const putChangePasswordUserApi = createAsyncThunk(
+  'user/putChangePasswordUserApi',
+  async (payload) => {
+    await axios
+      .put(`https://localhost:5001/api/Users/ChangePassword`, {
+        id: payload.id,
+        newPassword: payload.newPassword,
+      })
+      .then((res) => {
+        // console.log('.listUserApi ~ res', res.data.resultObj);
+        return res;
+      })
+      .catch((e) => {
+        console.log('e', e);
+      });
+  },
+);
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
     listUserApi: [],
+    loading: false,
   },
   reducers: {},
   extraReducers: {
     [getListUserApi.pending]: (state, action) => {},
     [getListUserApi.rejected]: (state, action) => {},
     [getListUserApi.fulfilled]: (state, action) => {
-      state.listUserApi = action.payload || [];
+      state.listUserApi = action.payload;
+    },
+    [postRegisterUserApi.pending]: (state, action) => {
+      state.loading = true;
     },
   },
 });

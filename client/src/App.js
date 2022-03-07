@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import ListUser from './features/pages/user/list-user/list-user';
+import FormCreate from './features/pages/user/create-user/form-create';
 
 function App() {
   const { Header, Content, Footer } = Layout;
@@ -44,6 +45,9 @@ function App() {
             style={{ padding: 24, minHeight: 380 }}>
             <Routes>
               <Route path='/account-user' element={<ListUser />}></Route>
+              <Route
+                path='/create-account-user'
+                element={<FormCreate />}></Route>
             </Routes>
           </div>
         </Content>

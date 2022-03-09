@@ -57,7 +57,7 @@ function App() {
 							></Route>
 							<Route path="/create-category" element={<Create />}></Route>
 							{/* <Route path='/create-department' element={<DepartmentList />}></Route> */}
-							<Route path="/update-category" element={<Update />}></Route>
+							<Route path="/update-category/:id" element={<Update />}></Route>
 							{/* <Route path='/update-department' element={<DepartmentList />}></Route> */}
 							<Route path="/account-user" element={<ListUser />}></Route>
 							<Route

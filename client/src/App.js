@@ -14,6 +14,10 @@ import {
 import { Layout, Menu, Breadcrumb } from 'antd';
 import ListUser from './features/pages/user/list-user/list-user';
 import FormCreate from './features/pages/user/create-user/form-create';
+import CategoryList from './features/pages/category/list-category/CategoryList';
+import DepartmentList from './features/pages/department/list-department/DepartmentList';
+import Create from './features/pages/category/create-category/Create';
+import Update from './features/pages/category/update-category/Update';
 
 function App() {
   const { Header, Content, Footer } = Layout;
@@ -27,10 +31,10 @@ function App() {
               <Link to='#'>Home</Link>
             </Menu.Item>
             <Menu.Item key='2'>
-              <Link to='#'>Category</Link>
+              <Link to='/list-category'>Category</Link>
             </Menu.Item>
             <Menu.Item key='3'>
-              <Link to='#'>Department</Link>
+              <Link to='/list-department'>Department</Link>
             </Menu.Item>
             <Menu.Item key='4'>
               <Link to='account-user'>AccountUser</Link>
@@ -44,6 +48,12 @@ function App() {
             className='site-layout-background'
             style={{ padding: 24, minHeight: 380 }}>
             <Routes>
+            <Route path='/list-category' element={<CategoryList />}></Route>
+            <Route path='/list-department' element={<DepartmentList />}></Route>
+            <Route path='/create-category' element={<Create />}></Route>
+            {/* <Route path='/create-department' element={<DepartmentList />}></Route> */}
+            <Route path='/update-category' element={<Update />}></Route>
+            {/* <Route path='/update-department' element={<DepartmentList />}></Route> */}
               <Route path='/account-user' element={<ListUser />}></Route>
               <Route
                 path='/create-account-user'

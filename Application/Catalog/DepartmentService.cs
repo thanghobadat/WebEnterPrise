@@ -1,6 +1,8 @@
 ﻿using Data.EF;
 using Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
@@ -11,9 +13,35 @@ namespace Application.Catalog
     public class DepartmentService : IDepartmentService
     {
         private readonly WebEnterpriseDbcontext _context;
-        public DepartmentService(WebEnterpriseDbcontext context)
+        private readonly UserManager<AppUser> _userManager;
+
+        public DepartmentService(WebEnterpriseDbcontext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+        public async Task<ApiResult<bool>> AssignDepartment(int id, Guid userId)
+        {
+            var department = await _context.Departments.FindAsync(id);
+            if (department == null)
+            {
+                return new ApiErrorResult<bool>("Department doesn't exist");
+            }
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("User does not exits");
+            }
+
+            user.DepartmentId = id;
+            var result = await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                return new ApiErrorResult<bool>("An error occurred, please try again");
+            }
+
+            return new ApiSuccessResult<bool>();
         }
 
         public async Task<ApiResult<bool>> CreateDepartment(DepartmentViewModel request)
@@ -47,6 +75,14 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("Department doesn't exist");
             }
+
+            var users = await _context.AppUsers.Where(x => x.DepartmentId == id).ToListAsync();
+            foreach (var user in users)
+            {
+                user.DepartmentId = null;
+                await _context.SaveChangesAsync();
+            }
+
 
             _context.Departments.Remove(department);
             var result = await _context.SaveChangesAsync();

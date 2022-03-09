@@ -1,5 +1,4 @@
 ﻿using Application.Catalog;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
@@ -8,7 +7,7 @@ namespace BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -44,7 +43,7 @@ namespace BackendApi.Controllers
         }
 
         [HttpPut("UpdateCategory")]
-        public async Task<IActionResult> UpdateCategory(CategoryViewModel request)
+        public async Task<IActionResult> UpdateCategory([FromBody] CategoryViewModel request)
         {
 
             if (!ModelState.IsValid)
@@ -55,12 +54,12 @@ namespace BackendApi.Controllers
             return Ok(category);
         }
 
-        //[HttpDelete("DeleteCategory")]
-        //public async Task<IActionResult> DeleteCategory(int id)
-        //{
+        [HttpDelete("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
 
-        //    var category = await _categoryService.DeleteCategory(id);
-        //    return Ok(category);
-        //}
+            var category = await _categoryService.DeleteCategory(id);
+            return Ok(category);
+        }
     }
 }

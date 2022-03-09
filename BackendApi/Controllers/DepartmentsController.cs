@@ -1,5 +1,6 @@
 ﻿using Application.Catalog;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
 
@@ -11,6 +12,7 @@ namespace BackendApi.Controllers
     public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
+
         public DepartmentsController(IDepartmentService departmentService)
         {
             _departmentService = departmentService;
@@ -43,7 +45,7 @@ namespace BackendApi.Controllers
         }
 
         [HttpPut("UpdateDepartment")]
-        public async Task<IActionResult> UpdateDepartment(DepartmentViewModel request)
+        public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentViewModel request)
         {
 
             if (!ModelState.IsValid)
@@ -51,6 +53,15 @@ namespace BackendApi.Controllers
                 return BadRequest();
             }
             var department = await _departmentService.UpdateDepartment(request);
+            return Ok(department);
+        }
+
+        [HttpPut("AssignDepartment")]
+        public async Task<IActionResult> AssignDepartment(int id, Guid userId)
+        {
+
+
+            var department = await _departmentService.AssignDepartment(id, userId);
             return Ok(department);
         }
 

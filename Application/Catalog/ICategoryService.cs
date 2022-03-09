@@ -10,6 +10,6 @@ namespace Application.Catalog
         Task<ApiResult<bool>> CreateCategory(CategoryViewModel request);
         Task<ApiResult<CategoryViewModel>> GetById(int id);
         Task<ApiResult<bool>> UpdateCategory(CategoryViewModel request);
-        //Task<ApiResult<bool>> DeleteCategory(int id);
+        Task<ApiResult<bool>> DeleteCategory(int id);
     }
 }

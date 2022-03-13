@@ -1,0 +1,22 @@
+/** @format */
+
+.formCreate {
+  width: 100%;
+  max-width: 700px;
+  margin: 50px auto;
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+  & h2 {
+    text-align: center;
+  }
+  & .groupBtn {
+    width: 100%;
+    &__center {
+      justify-content: space-around;
+      & .ant-col-12 {
+        flex: 0;
+      }
+    }
+  }
+}

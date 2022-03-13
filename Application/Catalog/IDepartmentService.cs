@@ -7,7 +7,7 @@ namespace Application.Catalog
 {
     public interface IDepartmentService
     {
-        Task<ApiResult<PageResult<DepartmentViewModel>>> GetDepartmentPaging(GetDepartmentPagingRequest request);
+        Task<ApiResult<PageResult<DepartmentViewModel>>> GetDepartmentPaging(GetPagingRequestPage request);
         Task<ApiResult<bool>> CreateDepartment(DepartmentViewModel request);
         Task<ApiResult<DepartmentViewModel>> GetDepartmentById(int id);
         Task<ApiResult<bool>> UpdateDepartment(DepartmentViewModel request);

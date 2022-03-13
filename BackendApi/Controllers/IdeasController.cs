@@ -17,7 +17,12 @@ namespace BackendApi.Controllers
             _ideaService = ideaService;
         }
 
-
+        [HttpGet("GetIdeaPaging")]
+        public async Task<IActionResult> GetIdeaPaging([FromQuery] GetPagingRequestPage request)
+        {
+            var departments = await _ideaService.GetIdeaPaging(request);
+            return Ok(departments);
+        }
 
         [HttpPost("CreateIdea")]
         [Consumes("multipart/form-data")]
@@ -28,6 +33,14 @@ namespace BackendApi.Controllers
                 return BadRequest();
             }
             var result = await _ideaService.CreateIdea(request);
+            return Ok(result);
+        }
+
+        [HttpPost("AddNewComment")]
+        public async Task<IActionResult> AddNewComment([FromBody] CommentCreateRequest request)
+        {
+
+            var result = await _ideaService.CommentIdea(request);
             return Ok(result);
         }
 

@@ -29,9 +29,9 @@ namespace BackendApi.Controllers
             var resultToken = await _userService.Authenticate(request);
 
 
-            if (string.IsNullOrEmpty(resultToken))
+            if (!resultToken.IsSuccessed)
             {
-                return BadRequest(resultToken);
+                return BadRequest(resultToken.Message);
             }
             return Ok(resultToken);
         }

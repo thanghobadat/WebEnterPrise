@@ -2,7 +2,7 @@
 
 namespace ViewModel.Catalog
 {
-    public class GetCategoryPagingRequest : PagingRequestBase
+    public class GetPagingRequestPage : PagingRequestBase
     {
         public string Keyword { get; set; }
 

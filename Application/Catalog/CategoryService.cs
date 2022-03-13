@@ -80,7 +80,7 @@ namespace Application.Catalog
             return new ApiSuccessResult<CategoryViewModel>(categoryViewModel);
         }
 
-        public async Task<ApiResult<PageResult<CategoryViewModel>>> GetCategoryPaging(GetCategoryPagingRequest request)
+        public async Task<ApiResult<PageResult<CategoryViewModel>>> GetCategoryPaging(GetPagingRequestPage request)
         {
             var query = await _context.Categories.ToListAsync();
             if (query == null)

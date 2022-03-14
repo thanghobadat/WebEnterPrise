@@ -14,12 +14,16 @@ import {
 import { Layout, Menu, Breadcrumb } from 'antd';
 import ListUser from './features/pages/user/list-user/list-user';
 import FormCreate from './features/pages/user/create-user/form-create';
+import Login from './features/pages/auth/login/Login';
 
 function App() {
   const { Header, Content, Footer } = Layout;
   return (
     <div className='App'>
-      <Layout>
+      <Routes>
+        <Route path='/login' element={<Login />}></Route>
+      </Routes>
+      {/* <Layout>
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
           <div className='logo' />
           <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['2']}>
@@ -52,7 +56,7 @@ function App() {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Footer</Footer>
-      </Layout>
+      </Layout> */}
     </div>
   );
 }

@@ -8,6 +8,8 @@ namespace Application.Catalog
     public interface IIDeaService
     {
         Task<ApiResult<PageResult<IDeaViewModel>>> GetIdeaPaging(GetPagingRequestPage request);
+        Task<ApiResult<IDeaViewModel>> GetIdeaById(int id);
+
 
         Task<ApiResult<bool>> CreateIdea(IdeaCreateRequest request);
         Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, List<int> categoryIdeas);

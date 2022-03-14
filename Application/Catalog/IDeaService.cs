@@ -215,6 +215,43 @@ namespace Application.Catalog
             return new ApiSuccessResult<bool>();
         }
 
+        public async Task<ApiResult<IDeaViewModel>> GetIdeaById(int id)
+        {
+            var idea = await _context.Ideas.FindAsync(id);
+            if (idea == null)
+            {
+                return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
+            }
+            var categoryIdeas = await _context.IdeaCategories.Where(x => x.IdeaId == id).ToListAsync();
+            if (idea == null)
+            {
+                return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
+            }
+
+            var ideaVM = new IDeaViewModel()
+            {
+                Id = idea.Id,
+                Content = idea.Content,
+                CreatedAt = idea.CreatedAt,
+                EditDate = idea.EditDate,
+                FilePath = idea.FilePath,
+                View = idea.View,
+                Like = idea.Like,
+                Dislike = idea.Dislike,
+                IsAnonymously = idea.IsAnonymously,
+                FinalDate = idea.FinalDate,
+                UserId = idea.UserId,
+                Categories = new List<string>()
+            };
+
+            foreach (var item in categoryIdeas)
+            {
+                var category = await _context.Categories.FindAsync(item.CategoryId);
+                ideaVM.Categories.Add(category.Name);
+            }
+            return new ApiSuccessResult<IDeaViewModel>(ideaVM);
+        }
+
         public async Task<ApiResult<PageResult<IDeaViewModel>>> GetIdeaPaging(GetPagingRequestPage request)
         {
             var query = await _context.Ideas.ToListAsync();

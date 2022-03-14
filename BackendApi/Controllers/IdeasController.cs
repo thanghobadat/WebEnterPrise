@@ -20,8 +20,15 @@ namespace BackendApi.Controllers
         [HttpGet("GetIdeaPaging")]
         public async Task<IActionResult> GetIdeaPaging([FromQuery] GetPagingRequestPage request)
         {
-            var departments = await _ideaService.GetIdeaPaging(request);
-            return Ok(departments);
+            var result = await _ideaService.GetIdeaPaging(request);
+            return Ok(result);
+        }
+
+        [HttpGet("GetIdeaById")]
+        public async Task<IActionResult> GetIdeaById(int id)
+        {
+            var result = await _ideaService.GetIdeaById(id);
+            return Ok(result);
         }
 
         [HttpPost("CreateIdea")]

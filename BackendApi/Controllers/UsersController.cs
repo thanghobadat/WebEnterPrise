@@ -29,28 +29,6 @@ namespace BackendApi.Controllers
       var resultToken = await _userService.Authenticate(request);
 
 
-
-            if (!resultToken.IsSuccessed)
-            {
-                return BadRequest(resultToken.Message);
-            }
-            return Ok(resultToken);
-        }
-        [HttpPost("Register")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var result = await _userService.RegisterAccount(request);
-            if (!result.ResultObj)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
       if (string.IsNullOrEmpty(resultToken))
       {
         return BadRequest(resultToken);
@@ -59,7 +37,6 @@ namespace BackendApi.Controllers
     }
     [HttpPost("Register")]
     // [AllowAnonymous]
->>>>>>> f12483c734f6df3ff01c55b507ba0a3c2b53b7d2
 
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {

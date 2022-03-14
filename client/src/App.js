@@ -18,7 +18,8 @@ import CategoryList from './features/pages/category/list-category/CategoryList';
 import DepartmentList from './features/pages/department/list-department/DepartmentList';
 import Create from './features/pages/category/create-category/Create';
 import Update from './features/pages/category/update-category/Update';
-
+import CreateIdea from './features/pages/idea/create-idea/create-idea';
+import CreateDepartment from './features/pages/department/create-department/create-department';
 function App() {
 	const { Header, Content, Footer } = Layout;
 	return (
@@ -56,7 +57,8 @@ function App() {
 								element={<DepartmentList />}
 							></Route>
 							<Route path="/create-category" element={<Create />}></Route>
-							{/* <Route path='/create-department' element={<DepartmentList />}></Route> */}
+							<Route path="/create-idea" element={<CreateIdea/>}></Route>
+							<Route path='/create-department' element={<CreateDepartment />}></Route>
 							<Route path="/update-category/:id" element={<Update />}></Route>
 							{/* <Route path='/update-department' element={<DepartmentList />}></Route> */}
 							<Route path="/account-user" element={<ListUser />}></Route>

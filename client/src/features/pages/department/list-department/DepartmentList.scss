@@ -1,27 +1,25 @@
-// #customers {
-//   font-family: Arial, Helvetica, sans-serif;
-//   border-collapse: collapse;
-//   width: 100%;
-// }
+.ListUser {
+  margin-top: 50px;
+  padding: 50px;
+  box-shadow: 0px 4px 10px gray;
 
-// #customers td,
-// #customers th {
-//   border: 1px solid #ddd;
-//   padding: 8px;
-// }
-
-// #customers tr:nth-child(even) {
-//   background-color: #f2f2f2;
-// }
-
-// #customers tr:hover {
-//   background-color: #ddd;
-// }
-
-// #customers th {
-//   padding-top: 12px;
-//   padding-bottom: 12px;
-//   text-align: left;
-//   background-color: #04aa6d;
-//   color: white;
-// }
+  &__title {
+    margin: 7px auto;
+  }
+  & h2 {
+    margin-left: 100px;
+  }
+  &__table {
+    border: 1px solid black;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
+.users-container {
+  .title.text-center {
+    font-size: 40px;
+    button.Add-btn.btn.btn-primary {
+      margin-left: 100px;
+    }
+  }
+}

@@ -13,11 +13,11 @@ function DepartmentList() {
   const [departmentList, setDepartmentList] = useState([]);
   const [pagination, setPagination] = useState({
     pageIndex: 1,
-    pageSize: 4,
+    pageSize: 10,
     totalRecords: 4,
   })
   const[filters, setFilters] = useState({
-    pageSize: 4,
+    pageSize: 10,
     pageIndex: 1,
   });
 
@@ -58,13 +58,11 @@ function DepartmentList() {
 	}
 
   const handleDelete = async (id) => {
-    
-		const  res  = await axios.delete(
-			`https://localhost:5001/api/Departments/DeleteDepartment?id=${id}`
+    await axios.delete(
+		`https://localhost:5001/api/Departments/DeleteDepartment?id=${id}`
 			
 		)
-    console.log(res);
-    navigate('/list-department');
+    handlePageChange()
 	}
 
   function handleCreate(){
@@ -75,7 +73,7 @@ function DepartmentList() {
     <div className="users-container">
       <div className='title text-center'>
         Manager Department
-        <Button  onClick={() => handleCreate()} variant="primary">Add</Button>
+        <Button className='Add-btn' onClick={() => handleCreate()} variant="primary">Add</Button>
         </div>
       <div className='users-table mt-3 mx-1'></div>
     <table id="customers">

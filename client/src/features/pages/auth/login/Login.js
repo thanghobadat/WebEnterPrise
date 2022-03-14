@@ -8,7 +8,7 @@ import { loginSlice } from '../../../../Redux/slices/loginSlice';
 const Login = () => {
   const dispatch = useDispatch();
   const onFinish = (values) => {
-    // dispatch(loginSlice(values));
+    dispatch(loginSlice(values));
     message.success('This is a success message');
     console.log(values);
   };

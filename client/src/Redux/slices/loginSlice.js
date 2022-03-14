@@ -8,7 +8,7 @@ export const postLoginUserApi = createAsyncThunk(
   'user/postLoginUserApi',
   async (payload) => {
     await axios
-      .post(`https://localhost:5001/api/Users/Register`, {
+      .post(`https://localhost:5001/api/Users/Authenticate`, {
         userName: payload.userName,
         password: payload.password,
       })

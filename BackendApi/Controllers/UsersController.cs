@@ -59,6 +59,13 @@ namespace BackendApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetAccountStaffAndQACoor")]
+        public async Task<IActionResult> GetAccountStaffAndQACoor()
+        {
+            var result = await _userService.GetAccountStaffAndQACoor();
+            return Ok(result);
+        }
+
         [HttpGet("GetAccountById")]
         public async Task<IActionResult> GetAccountById(Guid id)
         {

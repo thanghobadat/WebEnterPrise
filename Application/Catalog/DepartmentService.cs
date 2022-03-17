@@ -14,7 +14,6 @@ namespace Application.Catalog
     {
         private readonly WebEnterpriseDbcontext _context;
         private readonly UserManager<AppUser> _userManager;
-
         public DepartmentService(WebEnterpriseDbcontext context, UserManager<AppUser> userManager)
         {
             _context = context;
@@ -33,7 +32,6 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("User does not exits");
             }
-
             user.DepartmentId = id;
             var result = await _context.SaveChangesAsync();
             if (result == 0)

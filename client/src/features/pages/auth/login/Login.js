@@ -1,18 +1,21 @@
 /** @format */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './loginStyle.scss';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Button, Row, message } from 'antd';
-import { loginSlice } from '../../../../Redux/slices/loginSlice';
+import { postLoginUserApi } from '../../../../Redux/slices/loginSlice';
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = (values) => {
-    dispatch(loginSlice(values));
+    dispatch(postLoginUserApi(values));
     message.success('This is a success message');
-    console.log(values);
+    {
+      localStorage.getItem('user') ? navigate(`/admin`) : navigate(`/login`);
+    }
   };
-
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
@@ -28,7 +31,7 @@ const Login = () => {
         autoComplete='off'>
         <Form.Item
           label='Username'
-          name='username'
+          name='userName'
           rules={[{ required: true, message: 'Please input your username!' }]}>
           <Input />
         </Form.Item>

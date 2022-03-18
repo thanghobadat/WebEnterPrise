@@ -111,7 +111,7 @@ namespace Application.Catalog
             return new ApiSuccessResult<DepartmentViewModel>(departmentViewModel);
         }
 
-        public async Task<ApiResult<PageResult<DepartmentViewModel>>> GetDepartmentPaging(GetDepartmentPagingRequest request)
+        public async Task<ApiResult<PageResult<DepartmentViewModel>>> GetDepartmentPaging(GetPagingRequestPage request)
         {
             var query = await _context.Departments.ToListAsync();
             if (query == null)

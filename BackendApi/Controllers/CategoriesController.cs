@@ -17,7 +17,7 @@ namespace BackendApi.Controllers
         }
 
         [HttpGet("GetCategoryPaging")]
-        public async Task<IActionResult> GetCategoryPaging([FromQuery] GetCategoryPagingRequest request)
+        public async Task<IActionResult> GetCategoryPaging([FromQuery] GetPagingRequestPage request)
         {
             var categories = await _categoryService.GetCategoryPaging(request);
             return Ok(categories);

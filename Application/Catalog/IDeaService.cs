@@ -59,6 +59,75 @@ namespace Application.Catalog
             return new ApiSuccessResult<bool>(true);
         }
 
+        public async Task<ApiResult<bool>> CommentIdea(CommentCreateRequest request)
+        {
+            var idea = await _context.Ideas.FindAsync(request.IdeaId);
+            if (idea == null)
+            {
+                return new ApiErrorResult<bool>("Idea doesn't exist");
+            }
+            var userIdea = await _userManager.FindByIdAsync(idea.UserId.ToString());
+            if (userIdea == null)
+            {
+                return new ApiErrorResult<bool>("User does not exits");
+            }
+
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("User does not exits");
+            }
+
+            var comment = new Comment()
+            {
+                Content = request.Content,
+                IsAnonymously = request.IsAnonymous,
+                IdeaId = idea.Id,
+                UserId = user.Id
+            };
+            await _context.Comments.AddAsync(comment);
+            var result = await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                return new ApiErrorResult<bool>("An error occurred, please try again");
+            }
+
+            if (userIdea != user)
+            {
+                string to = userIdea.Email;
+                string subject = "A new idea has just been created";
+                string body = user.UserName + "Just comment to your idea";
+
+                var mailSetting = await _context.MailSettings.FirstOrDefaultAsync();
+
+                var email = new MimeMessage();
+
+                email.Sender = new MailboxAddress(mailSetting.DisplayName, mailSetting.Email);
+                email.From.Add(new MailboxAddress(mailSetting.DisplayName, mailSetting.Email));
+                email.To.Add(new MailboxAddress(to, to));
+                email.Subject = subject;
+                var builder = new BodyBuilder();
+                builder.HtmlBody = body;
+                email.Body = builder.ToMessageBody();
+                using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                try
+                {
+                    //kết nối máy chủ
+                    await smtp.ConnectAsync(mailSetting.Host, mailSetting.Port, SecureSocketOptions.StartTls);
+                    // xác thực
+                    await smtp.AuthenticateAsync(mailSetting.Email, mailSetting.Password);
+                    //gởi
+                    await smtp.SendAsync(email);
+                }
+                catch (Exception e)
+                {
+                    return new ApiErrorResult<bool>("there was an error when sending mail but still created the idea. Error: " + e.Message);
+                }
+                smtp.Disconnect(true);
+            }
+            return new ApiSuccessResult<bool>();
+        }
+
         public async Task<ApiResult<bool>> CountViewIdea(int id)
         {
             var idea = await _context.Ideas.FindAsync(id);
@@ -144,6 +213,98 @@ namespace Application.Catalog
                 smtp.Disconnect(true);
             }
             return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<IDeaViewModel>> GetIdeaById(int id)
+        {
+            var idea = await _context.Ideas.FindAsync(id);
+            if (idea == null)
+            {
+                return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
+            }
+            var categoryIdeas = await _context.IdeaCategories.Where(x => x.IdeaId == id).ToListAsync();
+            if (idea == null)
+            {
+                return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
+            }
+
+            var ideaVM = new IDeaViewModel()
+            {
+                Id = idea.Id,
+                Content = idea.Content,
+                CreatedAt = idea.CreatedAt,
+                EditDate = idea.EditDate,
+                FilePath = idea.FilePath,
+                View = idea.View,
+                Like = idea.Like,
+                Dislike = idea.Dislike,
+                IsAnonymously = idea.IsAnonymously,
+                FinalDate = idea.FinalDate,
+                UserId = idea.UserId,
+                Categories = new List<string>()
+            };
+
+            foreach (var item in categoryIdeas)
+            {
+                var category = await _context.Categories.FindAsync(item.CategoryId);
+                ideaVM.Categories.Add(category.Name);
+            }
+            return new ApiSuccessResult<IDeaViewModel>(ideaVM);
+        }
+
+        public async Task<ApiResult<PageResult<IDeaViewModel>>> GetIdeaPaging(GetPagingRequestPage request)
+        {
+            var query = await _context.Ideas.ToListAsync();
+            if (query == null)
+            {
+                return new ApiErrorResult<PageResult<IDeaViewModel>>("No Ideas exists");
+            }
+            var ideas = query.AsQueryable();
+
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                ideas = ideas.Where(x => x.Content.Contains(request.Keyword));
+            }
+
+
+            int totalRow = ideas.Count();
+
+            var data = ideas.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new IDeaViewModel()
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    EditDate = x.EditDate,
+                    FilePath = x.FilePath,
+                    View = x.View,
+                    Like = x.Like,
+                    Dislike = x.Dislike,
+                    IsAnonymously = x.IsAnonymously,
+                    FinalDate = x.FinalDate,
+                    UserId = x.UserId,
+                    Categories = new List<string>()
+                }).ToList();
+
+            foreach (var item in data)
+            {
+                var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
+                foreach (var ideacategory in ideaCategories)
+                {
+                    var category = await _context.Categories.FindAsync(ideacategory.CategoryId);
+                    item.Categories.Add(category.Name);
+                }
+            }
+
+            var pagedResult = new PageResult<IDeaViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Items = data
+            };
+            return new ApiSuccessResult<PageResult<IDeaViewModel>>(pagedResult);
         }
 
         public async Task<ApiResult<bool>> LikeOrDislikeIdea(int id, int number)

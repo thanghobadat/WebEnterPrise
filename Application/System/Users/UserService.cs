@@ -31,15 +31,15 @@ namespace Application.System.Users
       _config = config;
       _context = context;
     }
-    public async Task<string> Authenticate(LoginRequest request)
+    public async Task<ApiResult<LoginViewModel>> Authenticate(LoginRequest request)
     {
 
       var user = await _userManager.FindByNameAsync(request.UserName);
-      if (user == null) return "User doesn't exits";
+      if (user == null) return new ApiErrorResult<LoginViewModel>("User doesn't exits");
       var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
       if (!result.Succeeded)
       {
-        return "Login unsuccessful";
+        return new ApiErrorResult<LoginViewModel>("Password is not correct");
       }
       var roles = await _userManager.GetRolesAsync(user);
 
@@ -57,8 +57,21 @@ namespace Application.System.Users
           claims,
           expires: DateTime.Now.AddHours(3),
           signingCredentials: creds);
+      var information = await this.GetAccountById(user.Id);
 
-      return new JwtSecurityTokenHandler().WriteToken(token);
+      var loginVM = new LoginViewModel()
+      {
+        Token = new JwtSecurityTokenHandler().WriteToken(token),
+        Id = information.ResultObj.Id,
+        UserName = information.ResultObj.UserName,
+        Email = information.ResultObj.Email,
+        PhoneNumber = information.ResultObj.PhoneNumber,
+        Department = information.ResultObj.Department,
+        Role = information.ResultObj.Role,
+
+      };
+
+      return new ApiSuccessResult<LoginViewModel>(loginVM);
     }
 
     public async Task<ApiResult<bool>> ChangePassword(ChangePasswordRequest request)

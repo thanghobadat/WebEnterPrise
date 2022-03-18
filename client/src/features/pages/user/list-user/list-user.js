@@ -110,7 +110,7 @@ const ListUser = () => {
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>
-            <Link to='/create-account-user'> Add</Link>
+            <Link to='/admin/create-account-user'> Add</Link>
           </Button>
         </Col>
       </Row>

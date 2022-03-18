@@ -6,7 +6,7 @@ namespace Application.Catalog
 {
     public interface ICategoryService
     {
-        Task<ApiResult<PageResult<CategoryViewModel>>> GetCategoryPaging(GetCategoryPagingRequest request);
+        Task<ApiResult<PageResult<CategoryViewModel>>> GetCategoryPaging(GetPagingRequestPage request);
         Task<ApiResult<bool>> CreateCategory(CategoryViewModel request);
         Task<ApiResult<CategoryViewModel>> GetById(int id);
         Task<ApiResult<bool>> UpdateCategory(CategoryViewModel request);

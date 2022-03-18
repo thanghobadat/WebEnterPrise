@@ -19,7 +19,7 @@ namespace BackendApi.Controllers
         }
 
         [HttpGet("GetDepartmentPaging")]
-        public async Task<IActionResult> GetDepartmentPaging([FromQuery] GetDepartmentPagingRequest request)
+        public async Task<IActionResult> GetDepartmentPaging([FromQuery] GetPagingRequestPage request)
         {
             var departments = await _departmentService.GetDepartmentPaging(request);
             return Ok(departments);

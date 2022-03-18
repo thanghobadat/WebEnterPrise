@@ -7,6 +7,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const postLoginUserApi = createAsyncThunk(
   'user/postLoginUserApi',
   async (payload) => {
+    console.log(payload);
     await axios
       .post(`https://localhost:5001/api/Users/Authenticate`, {
         userName: payload.userName,
@@ -14,6 +15,8 @@ export const postLoginUserApi = createAsyncThunk(
       })
       .then((res) => {
         // console.log('.listUserApi ~ res', res.data.resultObj);
+        localStorage.setItem('user', JSON.stringify(res.data.resultObj));
+
         return res;
       })
       .catch((e) => {
@@ -28,7 +31,11 @@ export const loginSlice = createSlice({
     loading: false,
   },
   reducers: {},
-  extraReducers: {},
+  extraReducers: {
+    [postLoginUserApi.pending]: (state, action) => {
+      state.loading = true;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function

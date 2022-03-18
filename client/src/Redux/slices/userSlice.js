@@ -28,7 +28,7 @@ export const postRegisterUserApi = createAsyncThunk(
         email: payload.email,
         role: payload.role,
         phoneNumber: payload.phoneNumber,
-        department: payload.department,
+        departmentId: parseInt(payload.department),
         password: payload.password,
       })
       .then((res) => {

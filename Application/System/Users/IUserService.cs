@@ -6,15 +6,15 @@ using ViewModel.System.Users;
 
 namespace Application.System.Users
 {
-    public interface IUserService
-    {
-        Task<string> Authenticate(LoginRequest request);
-        Task<ApiResult<bool>> RegisterAccount(RegisterRequest request);
-        Task<ApiResult<List<AccountViewModel>>> GetAllAccount(string keyword);
-        Task<ApiResult<AccountViewModel>> GetAccountById(Guid id);
-        Task<ApiResult<bool>> DeleteAccount(Guid id);
-        Task<ApiResult<bool>> ChangePassword(ChangePasswordRequest request);
+  public interface IUserService
+  {
+    Task<ApiResult<LoginViewModel>> Authenticate(LoginRequest request);
+    Task<ApiResult<bool>> RegisterAccount(RegisterRequest request);
+    Task<ApiResult<List<AccountViewModel>>> GetAllAccount(string keyword);
+    Task<ApiResult<AccountViewModel>> GetAccountById(Guid id);
+    Task<ApiResult<bool>> DeleteAccount(Guid id);
+    Task<ApiResult<bool>> ChangePassword(ChangePasswordRequest request);
 
 
-    }
+  }
 }

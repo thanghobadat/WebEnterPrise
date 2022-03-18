@@ -7,6 +7,7 @@ import Pagination from '../../../../components/Pagination';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
+import { message } from 'antd';
 
 function DepartmentList() {
 	const navigate = useNavigate();
@@ -65,7 +66,7 @@ function DepartmentList() {
 			`https://localhost:5001/api/Departments/DeleteDepartment?id=${id}`
 		);
 		setDeleteSucceed(res.data.isSuccessed);
-		navigate('/list-department');
+		message.success('Delete department success !!');
 	};
 
 	const handleAssign = async (id) => {
@@ -97,7 +98,7 @@ function DepartmentList() {
 									variant="info"
 									className="btn-edit btn_update"
 								>
-									Assign to Staff and QA
+									Assign to Staff or QA
 								</Button>
 								<Button
 									onClick={() => handleUpdate(department.id)}

@@ -21,6 +21,8 @@ import Update from './features/pages/category/update-category/Update';
 import CreateDepartment from './features/pages/department/create-department/CreateDepartment';
 import UpdateDepartment from './features/pages/department/update-department/UpdateDepartment';
 import ListStaffAndQA from './features/pages/department/assign/ListStaffAndQA';
+import CreateIdeas from './features/pages/ideas/CreateIdeas';
+import ViewIdeas from './features/pages/ideas/ViewIdeas';
 
 function App() {
 	const { Header, Content, Footer } = Layout;
@@ -41,6 +43,9 @@ function App() {
 						</Menu.Item>
 						<Menu.Item key="4">
 							<Link to="account-user">AccountUser</Link>
+						</Menu.Item>
+						<Menu.Item key="5">
+							<Link to="/viewIdeas">Ideas</Link>
 						</Menu.Item>
 					</Menu>
 				</Header>
@@ -71,13 +76,16 @@ function App() {
 							<Route
 								path="/list-assign-staff-qa/:id"
 								element={<ListStaffAndQA />}
-							></Route>
+							/>
 
 							<Route path="/account-user" element={<ListUser />}></Route>
 							<Route
 								path="/create-account-user"
 								element={<FormCreate />}
 							></Route>
+
+							<Route path="/viewIdeas" element={<ViewIdeas />} />
+							<Route path="/createIdeas" element={<CreateIdeas />} />
 						</Routes>
 					</div>
 				</Content>

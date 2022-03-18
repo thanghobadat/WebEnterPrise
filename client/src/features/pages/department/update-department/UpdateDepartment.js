@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 const UpdateDepartment = () => {
 	const { id } = useParams();
@@ -27,6 +28,7 @@ const UpdateDepartment = () => {
 			config
 		);
 		navigate('/list-department');
+		message.success('Update department success !!');
 	};
 
 	useEffect(() => {

@@ -3,6 +3,8 @@ import { Form, Input, Button } from 'antd';
 import './create.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+
 const CreateDepartment = () => {
 	const navigate = useNavigate();
 	const onFinish = (values) => {
@@ -18,8 +20,8 @@ const CreateDepartment = () => {
 			{ name, description },
 			config
 		);
-
 		navigate('/list-department');
+		message.success('Create department success !!');
 	};
 	return (
 		<div className="create">

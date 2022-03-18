@@ -3,6 +3,7 @@ import { Form, Input, Button } from 'antd';
 import '../create-category/create.css';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 const Update = () => {
 	const { id } = useParams();
@@ -28,6 +29,7 @@ const Update = () => {
 			config
 		);
 		navigate('/list-category');
+		message.success('Update category success !!');
 	};
 
 	useEffect(() => {

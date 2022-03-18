@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Row, Col, Modal, Form, Input, Select } from 'antd';
+import { Table, Button, Row, Col } from 'antd';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 const ListStaffAndQA = () => {
 	const [listUser, setListUser] = useState([]);
-
-	useEffect(() => {
-		getDepartmentList();
-	}, []);
+	const { id } = useParams();
+	const navigate = useNavigate();
 
 	const getDepartmentList = async () => {
 		try {
@@ -21,6 +21,10 @@ const ListStaffAndQA = () => {
 			console.log('Failed to fetch department list', error.message);
 		}
 	};
+
+	useEffect(() => {
+		getDepartmentList();
+	}, []);
 
 	const columns = [
 		{
@@ -40,7 +44,7 @@ const ListStaffAndQA = () => {
 			dataIndex: 'department',
 		},
 		{
-			title: 'Change password',
+			title: 'Assign',
 			key: 'id',
 			fixed: 'right',
 			width: 200,
@@ -58,10 +62,12 @@ const ListStaffAndQA = () => {
 		},
 	];
 
-	const assignHandler = (id) => {
-		console.log('====================================');
-		console.log(id);
-		console.log('====================================');
+	const assignHandler = async (userId) => {
+		await axios.put(
+			`https://localhost:5001/api/Departments/AssignDepartment?id=${id}&userId=${userId}`
+		);
+		navigate('/list-department');
+		message.success('Assign department to user success !!');
 	};
 
 	return (

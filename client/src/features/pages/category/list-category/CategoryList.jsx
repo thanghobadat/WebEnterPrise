@@ -7,6 +7,7 @@ import Pagination from '../../../../components/Pagination';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
+import { message } from 'antd';
 
 function CategoryList() {
 	const navigate = useNavigate();
@@ -64,7 +65,7 @@ function CategoryList() {
 			`https://localhost:5001/api/Categories/DeleteCategory?id=${id}`
 		);
 		setDeleteSucceed(res.data.isSuccessed);
-		navigate('/list-category');
+		message.success('Delete category success !!');
 	};
 
 	return (

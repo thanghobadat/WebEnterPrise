@@ -3,6 +3,8 @@ import { Form, Input, Button } from 'antd';
 import './create.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+
 const Create = () => {
 	const navigate = useNavigate();
 	const onFinish = (values) => {
@@ -18,9 +20,10 @@ const Create = () => {
 			{ name, description },
 			config
 		);
-
 		navigate('/list-category');
+		message.success('Create category success !!');
 	};
+	
 	return (
 		<div className="create">
 			<Form

@@ -96,7 +96,7 @@ namespace Application.Catalog
             {
                 string to = userIdea.Email;
                 string subject = "A new idea has just been created";
-                string body = user.UserName + "Just comment to your idea";
+                string body = user.UserName + " just comment to your idea";
 
                 var mailSetting = await _context.MailSettings.FirstOrDefaultAsync();
 

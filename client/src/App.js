@@ -18,6 +18,9 @@ import CategoryList from './features/pages/category/list-category/CategoryList';
 import DepartmentList from './features/pages/department/list-department/DepartmentList';
 import Create from './features/pages/category/create-category/Create';
 import Update from './features/pages/category/update-category/Update';
+import CreateDepartment from './features/pages/department/create-department/CreateDepartment';
+import UpdateDepartment from './features/pages/department/update-department/UpdateDepartment';
+import ListStaffAndQA from './features/pages/department/assign/ListStaffAndQA';
 
 function App() {
 	const { Header, Content, Footer } = Layout;
@@ -57,8 +60,19 @@ function App() {
 								path="/list-department"
 								element={<DepartmentList />}
 							></Route>
-							<Route path='/create-department' element={<DepartmentList />}></Route>	
-							<Route path='/update-department' element={<DepartmentList />}></Route>
+							<Route
+								path="/create-department"
+								element={<CreateDepartment />}
+							></Route>
+							<Route
+								path="/update-department/:id"
+								element={<UpdateDepartment />}
+							></Route>
+							<Route
+								path="/list-assign-staff-qa/:id"
+								element={<ListStaffAndQA />}
+							></Route>
+
 							<Route path="/account-user" element={<ListUser />}></Route>
 							<Route
 								path="/create-account-user"

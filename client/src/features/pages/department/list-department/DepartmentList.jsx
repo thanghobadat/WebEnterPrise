@@ -54,7 +54,7 @@ function DepartmentList() {
   const handleUpdate = async (id) => {
 		const  res  = await axios.get(`https://localhost:5001/api/Departments/GetDepartmentById?id=${id}`)
     console.log(res);
-    navigate(`/update-department?id=${id}`);
+    navigate(`/admin/update-department?id=${id}`);
 	}
 
   const handleDelete = async (id) => {
@@ -64,11 +64,11 @@ function DepartmentList() {
 			
 		)
     console.log(res);
-    navigate('/list-department');
+    navigate('/admin/list-department');
 	}
 
   function handleCreate(){
-    navigate('/create-department')
+    navigate('/admin/create-department')
   }
 
   return (

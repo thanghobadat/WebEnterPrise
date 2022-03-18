@@ -54,11 +54,11 @@ function CategoryList() {
 	const handleUpdate = async (id) => {
 		// const  res  = await axios.get(`https://localhost:5001/api/Categories/GetById?categoryId=${id}`)
 		// console.log(res);
-		navigate(`/update-category/${id}`);
+		navigate(`/admin/update-category/${id}`);
 	};
 
 	function handleCreate() {
-		navigate('/create-category');
+		navigate('/admin/create-category');
 	}
 
 	return (

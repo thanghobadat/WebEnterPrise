@@ -1,0 +1,29 @@
+/** @format */
+.formCreate {
+  width: 100%;
+  max-width: 700px;
+  margin: 50px auto;
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.formCreate h2 {
+  text-align: center;
+}
+
+.formCreate .groupBtn {
+  width: 100%;
+}
+
+.formCreate .groupBtn__center {
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.formCreate .groupBtn__center .ant-col-12 {
+  -webkit-box-flex: 0;
+      -ms-flex: 0;
+          flex: 0;
+}
+/*# sourceMappingURL=formUser.css.map */

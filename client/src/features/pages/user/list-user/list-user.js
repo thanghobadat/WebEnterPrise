@@ -2,13 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Row, Col, Modal, Form, Input, Select } from 'antd';
+import { Table, Button, Row, Col, Modal, Form, Input } from 'antd';
 import '../../../../assets/styles/_typeButton.scss';
 import './list-user.scss';
 
 import {
   getListUserApi,
-  postRegisterUserApi,
   putChangePasswordUserApi,
 } from '../../../../Redux/slices/userSlice';
 import { Link } from 'react-router-dom';
@@ -19,8 +18,6 @@ const ListUser = () => {
     id: '',
     newPassword: '',
   });
-
-  const { Option } = Select;
   useEffect(() => {
     dispatch(getListUserApi());
   }, []);
@@ -113,7 +110,7 @@ const ListUser = () => {
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>
-            <Link to='/create-account-user'> Add</Link>
+            <Link to='/admin/create-account-user'> Add</Link>
           </Button>
         </Col>
       </Row>

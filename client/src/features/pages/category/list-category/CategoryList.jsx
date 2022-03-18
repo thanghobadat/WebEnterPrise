@@ -1,106 +1,133 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './CategoryList.scss';
 import 'font-awesome/css/font-awesome.min.css';
-import { useNavigate } from 'react-router-dom';
+
 import queryString from 'query-string';
-import Pagination from '../../../../components/Pagination';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-
+import { useNavigate, Link } from 'react-router-dom';
+import { Button,Table,Col,Row,Modal } from "antd";
+import { useParams } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 function CategoryList() {
-	const navigate = useNavigate();
-	const [categoryList, setCategoryList] = useState([]);
-	const [pagination, setPagination] = useState({
-		pageIndex: 1,
-		pageSize: 4,
-		totalRecords: 4,
-	});
-	const [filters, setFilters] = useState({
-		pageSize: 4,
-		pageIndex: 1,
-	});
+  const [loading, setloading] = useState(true);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [categoryList, setCategoryList] = useState([]);
+  const[filters] = useState({
+    pageSize: 10,
+    pageIndex: 1,
+  });
+  const paramsString = queryString.stringify(filters);
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
-	useEffect(() => {
-		async function getCategoryList() {
-			try {
-				const paramsString = queryString.stringify(filters);
-				const res = await axios.get(
-					`https://localhost:5001/api/Categories/GetCategoryPaging?${paramsString}`
-				);
-				const data = res.data.resultObj;
-				setCategoryList(res.data.resultObj.items);
-				setPagination({
-					pageIndex: data.pageIndex,
-					pageSize: data.pageSize,
-					totalRecords: data.totalRecords,
-				});
-			} catch (error) {
-				console.log('Failed to fetch category list', error.message);
-			}
+    const getCategoryList = async () => {
+      await axios.get(`https://localhost:5001/api/Categories/GetCategoryPaging?${paramsString}`).then(
+        res => {
+          setloading(false);
+          setCategoryList(
+            res.data.resultObj.items.map((row, index) => ({
+            key: index,
+            name: row.name,
+            description: row.description,
+            id: row.id,
+            }))
+          );
+        }
+      );
+    };
+  
+    const columns = [
+		
+      
+      {
+        title: "Name",
+        dataIndex: "name",
+        width: 300
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        width: 300
+      },
+      {
+		key: "5",
+		title: "Actions",
+		width: 300,
+		render: (key) => {
+		  return (
+			<>
+			  <EditOutlined
+				onClick={() => {
+					handleUpdate(key.id);
+				}}
+			  />
+			  <DeleteOutlined
+				onClick={() => {
+					onDeleteCategory(key.id);
+				}}
+				style={{ color: "red", marginLeft: 12 }}
+			  />
+			</>
+		  );
 		}
+	}
+];
 
-		getCategoryList();
-	}, [filters]);
-
-	function handlePageChange(newPage) {
-		console.log('New page: ', newPage);
-		setFilters({
-			...filters,
-			pageIndex: newPage,
+	const onDeleteCategory = (id) => {
+		Modal.confirm({
+		  title: "Are you sure, you want to delete this category record?",
+		  okText: "Yes",
+		  okType: "danger",
+		  onOk: () => {
+			handleDelete(id);
+		  },
 		});
+	  };  
+  const handleUpdate = async (id) => {
+    // await axios.get(`https://localhost:5001/api/Categories/GetCategoryById?id=${id}`)
+    navigate(`/update-category?id=${id}`);
+	}
+	
+  const handleDelete = async (id) => {
+		await axios.delete(
+			`https://localhost:5001/api/Categories/DeleteCategory?id=${id}`
+		)
+    getCategoryList();
+    navigate('/list-category');
 	}
 
-	const handleUpdate = async (id) => {
-		// const  res  = await axios.get(`https://localhost:5001/api/Categories/GetById?categoryId=${id}`)
-		// console.log(res);
-		navigate(`/update-category/${id}`);
-	};
 
-	function handleCreate() {
-		navigate('/create-category');
-	}
 
-	return (
-		<div className="users-container">
-			<div className="title text-center">
-				Manager Category
-				<Button onClick={() => handleCreate()} variant="primary">
-					Add
-				</Button>
-			</div>
-			<div className="users-table mt-3 mx-1"></div>
-			<table id="customers">
-				<tr>
-					<th>Name</th>
-					<th>Description</th>
-					<th>Actions</th>
-				</tr>
-				{categoryList.map((category) => {
-					return (
-						<tr key={category.id}>
-							<td>{category.name}</td>
-							<td>{category.description}</td>
-							<td>
-								<Button
-									className="btn-edit"
-									onClick={() => handleUpdate(category.id)}
-									variant="warning"
-								>
-									Edit
-								</Button>
-
-								<Button className="btn-delete" variant="danger">
-									Delete
-								</Button>
-							</td>
-						</tr>
-					);
-				})}
-			</table>
-			<Pagination pagination={pagination} onPageChange={handlePageChange} />
-		</div>
-	);
+  return (
+    <div className="container ListUser">
+      <Row className='ListUser__title'>
+        <Col span={20}>
+          <h2>Manager Category</h2>
+        </Col>
+        <Col span={4}>
+          <Button type='primary' size='large'>
+            <Link to='/create-category'> Add</Link>
+          </Button>
+        </Col>
+      </Row>
+      <div>
+      {loading ? (
+        "Loading"
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={categoryList}
+          pagination={{ pageSize: 10 }}
+          scroll={{ y: 240 }}
+        />
+      )}
+    </div>
+    </div>
+    
+  );
 }
 
 export default CategoryList;

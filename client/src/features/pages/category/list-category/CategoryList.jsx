@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 function CategoryList() {
 	const navigate = useNavigate();
 	const [categoryList, setCategoryList] = useState([]);
+	const [deleteSucceed, setDeleteSucceed] = useState('');
 	const [pagination, setPagination] = useState({
 		pageIndex: 1,
 		pageSize: 4,
@@ -41,10 +42,9 @@ function CategoryList() {
 		}
 
 		getCategoryList();
-	}, [filters]);
+	}, [filters, deleteSucceed]);
 
 	function handlePageChange(newPage) {
-		console.log('New page: ', newPage);
 		setFilters({
 			...filters,
 			pageIndex: newPage,
@@ -52,8 +52,6 @@ function CategoryList() {
 	}
 
 	const handleUpdate = async (id) => {
-		// const  res  = await axios.get(`https://localhost:5001/api/Categories/GetById?categoryId=${id}`)
-		// console.log(res);
 		navigate(`/update-category/${id}`);
 	};
 
@@ -61,15 +59,23 @@ function CategoryList() {
 		navigate('/create-category');
 	}
 
+	const handleDelete = async (id) => {
+		const res = await axios.delete(
+			`https://localhost:5001/api/Categories/DeleteCategory?id=${id}`
+		);
+		setDeleteSucceed(res.data.isSuccessed);
+		navigate('/list-category');
+	};
+
 	return (
 		<div className="users-container">
-			<div className="title text-center">
-				Manager Category
+			<div className="title text-center">Manager Category</div>
+
+			<div className="users-table mt-3 mb-3">
 				<Button onClick={() => handleCreate()} variant="primary">
-					Add
+					Create category
 				</Button>
 			</div>
-			<div className="users-table mt-3 mx-1"></div>
 			<table id="customers">
 				<tr>
 					<th>Name</th>
@@ -83,14 +89,18 @@ function CategoryList() {
 							<td>{category.description}</td>
 							<td>
 								<Button
-									className="btn-edit"
+									className="btn-edit btn_update"
 									onClick={() => handleUpdate(category.id)}
 									variant="warning"
 								>
-									Edit
+									Update
 								</Button>
 
-								<Button className="btn-delete" variant="danger">
+								<Button
+									className="btn-delete"
+									variant="danger"
+									onClick={() => handleDelete(category.id)}
+								>
 									Delete
 								</Button>
 							</td>

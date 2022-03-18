@@ -58,12 +58,10 @@ function DepartmentList() {
 	}
 
   const handleDelete = async (id) => {
-    
 		const  res  = await axios.delete(
 			`https://localhost:5001/api/Departments/DeleteDepartment?id=${id}`
 			
 		)
-    console.log(res);
     navigate('/list-department');
 	}
 

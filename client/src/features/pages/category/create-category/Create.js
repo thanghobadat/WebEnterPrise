@@ -2,10 +2,13 @@
 
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import './create.css';
+import './create.scss';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+
 const Create = () => {
+<<<<<<< HEAD
   const navigate = useNavigate();
   const onFinish = (values) => {
     console.log('Success:', values);
@@ -24,6 +27,45 @@ const Create = () => {
       { name, description },
       config,
     );
+=======
+	const navigate = useNavigate();
+	const onFinish = (values) => {
+		const { name, description } = values;
+		createCategorySubmit(name, description);
+	};
+
+	const createCategorySubmit = async (name, description) => {
+		const config = { headers: { 'Content-Type': 'application/json' } };
+
+		await axios.post(
+			`https://localhost:5001/api/Categories/CreateCategory`,
+			{ name, description },
+			config
+		);
+		navigate('/list-category');
+		message.success('Create category success !!');
+	};
+	
+	return (
+		<div className="create">
+			<Form
+				name="basic"
+				labelCol={{ span: 8 }}
+				wrapperCol={{ span: 16 }}
+				initialValues={{ remember: true }}
+				onFinish={onFinish}
+				autoComplete="off"
+				className="form"
+			>
+				<h1>Create a new category</h1>
+				<Form.Item
+					label="Name"
+					name="name"
+					rules={[{ required: true, message: 'Please input name!' }]}
+				>
+					<Input />
+				</Form.Item>
+>>>>>>> c670e4c (Upload file)
 
     navigate('/admin/list-category');
   };

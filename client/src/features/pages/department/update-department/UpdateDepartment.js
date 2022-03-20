@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
-import './update.scss';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 
-const Update = () => {
+const UpdateDepartment = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
@@ -14,9 +13,9 @@ const Update = () => {
 		updateCategoryById(parseInt(id), name, description);
 	};
 
-	const getCategoryById = async () => {
+	const getDepartmentById = async () => {
 		const res = await axios.get(
-			`https://localhost:5001/api/Categories/GetById?categoryId=${id}`
+			`https://localhost:5001/api/Departments/GetDepartmentById?id=${id}`
 		);
 		return res.data.resultObj;
 	};
@@ -24,16 +23,16 @@ const Update = () => {
 	const updateCategoryById = async (id, name, description) => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 		await axios.put(
-			`https://localhost:5001/api/Categories/UpdateCategory`,
+			`https://localhost:5001/api/Departments/UpdateDepartment`,
 			{ id, name, description },
 			config
 		);
-		navigate('/list-category');
-		message.success('Update category success !!');
+		navigate('/list-department');
+		message.success('Update department success !!');
 	};
 
 	useEffect(() => {
-		getCategoryById();
+		getDepartmentById();
 	});
 
 	return (
@@ -47,7 +46,7 @@ const Update = () => {
 				autoComplete="off"
 				className="form"
 			>
-				<h1>Update category</h1>
+				<h1>Update department</h1>
 				<Form.Item
 					label="Name"
 					name="name"
@@ -73,4 +72,4 @@ const Update = () => {
 	);
 };
 
-export default Update;
+export default UpdateDepartment;

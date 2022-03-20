@@ -1,41 +1,28 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form, Input, Button } from 'antd';
-import './update.scss';
+import './create.scss';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 
-const Update = () => {
-	const { id } = useParams();
+const CreateDepartment = () => {
 	const navigate = useNavigate();
-
 	const onFinish = (values) => {
 		const { name, description } = values;
-		updateCategoryById(parseInt(id), name, description);
+		createDepartmentSubmit(name, description);
 	};
 
-	const getCategoryById = async () => {
-		const res = await axios.get(
-			`https://localhost:5001/api/Categories/GetById?categoryId=${id}`
-		);
-		return res.data.resultObj;
-	};
-
-	const updateCategoryById = async (id, name, description) => {
+	const createDepartmentSubmit = async (name, description) => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
-		await axios.put(
-			`https://localhost:5001/api/Categories/UpdateCategory`,
-			{ id, name, description },
+
+		await axios.post(
+			`https://localhost:5001/api/Departments/CreateDepartment`,
+			{ name, description },
 			config
 		);
-		navigate('/list-category');
-		message.success('Update category success !!');
+		navigate('/list-department');
+		message.success('Create department success !!');
 	};
-
-	useEffect(() => {
-		getCategoryById();
-	});
-
 	return (
 		<div className="create">
 			<Form
@@ -47,7 +34,7 @@ const Update = () => {
 				autoComplete="off"
 				className="form"
 			>
-				<h1>Update category</h1>
+				<h1>Create new department</h1>
 				<Form.Item
 					label="Name"
 					name="name"
@@ -73,4 +60,4 @@ const Update = () => {
 	);
 };
 
-export default Update;
+export default CreateDepartment;

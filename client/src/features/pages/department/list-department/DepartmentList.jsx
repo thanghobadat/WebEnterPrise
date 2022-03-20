@@ -1,18 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import './DepartmentList.scss';
-import 'font-awesome/css/font-awesome.min.css';
-
 import queryString from 'query-string';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Button,Table,Col,Row,Modal } from "antd";
-import { useParams } from 'react-router-dom';
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 function DepartmentList() {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
-  const { id } = useParams();
+  // const { id } = useParams();
   const [departmentList, setDepartmentList] = useState([]);
   const[filters] = useState({
     pageSize: 10,
@@ -51,7 +47,6 @@ function DepartmentList() {
         width: 300
       },
       {
-		key: "5",
 		title: "Actions",
 		width: 300,
 		render: (key) => {
@@ -59,9 +54,13 @@ function DepartmentList() {
 			<>
 			  <EditOutlined
 				onClick={() => {
-					handleUpdate(key.id);
+					handleAssign(key.id);
 				}}
 			  />
+        <UserAddOutlined
+        onClick={() => {
+					handleUpdate(key.id);
+				}} />
 			  <DeleteOutlined
 				onClick={() => {
 					onDeleteDepartment(key.id);
@@ -96,7 +95,9 @@ function DepartmentList() {
     getDepartmentList();
     navigate('/list-department');
 	}
-
+  const handleAssign = async (id) => {
+		navigate(`/list-assign-staff-qa/${id}`);
+	};
   return (
     <div className="container ListUser">
       <Row className='ListUser__title'>
@@ -105,7 +106,7 @@ function DepartmentList() {
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>
-            <Link to='/create-department'> Add</Link>
+            <Link to='/create-department'> Create</Link>
           </Button>
         </Col>
       </Row>
@@ -116,7 +117,7 @@ function DepartmentList() {
         <Table
           columns={columns}
           dataSource={departmentList}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 3 }}
           scroll={{ y: 240 }}
         />
       )}

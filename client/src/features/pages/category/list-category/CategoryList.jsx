@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './CategoryList.scss';
 import 'font-awesome/css/font-awesome.min.css';
-
 import queryString from 'query-string';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,6 +8,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Button,Table,Col,Row,Modal } from "antd";
 import { useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Update from '../update-category/Update';
+
 function CategoryList() {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
@@ -87,8 +88,8 @@ function CategoryList() {
 		});
 	  };  
   const handleUpdate = async (id) => {
-    // await axios.get(`https://localhost:5001/api/Categories/GetCategoryById?id=${id}`)
-    navigate(`/update-category?id=${id}`);
+    //await axios.get(`https://localhost:5001/api/Categories/GetCategoryById?id=${id}`)
+    navigate(`/update-category/${id}`);
 	}
 	
   const handleDelete = async (id) => {
@@ -106,10 +107,11 @@ function CategoryList() {
       <Row className='ListUser__title'>
         <Col span={20}>
           <h2>Manager Category</h2>
+          
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>
-            <Link to='/create-category'> Add</Link>
+            <Link to='/create-category'> Create</Link>
           </Button>
         </Col>
       </Row>

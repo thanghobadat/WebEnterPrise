@@ -27,7 +27,7 @@ const UpdateDepartment = () => {
 			{ id, name, description },
 			config
 		);
-		navigate('/list-department');
+		navigate('/admin/list-department');
 		message.success('Update department success !!');
 	};
 

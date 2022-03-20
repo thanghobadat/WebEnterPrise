@@ -52,15 +52,18 @@ function DepartmentList() {
 		render: (key) => {
 		  return (
 			<>
-			  <EditOutlined
-				onClick={() => {
-					handleAssign(key.id);
-				}}
-			  />
         <UserAddOutlined
         onClick={() => {
+          handleAssign(key.id);
+				}}
+        style={{ color: "green", marginLeft: 12 }}
+         />
+			  <EditOutlined
+				onClick={() => {
 					handleUpdate(key.id);
-				}} />
+				}}
+        style={{  marginLeft: 12 }}
+			  />
 			  <DeleteOutlined
 				onClick={() => {
 					onDeleteDepartment(key.id);
@@ -86,20 +89,20 @@ function DepartmentList() {
   const handleUpdate = async (id) => {
 		const  res  = await axios.get(`https://localhost:5001/api/Departments/GetDepartmentById?id=${id}`)
     console.log(res);
-    navigate(`/admin/update-department?id=${id}`);
+    navigate(`/admin/update-department/${id}`);
+    
 	}
 	
   const handleDelete = async (id) => {
 		await axios.delete(
 			`https://localhost:5001/api/Departments/DeleteDepartment?id=${id}`
 		)
-    navigate('/admin/list-department');
+    getDepartmentList()
 	}
 
-  function handleCreate(){
-    navigate('/admin/create-department')
-  }
-
+  const handleAssign = async (id) => {
+		navigate(`/admin/list-assign-staff-qa/${id}`);
+	};
   return (
     <div className="container ListUser">
       <Row className='ListUser__title'>

@@ -20,7 +20,7 @@ const CreateDepartment = () => {
 			{ name, description },
 			config
 		);
-		navigate('/list-department');
+		navigate('/admin/list-department');
 		message.success('Create department success !!');
 	};
 	return (

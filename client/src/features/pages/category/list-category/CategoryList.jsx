@@ -87,29 +87,18 @@ function CategoryList() {
 		  },
 		});
 	  };  
-<<<<<<< HEAD
-=======
-  const handleUpdate = async (id) => {
-    //await axios.get(`https://localhost:5001/api/Categories/GetCategoryById?id=${id}`)
-    navigate(`/update-category/${id}`);
-	}
->>>>>>> c670e4c (Upload file)
 	
   const handleDelete = async (id) => {
 		await axios.delete(
 			`https://localhost:5001/api/Categories/DeleteCategory?id=${id}`
 		)
     getCategoryList();
-    navigate('/list-category');
 	}
 
 	const handleUpdate = async (id) => {
 		navigate(`/admin/update-category/${id}`);
 	};
 
-	// function handleCreate() {
-	// 	navigate('/admin/create-category');
-	// }
 
 
   return (
@@ -121,11 +110,7 @@ function CategoryList() {
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>
-<<<<<<< HEAD
-            <Link to='/admin/create-category'> Add</Link>
-=======
-            <Link to='/create-category'> Create</Link>
->>>>>>> c670e4c (Upload file)
+            <Link to='/admin/create-category'> Create</Link>
           </Button>
         </Col>
       </Row>

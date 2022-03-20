@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import './create.scss';
@@ -8,26 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 
 const Create = () => {
-<<<<<<< HEAD
-  const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    const { name, description } = values;
-    Submit(name, description);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-  const Submit = async (name, description) => {
-    const config = { headers: { 'Content-Type': 'application/json' } };
-
-    const { data } = await axios.post(
-      `https://localhost:5001/api/Categories/CreateCategory`,
-      { name, description },
-      config,
-    );
-=======
 	const navigate = useNavigate();
 	const onFinish = (values) => {
 		const { name, description } = values;
@@ -42,7 +20,7 @@ const Create = () => {
 			{ name, description },
 			config
 		);
-		navigate('/list-category');
+		navigate('/admin/list-category');
 		message.success('Create category success !!');
 	};
 	
@@ -65,42 +43,22 @@ const Create = () => {
 				>
 					<Input />
 				</Form.Item>
->>>>>>> c670e4c (Upload file)
 
-    navigate('/admin/list-category');
-  };
-  return (
-    <div className='create'>
-      <Form
-        name='basic'
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete='off'>
-        <h1>Create a new category</h1>
-        <Form.Item
-          label='Name'
-          name='name'
-          rules={[{ required: true, message: 'Please input name!' }]}>
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label='Description'
-          name='description'
-          rules={[{ required: true, message: 'Please input description!' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type='primary' htmlType='submit'>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
-  );
+				<Form.Item
+					label="Description"
+					name="description"
+					rules={[{ required: true, message: 'Please input description!' }]}
+				>
+					<Input />
+				</Form.Item>
+				<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+					<Button type="primary" htmlType="submit">
+						Submit
+					</Button>
+				</Form.Item>
+			</Form>
+		</div>
+	);
 };
 
 export default Create;

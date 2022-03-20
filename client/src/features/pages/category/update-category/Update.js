@@ -28,7 +28,7 @@ const Update = () => {
 			{ id, name, description },
 			config
 		);
-		navigate('/list-category');
+		navigate('/admin/list-category');
 		message.success('Update category success !!');
 	};
 

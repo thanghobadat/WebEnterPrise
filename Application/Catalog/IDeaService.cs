@@ -218,7 +218,7 @@ namespace Application.Catalog
                 }
                 smtp.Disconnect(true);
             }
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<IDeaViewModel>> GetIdeaById(int id)
@@ -274,11 +274,14 @@ namespace Application.Catalog
                 IsAnonymously = x.IsAnonymously,
                 FinalDate = x.FinalDate,
                 UserId = x.UserId,
+                AcademicYearId = x.AcademicYearId,
                 Categories = new List<string>()
             }).ToList();
 
             foreach (var item in data)
             {
+                var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
+                item.AcademicYearName = academicYear.Name;
                 var user = await _userManager.FindByIdAsync(item.UserId.ToString());
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
@@ -313,11 +316,14 @@ namespace Application.Catalog
                 IsAnonymously = x.IsAnonymously,
                 FinalDate = x.FinalDate,
                 UserId = x.UserId,
-                Categories = new List<string>()
+                Categories = new List<string>(),
+                AcademicYearId = x.AcademicYearId
             }).ToList();
 
             foreach (var item in data)
             {
+                var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
+                item.AcademicYearName = academicYear.Name;
                 var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == item.Id && x.UserId == userId);
                 if (likeOrDislike != null)
                 {

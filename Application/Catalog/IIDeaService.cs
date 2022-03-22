@@ -17,5 +17,6 @@ namespace Application.Catalog
         Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request);
         Task<ApiResult<bool>> CountViewIdea(int id);
         Task<ApiResult<bool>> CommentIdea(CommentCreateRequest request);
+
     }
 }

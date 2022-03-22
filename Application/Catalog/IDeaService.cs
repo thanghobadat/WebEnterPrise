@@ -148,6 +148,11 @@ namespace Application.Catalog
 
         public async Task<ApiResult<bool>> CreateIdea(IdeaCreateRequest request)
         {
+            var academicYear = await _context.AcademicYears.FirstOrDefaultAsync(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now);
+            if (academicYear == null)
+            {
+                return new ApiErrorResult<bool>("Current time does not belong to any school year, please create corresponding school year");
+            }
             var userCreate = await _userManager.FindByIdAsync(request.UserId.ToString());
             var roles = await _userManager.GetRolesAsync(userCreate);
             var role = roles[0];
@@ -159,7 +164,8 @@ namespace Application.Catalog
             {
                 Content = request.Content,
                 UserId = request.UserId,
-                IsAnonymously = request.IsAnonymously
+                IsAnonymously = request.IsAnonymously,
+                AcademicYearId = academicYear.Id
             };
             if (request.File != null)
             {
@@ -223,10 +229,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
             }
             var categoryIdeas = await _context.IdeaCategories.Where(x => x.IdeaId == id).ToListAsync();
-            if (idea == null)
-            {
-                return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
-            }
+            var user = await _userManager.FindByIdAsync(idea.UserId.ToString());
 
             var ideaVM = new IDeaViewModel()
             {
@@ -236,8 +239,7 @@ namespace Application.Catalog
                 EditDate = idea.EditDate,
                 FilePath = idea.FilePath,
                 View = idea.View,
-                Like = idea.Like,
-                Dislike = idea.Dislike,
+                UserName = user.UserName,
                 IsAnonymously = idea.IsAnonymously,
                 FinalDate = idea.FinalDate,
                 UserId = idea.UserId,
@@ -252,43 +254,33 @@ namespace Application.Catalog
             return new ApiSuccessResult<IDeaViewModel>(ideaVM);
         }
 
-        public async Task<ApiResult<PageResult<IDeaViewModel>>> GetIdeaPaging(GetPagingRequestPage request)
+        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdea()
         {
             var query = await _context.Ideas.ToListAsync();
             if (query == null)
             {
-                return new ApiErrorResult<PageResult<IDeaViewModel>>("No Ideas exists");
+                return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
             }
-            var ideas = query.AsQueryable();
 
-            if (!string.IsNullOrEmpty(request.Keyword))
+
+            var data = query.Select(x => new IDeaViewModel()
             {
-                ideas = ideas.Where(x => x.Content.Contains(request.Keyword));
-            }
-
-
-            int totalRow = ideas.Count();
-
-            var data = ideas.Skip((request.PageIndex - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .Select(x => new IDeaViewModel()
-                {
-                    Id = x.Id,
-                    Content = x.Content,
-                    CreatedAt = x.CreatedAt,
-                    EditDate = x.EditDate,
-                    FilePath = x.FilePath,
-                    View = x.View,
-                    Like = x.Like,
-                    Dislike = x.Dislike,
-                    IsAnonymously = x.IsAnonymously,
-                    FinalDate = x.FinalDate,
-                    UserId = x.UserId,
-                    Categories = new List<string>()
-                }).ToList();
+                Id = x.Id,
+                Content = x.Content,
+                CreatedAt = x.CreatedAt,
+                EditDate = x.EditDate,
+                FilePath = x.FilePath,
+                View = x.View,
+                IsAnonymously = x.IsAnonymously,
+                FinalDate = x.FinalDate,
+                UserId = x.UserId,
+                Categories = new List<string>()
+            }).ToList();
 
             foreach (var item in data)
             {
+                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
                 foreach (var ideacategory in ideaCategories)
                 {
@@ -297,47 +289,113 @@ namespace Application.Catalog
                 }
             }
 
-            var pagedResult = new PageResult<IDeaViewModel>()
-            {
-                TotalRecords = totalRow,
-                PageIndex = request.PageIndex,
-                PageSize = request.PageSize,
-                Items = data
-            };
-            return new ApiSuccessResult<PageResult<IDeaViewModel>>(pagedResult);
+
+            return new ApiSuccessResult<List<IDeaViewModel>>(data);
         }
 
-        public async Task<ApiResult<bool>> LikeOrDislikeIdea(int id, int number)
+        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdeaUser(Guid userId)
+        {
+            var query = await _context.Ideas.ToListAsync();
+            if (query == null)
+            {
+                return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
+            }
+
+
+            var data = query.Select(x => new IDeaViewModel()
+            {
+                Id = x.Id,
+                Content = x.Content,
+                CreatedAt = x.CreatedAt,
+                EditDate = x.EditDate,
+                FilePath = x.FilePath,
+                View = x.View,
+                IsAnonymously = x.IsAnonymously,
+                FinalDate = x.FinalDate,
+                UserId = x.UserId,
+                Categories = new List<string>()
+            }).ToList();
+
+            foreach (var item in data)
+            {
+                var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == item.Id && x.UserId == userId);
+                if (likeOrDislike != null)
+                {
+                    item.Like = likeOrDislike.IsLike;
+                    item.Dislike = likeOrDislike.IsDislike;
+                }
+
+                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                item.UserName = user.UserName;
+                var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
+                foreach (var ideacategory in ideaCategories)
+                {
+                    var category = await _context.Categories.FindAsync(ideacategory.CategoryId);
+                    item.Categories.Add(category.Name);
+                }
+            }
+
+
+            return new ApiSuccessResult<List<IDeaViewModel>>(data);
+        }
+
+        public async Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request)
         {
 
-            var idea = await _context.Ideas.FindAsync(id);
+            var idea = await _context.Ideas.FindAsync(request.IdeaId);
             if (idea == null)
             {
                 return new ApiErrorResult<bool>("Idea doesn't exist");
             }
-            switch (number)
+            switch (request.Number)
             {
                 case -2:
-                    idea.Like -= 1;
-                    idea.Dislike += 1;
+                    var dislike = new LikeOrDislike()
+                    {
+                        IdeaId = request.IdeaId,
+                        UserId = request.UserId,
+                        IsLike = false,
+                        IsDislike = true
+                    };
+                    await _context.LikeOrDislikes.AddAsync(dislike);
+                    await _context.SaveChangesAsync();
                     break;
+
                 case -1:
-                    idea.Dislike += 1;
+                    var queryDislike = await _context.LikeOrDislikes
+                        .FirstOrDefaultAsync(x => x.IdeaId == request.IdeaId && x.UserId == request.UserId);
+                    if (queryDislike == null)
+                    {
+                        return new ApiErrorResult<bool>("An error occurred, please try again");
+                    }
+                    queryDislike.IsLike = false;
+                    queryDislike.IsDislike = true;
+                    await _context.SaveChangesAsync();
                     break;
                 case 1:
-                    idea.Like += 1;
+                    var queryLike = await _context.LikeOrDislikes
+                        .FirstOrDefaultAsync(x => x.IdeaId == request.IdeaId && x.UserId == request.UserId);
+                    if (queryLike == null)
+                    {
+                        return new ApiErrorResult<bool>("An error occurred, please try again");
+                    }
+                    queryLike.IsLike = true;
+                    queryLike.IsDislike = false;
+                    await _context.SaveChangesAsync();
+
                     break;
                 case 2:
-                    idea.Dislike -= 1;
-                    idea.Like += 1;
+                    var like = new LikeOrDislike()
+                    {
+                        IdeaId = request.IdeaId,
+                        UserId = request.UserId,
+                        IsLike = true,
+                        IsDislike = false
+                    };
+                    await _context.LikeOrDislikes.AddAsync(like);
+                    await _context.SaveChangesAsync();
                     break;
             }
-            var result = await _context.SaveChangesAsync();
-            if (result == 0)
-            {
-                return new ApiErrorResult<bool>("An error occurred, please try again");
-            }
-
             return new ApiSuccessResult<bool>();
 
 
@@ -350,5 +408,7 @@ namespace Application.Catalog
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
         }
+
+
     }
 }

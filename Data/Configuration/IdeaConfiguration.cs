@@ -17,14 +17,14 @@ namespace Data.Configuration
 
             builder.Property(x => x.Content).IsRequired();
             builder.Property(x => x.View).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.Like).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.Dislike).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.IsAnonymously).IsRequired().HasDefaultValue(false);
             builder.Property(x => x.CreatedAt).IsRequired().HasDefaultValue(DateTime.Now);
             builder.Property(x => x.EditDate).IsRequired().HasDefaultValue(DateTime.Now.AddDays(7));
             builder.Property(x => x.FinalDate).IsRequired().HasDefaultValue(DateTime.Now.AddDays(11));
             builder.HasOne(t => t.User).WithMany(pc => pc.Ideas)
               .HasForeignKey(pc => pc.UserId);
+            builder.HasOne(t => t.AcademicYear).WithMany(pc => pc.Ideas)
+                .HasForeignKey(pc => pc.AcademicYearId);
         }
     }
 }

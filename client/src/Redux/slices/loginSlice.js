@@ -29,7 +29,11 @@ export const loginSlice = createSlice({
     loading: false,
   },
   reducers: {},
-  extraReducers: {},
+  extraReducers: {
+    [postLoginUserApi.pending]: (state, action) => {
+      state.loading = true;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function

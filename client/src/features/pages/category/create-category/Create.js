@@ -1,30 +1,29 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import './create.css';
+import './create.scss';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+
 const Create = () => {
 	const navigate = useNavigate();
 	const onFinish = (values) => {
-		console.log('Success:', values);
-		const {name, description } = values;
-		Submit(name, description);
+		const { name, description } = values;
+		createCategorySubmit(name, description);
 	};
 
-	const onFinishFailed = (errorInfo) => {
-		console.log('Failed:', errorInfo);
-	};
-	const Submit= async (name, description) => {
+	const createCategorySubmit = async (name, description) => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
-		const { data } = await axios.post(
+		await axios.post(
 			`https://localhost:5001/api/Categories/CreateCategory`,
 			{ name, description },
 			config
-		)
-		
-		navigate('/list-category');
-	}
+		);
+		navigate('/admin/list-category');
+		message.success('Create category success !!');
+	};
+	
 	return (
 		<div className="create">
 			<Form
@@ -33,8 +32,8 @@ const Create = () => {
 				wrapperCol={{ span: 16 }}
 				initialValues={{ remember: true }}
 				onFinish={onFinish}
-				onFinishFailed={onFinishFailed}
 				autoComplete="off"
+				className="form"
 			>
 				<h1>Create a new category</h1>
 				<Form.Item

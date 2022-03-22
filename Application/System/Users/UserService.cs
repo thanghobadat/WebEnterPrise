@@ -135,6 +135,38 @@ namespace Application.System.Users
       return new ApiSuccessResult<AccountViewModel>(accountVm);
     }
 
+    public async Task<ApiResult<List<AccountViewModel>>> GetAccountStaffAndQACoor()
+    {
+      var data = new List<AccountViewModel>();
+      var query = _userManager.Users;
+      List<AppUser> accounts = query.ToList();
+      foreach (var item in accounts)
+      {
+        var roles = await _userManager.GetRolesAsync(item);
+        var role = roles[0];
+        if (role == "staff" || role == "QACoordinator")
+        {
+          var accountVM = new AccountViewModel()
+          {
+            Email = item.Email,
+            PhoneNumber = item.PhoneNumber,
+            UserName = item.UserName,
+            Id = item.Id,
+            CreatedAt = item.CreatedAt,
+            Role = role
+          };
+          if (item.DepartmentId != null)
+          {
+            var department = await _context.Departments.FindAsync(item.DepartmentId);
+            accountVM.Department = department.Name;
+          }
+          data.Add(accountVM);
+        }
+
+      }
+      return new ApiSuccessResult<List<AccountViewModel>>(data);
+    }
+
     public async Task<ApiResult<List<AccountViewModel>>> GetAllAccount(string keyword)
     {
       var data = new List<AccountViewModel>();

@@ -23,6 +23,8 @@ namespace Data.EF
             modelBuilder.ApplyConfiguration(new IdeaConfiguration());
             modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
             modelBuilder.ApplyConfiguration(new MailSettingConfiguration());
+            modelBuilder.ApplyConfiguration(new LikeOrDislikeConfiguration());
+            modelBuilder.ApplyConfiguration(new AcademicYearConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
@@ -39,6 +41,8 @@ namespace Data.EF
         public DbSet<IdeaCategory> IdeaCategories { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<MailSetting> MailSettings { get; set; }
+        public DbSet<LikeOrDislike> LikeOrDislikes { get; set; }
+        public DbSet<AcademicYear> AcademicYears { get; set; }
 
 
 

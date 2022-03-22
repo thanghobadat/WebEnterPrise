@@ -2,12 +2,13 @@
 
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Button, Select, Row, Col } from 'antd';
+import { Form, Input, Button, Select, Row, Col, message } from 'antd';
 import validatorForm from '../validation';
 import './formUser.scss';
 import { postRegisterUserApi } from '../../../../Redux/slices/userSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const FormCreate = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { Option } = Select;
   const layout = {
@@ -15,8 +16,9 @@ const FormCreate = () => {
     wrapperCol: { span: 20 },
   };
   const onFinish = (values) => {
-    console.log('Success:', values);
     dispatch(postRegisterUserApi(values));
+    message.success('This is a success message');
+    navigate(`/admin/account-user`);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -75,7 +77,7 @@ const FormCreate = () => {
             </Col>
             <Col span={12}>
               <Button type='danger' htmlType='submit'>
-                <Link to='/account-user'>Cancel</Link>
+                <Link to='/admin/account-user'>Cancel</Link>
               </Button>
             </Col>
           </Row>

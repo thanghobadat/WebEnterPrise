@@ -34,10 +34,7 @@ namespace BackendApi.Controllers
         [HttpPost("CreateCategory")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryViewModel request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+
             var category = await _categoryService.CreateCategory(request);
             return Ok(category);
         }
@@ -46,10 +43,7 @@ namespace BackendApi.Controllers
         public async Task<IActionResult> UpdateCategory([FromBody] CategoryViewModel request)
         {
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+
             var category = await _categoryService.UpdateCategory(request);
             return Ok(category);
         }

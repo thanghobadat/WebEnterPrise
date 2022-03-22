@@ -1,5 +1,6 @@
 ﻿using Application.Catalog;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
 
@@ -17,13 +18,18 @@ namespace BackendApi.Controllers
             _ideaService = ideaService;
         }
 
-        [HttpGet("GetIdeaPaging")]
-        public async Task<IActionResult> GetIdeaPaging([FromQuery] GetPagingRequestPage request)
+        [HttpGet("GetAllIdea")]
+        public async Task<IActionResult> GetAllIdea()
         {
-            var result = await _ideaService.GetIdeaPaging(request);
+            var result = await _ideaService.GetAllIdea();
             return Ok(result);
         }
-
+        [HttpGet("GetAllIdeaUser")]
+        public async Task<IActionResult> GetAllIdeaUser(Guid userId)
+        {
+            var result = await _ideaService.GetAllIdeaUser(userId);
+            return Ok(result);
+        }
         [HttpGet("GetIdeaById")]
         public async Task<IActionResult> GetIdeaById(int id)
         {
@@ -64,10 +70,10 @@ namespace BackendApi.Controllers
         }
 
         [HttpPut("LikeOrDislikeIdea")]
-        public async Task<IActionResult> LikeOrDislikeIdea(int id, int number)
+        public async Task<IActionResult> LikeOrDislikeIdea(LikeOrDislikeRequest request)
         {
 
-            var result = await _ideaService.LikeOrDislikeIdea(id, number);
+            var result = await _ideaService.LikeOrDislikeIdea(request);
             return Ok(result);
         }
 

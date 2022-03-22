@@ -11,6 +11,7 @@ namespace Data.Entities
         public virtual Department Department { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Idea> Ideas { get; set; }
+        public List<LikeOrDislike> LikeOrDislikes { get; set; }
 
     }
 }

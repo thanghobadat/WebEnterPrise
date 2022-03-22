@@ -37,7 +37,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<bool>> DeleteCategory(int id)
@@ -59,7 +59,7 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<CategoryViewModel>> GetById(int id)
@@ -135,7 +135,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
     }
 }

@@ -102,6 +102,7 @@ namespace BackendApi
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IIDeaService, IDeaService>();
             services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<IAcademicService, AcademicService>();
 
         }
 

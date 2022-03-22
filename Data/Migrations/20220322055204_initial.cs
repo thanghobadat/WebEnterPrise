@@ -8,6 +8,21 @@ namespace Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AcademicYears",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AcademicYears", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppRoleClaims",
                 columns: table => new
                 {
@@ -121,6 +136,23 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MailSettings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Host = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Port = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MailSettings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppUsers",
                 columns: table => new
                 {
@@ -162,17 +194,22 @@ namespace Data.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     View = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Like = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Dislike = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 6, 10, 2, 48, 482, DateTimeKind.Local).AddTicks(164)),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 13, 10, 2, 48, 482, DateTimeKind.Local).AddTicks(8667)),
-                    FinalDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 17, 10, 2, 48, 482, DateTimeKind.Local).AddTicks(9077)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 22, 12, 52, 4, 169, DateTimeKind.Local).AddTicks(3253)),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 29, 12, 52, 4, 170, DateTimeKind.Local).AddTicks(1608)),
+                    FinalDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 4, 2, 12, 52, 4, 170, DateTimeKind.Local).AddTicks(2048)),
                     IsAnonymously = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AcademicYearId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ideas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ideas_AcademicYears_AcademicYearId",
+                        column: x => x.AcademicYearId,
+                        principalTable: "AcademicYears",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ideas_AppUsers_UserId",
                         column: x => x.UserId,
@@ -233,15 +270,50 @@ namespace Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "LikeOrDislikes",
+                columns: table => new
+                {
+                    IdeaId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsLike = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDislike = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikeOrDislikes", x => new { x.IdeaId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_LikeOrDislikes_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LikeOrDislikes_Ideas_IdeaId",
+                        column: x => x.IdeaId,
+                        principalTable: "Ideas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AcademicYears",
+                columns: new[] { "Id", "EndDate", "Name", "StartDate" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2022, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sprint 2022", new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2022, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Summer 2022", new DateTime(2022, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
             migrationBuilder.InsertData(
                 table: "AppRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("7f7f2580-651e-47e5-a9d8-6e8a90f4e64f"), "621e1073-d909-4343-9932-b56d9e0ec7b5", "Administrator role", "admin", "admin" },
-                    { new Guid("923cbd1d-3d58-44f5-9f8f-707a8edd6249"), "0a752d20-bba4-4ddf-a274-4f416ad6d0f3", "QA Manager role", "QAManager", "QAManager" },
-                    { new Guid("83a226a5-f7c7-4fc5-83ff-bdd88019f98d"), "69ce8cba-bd70-40ac-9421-3a92e5e0830a", "QA Coordinator role", "QACoordinator", "QACoordinator" },
-                    { new Guid("1e84833f-96af-4611-9684-49de78cfc897"), "31c20564-1e83-4f12-b66a-88fb4c4bc878", "Staff role", "staff", "staff" }
+                    { new Guid("53d78053-d999-4fd3-a14d-50e476960cca"), "ddce15fc-e12c-4bbf-98e8-e5f20f42b002", "Administrator role", "admin", "admin" },
+                    { new Guid("25c55e6a-d027-4fc9-a4cd-ed7eca4a7067"), "2f8175db-f4b1-43c2-bc54-ab7e3a1c5efe", "QA Manager role", "QAManager", "QAManager" },
+                    { new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"), "069a4467-7383-4caf-b0a1-e0e9937a44d5", "QA Coordinator role", "QACoordinator", "QACoordinator" },
+                    { new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"), "ba3c0e3c-23ce-4c77-a54b-97348e94b256", "Staff role", "staff", "staff" }
                 });
 
             migrationBuilder.InsertData(
@@ -249,12 +321,12 @@ namespace Data.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("7f7f2580-651e-47e5-a9d8-6e8a90f4e64f"), new Guid("73e15ce4-064b-446a-9005-1c3687b55db3") },
-                    { new Guid("923cbd1d-3d58-44f5-9f8f-707a8edd6249"), new Guid("20f0e1c0-9e73-48cd-b863-9d4d2aa3d6e8") },
-                    { new Guid("83a226a5-f7c7-4fc5-83ff-bdd88019f98d"), new Guid("f05890a2-fe56-4f77-9470-b893c36db0ff") },
-                    { new Guid("83a226a5-f7c7-4fc5-83ff-bdd88019f98d"), new Guid("ede32135-4ebf-4455-93fa-fcaaf8e55dfc") },
-                    { new Guid("1e84833f-96af-4611-9684-49de78cfc897"), new Guid("a6a5acd3-f702-4c5e-a2b8-332c05ec1e26") },
-                    { new Guid("1e84833f-96af-4611-9684-49de78cfc897"), new Guid("fd4d8a74-d342-43a6-9729-7a8e3332a5ce") }
+                    { new Guid("53d78053-d999-4fd3-a14d-50e476960cca"), new Guid("558b81cc-9376-49c4-8f82-467988807134") },
+                    { new Guid("25c55e6a-d027-4fc9-a4cd-ed7eca4a7067"), new Guid("e208e482-4dfb-4a49-bc41-f8a5abbe5f91") },
+                    { new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"), new Guid("0e2066a4-ff28-4f4d-83dc-ea14ce13ea18") },
+                    { new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"), new Guid("ddb5db77-b6b3-470a-9af1-ee5af8a99928") },
+                    { new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"), new Guid("efb6f2bb-b30a-49ae-9ab4-fe76ed16885e") },
+                    { new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"), new Guid("5e9962d7-8b63-4e1a-943c-24c17d2f25de") }
                 });
 
             migrationBuilder.InsertData(
@@ -262,8 +334,8 @@ namespace Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DepartmentId", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("73e15ce4-064b-446a-9005-1c3687b55db3"), 0, "fa88e41d-5ffa-4ff1-936c-ef0608566aef", new DateTime(2022, 3, 6, 10, 2, 48, 503, DateTimeKind.Local).AddTicks(3529), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "admin", "AQAAAAEAACcQAAAAEI8pdBm1uoXjJeThv49Cu9lEr336UP9Dbr/Rq+ggi1iUxysypXsdekbModISvbW64Q==", "0123", false, "", false, "admin" },
-                    { new Guid("20f0e1c0-9e73-48cd-b863-9d4d2aa3d6e8"), 0, "d9295411-02bd-444c-aed0-f45b9ce78300", new DateTime(2022, 3, 6, 10, 2, 48, 510, DateTimeKind.Local).AddTicks(4630), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "manager", "AQAAAAEAACcQAAAAELVymqeEKFo/S6TLFOHKAwroGzoaIi/dl7XUNWYevl2M5M1GOKMb0vJHJC9SnPLv2A==", "0123", false, "", false, "manager" }
+                    { new Guid("558b81cc-9376-49c4-8f82-467988807134"), 0, "10421817-1b88-44b5-83f1-145184c20b9a", new DateTime(2022, 3, 22, 12, 52, 4, 194, DateTimeKind.Local).AddTicks(9162), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "admin", "AQAAAAEAACcQAAAAEHPeIfPmTAYJqrVo5OaqNqbkGqDP7eyZ261h5ZuO7Pzh7vt4uxZCz7hpsXatrit80w==", "0123", false, "", false, "admin" },
+                    { new Guid("e208e482-4dfb-4a49-bc41-f8a5abbe5f91"), 0, "0f3e4549-b85f-4844-88ce-64ce01a62c95", new DateTime(2022, 3, 22, 12, 52, 4, 201, DateTimeKind.Local).AddTicks(9387), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "manager", "AQAAAAEAACcQAAAAEIdw4WHocFRDyC4J7QpvxNagVt9NVTCEiHGOc7Ep6UkorcmdOaZoS60Jf8QZeJTutg==", "0123", false, "", false, "manager" }
                 });
 
             migrationBuilder.InsertData(
@@ -280,10 +352,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DepartmentId", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("f05890a2-fe56-4f77-9470-b893c36db0ff"), 0, "8f725e1d-cbcf-4d4c-957a-6e7d2068a8e7", new DateTime(2022, 3, 6, 10, 2, 48, 517, DateTimeKind.Local).AddTicks(2550), 1, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "QACoordinatorAcademic", "AQAAAAEAACcQAAAAEFnwkUM6YTczF89EikbuuTN9HYDdjnWVbyHc37aN46eFQRd/6WnhxA/EYYWdEQLdZw==", "0123", false, "", false, "QACoordinatorAcademic" },
-                    { new Guid("a6a5acd3-f702-4c5e-a2b8-332c05ec1e26"), 0, "a5dfc807-ef69-418f-849f-c13cf03436eb", new DateTime(2022, 3, 6, 10, 2, 48, 530, DateTimeKind.Local).AddTicks(8965), 1, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "StaffAcademic", "AQAAAAEAACcQAAAAEC4gU1d1pCgMbdipgzo+1r7Jt4NCpxHhB1IbCt5R6gfCUdUzkKHlJi6kMO+GkuDdGA==", "0123", false, "", false, "StaffAcademic" },
-                    { new Guid("ede32135-4ebf-4455-93fa-fcaaf8e55dfc"), 0, "0e3a00c1-71bc-402d-bbd5-cb43dddfb07f", new DateTime(2022, 3, 6, 10, 2, 48, 524, DateTimeKind.Local).AddTicks(1208), 2, "hungnd342000@gmail.com", true, false, null, "hungnd342000@gmail.com", "QACoordinatorSupport", "AQAAAAEAACcQAAAAEKN33kxPdxfsDitowktA9+PG+rONImLvb2J1wOWJ6G4JzUQJWfapPF08k/gQbpUaTA==", "0123", false, "", false, "QACoordinatorSupport" },
-                    { new Guid("fd4d8a74-d342-43a6-9729-7a8e3332a5ce"), 0, "97ff8f3d-6e42-49bc-98a3-54c9bff2ce20", new DateTime(2022, 3, 6, 10, 2, 48, 537, DateTimeKind.Local).AddTicks(6679), 2, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "StaffSupport", "AQAAAAEAACcQAAAAECUui9R+8NJQp8wZHBXZUcZbsfNyjb9TI8jieBGvlkBwCnv+1CP9P8a6aA7qp5Y1rw==", "0123", false, "", false, "StaffSupport" }
+                    { new Guid("0e2066a4-ff28-4f4d-83dc-ea14ce13ea18"), 0, "81db2eaa-3cab-4bb5-8836-313cb742627f", new DateTime(2022, 3, 22, 12, 52, 4, 208, DateTimeKind.Local).AddTicks(7193), 1, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "QACoordinatorAcademic", "AQAAAAEAACcQAAAAEGLftVUgxnOWlhzgQEZdiy01xP1DDJ3qao9UClKWAr9DaD7EUcDkXY87Gfpe1Cu7tQ==", "0123", false, "", false, "QACoordinatorAcademic" },
+                    { new Guid("efb6f2bb-b30a-49ae-9ab4-fe76ed16885e"), 0, "b487deef-8c61-4656-9e30-62fee202c0e8", new DateTime(2022, 3, 22, 12, 52, 4, 222, DateTimeKind.Local).AddTicks(3745), 1, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "StaffAcademic", "AQAAAAEAACcQAAAAEJAX9FlCEjSKETz7I5h+298Ivnhi0jrwJxHEgXi5G7s7qoLrw27WqciJ/TBth9FJWQ==", "0123", false, "", false, "StaffAcademic" },
+                    { new Guid("ddb5db77-b6b3-470a-9af1-ee5af8a99928"), 0, "c834d332-2982-429a-a60d-05154e3f68c3", new DateTime(2022, 3, 22, 12, 52, 4, 215, DateTimeKind.Local).AddTicks(5632), 2, "hungnd342000@gmail.com", true, false, null, "hungnd342000@gmail.com", "QACoordinatorSupport", "AQAAAAEAACcQAAAAEBEbwWnYtsPa4lY1xJ7VvZAWuq6+UzfhKSJ9oiNCi/RNC9u/qaIqu4/AnOEgc6xBpg==", "0123", false, "", false, "QACoordinatorSupport" },
+                    { new Guid("5e9962d7-8b63-4e1a-943c-24c17d2f25de"), 0, "660b49c3-2270-4906-b057-8d54b5ac8927", new DateTime(2022, 3, 22, 12, 52, 4, 229, DateTimeKind.Local).AddTicks(1796), 2, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "StaffSupport", "AQAAAAEAACcQAAAAEM0PNHk0pOY3v2Z8T7pWFv9c4P+BBnVR3KjYXGpKkxluxpKkZpuWC10icflLKnl9EA==", "0123", false, "", false, "StaffSupport" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -307,8 +379,18 @@ namespace Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ideas_AcademicYearId",
+                table: "Ideas",
+                column: "AcademicYearId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ideas_UserId",
                 table: "Ideas",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikeOrDislikes_UserId",
+                table: "LikeOrDislikes",
                 column: "UserId");
         }
 
@@ -339,10 +421,19 @@ namespace Data.Migrations
                 name: "IdeaCategories");
 
             migrationBuilder.DropTable(
+                name: "LikeOrDislikes");
+
+            migrationBuilder.DropTable(
+                name: "MailSettings");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Ideas");
+
+            migrationBuilder.DropTable(
+                name: "AcademicYears");
 
             migrationBuilder.DropTable(
                 name: "AppUsers");

@@ -23,6 +23,21 @@ namespace Data.Extension
                Name = "Support",
                Description = "This is Support Department"
            });
+            modelBuilder.Entity<AcademicYear>().HasData(
+               new AcademicYear
+               {
+                   Id = 1,
+                   Name = "Sprint 2022",
+                   StartDate = new DateTime(2022, 01, 01),
+                   EndDate = new DateTime(2022, 03, 21)
+               },
+           new AcademicYear
+           {
+               Id = 2,
+               Name = "Summer 2022",
+               StartDate = new DateTime(2022, 03, 22),
+               EndDate = new DateTime(2022, 03, 31)
+           });
 
 
             // 1: admin

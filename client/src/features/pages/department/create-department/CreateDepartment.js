@@ -5,25 +5,24 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 
-const Create = () => {
+const CreateDepartment = () => {
 	const navigate = useNavigate();
 	const onFinish = (values) => {
 		const { name, description } = values;
-		createCategorySubmit(name, description);
+		createDepartmentSubmit(name, description);
 	};
 
-	const createCategorySubmit = async (name, description) => {
+	const createDepartmentSubmit = async (name, description) => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
 		await axios.post(
-			`https://localhost:5001/api/Categories/CreateCategory`,
+			`https://localhost:5001/api/Departments/CreateDepartment`,
 			{ name, description },
 			config
 		);
-		navigate('/admin/list-category');
-		message.success('Create category success !!');
+		navigate('/admin/list-department');
+		message.success('Create department success !!');
 	};
-	
 	return (
 		<div className="create">
 			<Form
@@ -35,7 +34,7 @@ const Create = () => {
 				autoComplete="off"
 				className="form"
 			>
-				<h1>Create a new category</h1>
+				<h1>Create new department</h1>
 				<Form.Item
 					label="Name"
 					name="name"
@@ -61,4 +60,4 @@ const Create = () => {
 	);
 };
 
-export default Create;
+export default CreateDepartment;

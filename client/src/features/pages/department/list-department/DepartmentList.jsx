@@ -1,109 +1,132 @@
 import React, {useEffect, useState} from 'react';
 import './DepartmentList.scss';
-import 'font-awesome/css/font-awesome.min.css';
-import { useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
-import Pagination from '../../../../components/Pagination';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import { Button,Table,Col,Row,Modal } from "antd";
+import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 function DepartmentList() {
+  const [loading, setloading] = useState(true);
   const navigate = useNavigate();
+  // const { id } = useParams();
   const [departmentList, setDepartmentList] = useState([]);
-  const [pagination, setPagination] = useState({
-    pageIndex: 1,
-    pageSize: 4,
-    totalRecords: 4,
-  })
-  const[filters, setFilters] = useState({
-    pageSize: 4,
+  const[filters] = useState({
+    pageSize: 10,
     pageIndex: 1,
   });
-
-  useEffect(() =>{
-    async function getDepartmentList(){
-      try{
-        const paramsString = queryString.stringify(filters);
-        const res = await axios.get(`https://localhost:5001/api/Departments/GetDepartmentPaging?${paramsString}`);
-        console.log(res);
-        const data = res.data.resultObj;
-        setDepartmentList(res.data.resultObj.items);
-        setPagination({
-          pageIndex: data.pageIndex,
-          pageSize: data.pageSize,
-          totalRecords : data.totalRecords,
-        })
-      }
-      catch(error){
-        console.log('Failed to fetch department list', error.message);
-      }
-    }
-    console.log('Department list effect');
+  const paramsString = queryString.stringify(filters);
+  useEffect(() => {
     getDepartmentList();
-  }, [filters]);
+  }, []);
 
-  function handlePageChange(newPage){
-    console.log('New page: ', newPage);
-    setFilters({
-      ...filters,
-      pageIndex: newPage,
-    })
-  }
+    const getDepartmentList = async () => {
+      await axios.get(`https://localhost:5001/api/Departments/GetDepartmentPaging?${paramsString}`).then(
+        res => {
+          setloading(false);
+          setDepartmentList(
+            res.data.resultObj.items.map((row, index) => ({
+            key: index,
+            name: row.name,
+            description: row.description,
+            id: row.id,
+            }))
+          );
+        }
+      );
+    };
+  
+    const columns = [
+      {
+        title: "Name",
+        dataIndex: "name",
+        width: 300
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        width: 300
+      },
+      {
+		title: "Actions",
+		width: 300,
+		render: (key) => {
+		  return (
+			<>
+        <UserAddOutlined
+        onClick={() => {
+          handleAssign(key.id);
+				}}
+        style={{ color: "green", marginLeft: 12 }}
+         />
+			  <EditOutlined
+				onClick={() => {
+					handleUpdate(key.id);
+				}}
+        style={{  marginLeft: 12 }}
+			  />
+			  <DeleteOutlined
+				onClick={() => {
+					onDeleteDepartment(key.id);
+				}}
+				style={{ color: "red", marginLeft: 12 }}
+			  />
+			</>
+		  );
+		}
+	}
+];
 
+	const onDeleteDepartment = (id) => {
+		Modal.confirm({
+		  title: "Are you sure, you want to delete this department record?",
+		  okText: "Yes",
+		  okType: "danger",
+		  onOk: () => {
+			handleDelete(id);
+		  },
+		});
+	  };  
   const handleUpdate = async (id) => {
 		const  res  = await axios.get(`https://localhost:5001/api/Departments/GetDepartmentById?id=${id}`)
     console.log(res);
-    navigate(`/admin/update-department?id=${id}`);
-	}
-
-  const handleDelete = async (id) => {
+    navigate(`/admin/update-department/${id}`);
     
-		const  res  = await axios.delete(
+	}
+	
+  const handleDelete = async (id) => {
+		await axios.delete(
 			`https://localhost:5001/api/Departments/DeleteDepartment?id=${id}`
-			
 		)
-    console.log(res);
-    navigate('/admin/list-department');
+    getDepartmentList()
 	}
 
-  function handleCreate(){
-    navigate('/admin/create-department')
-  }
-
+  const handleAssign = async (id) => {
+		navigate(`/admin/list-assign-staff-qa/${id}`);
+	};
   return (
-    <div className="users-container">
-      <div className='title text-center'>
-        Manager Department
-        <Button  onClick={() => handleCreate()} variant="primary">Add</Button>
-        </div>
-      <div className='users-table mt-3 mx-1'></div>
-    <table id="customers">
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-      {departmentList.map(department => {
-        return(
-          <tr key={department.id}>
-            <td>{department.name}</td>
-            <td>{department.description}</td>
-            <td>
-              <Button onClick={() => handleUpdate(department.id)} variant="warning">Edit</Button>
-              
-              <Button onClick={() => handleDelete(department.id)} onPageChange={handlePageChange} variant="danger">Delete</Button>
-            </td>
-          </tr>
-        )
-      })
-      }
-
-    </table>
-      <Pagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+    <div className="container ListUser">
+      <Row className='ListUser__title'>
+        <Col span={20}>
+          <h2>Manager Department</h2>
+        </Col>
+        <Col span={4}>
+          <Button type='primary' size='large'>
+            <Link to='/admin/create-department'> Create</Link>
+          </Button>
+        </Col>
+      </Row>
+      <div>
+      {loading ? (
+        "Loading"
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={departmentList}
+          pagination={{ pageSize: 3 }}
+          scroll={{ y: 240 }}
+        />
+      )}
+    </div>
     </div>
     
   );

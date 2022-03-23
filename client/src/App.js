@@ -3,15 +3,7 @@
 import React from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Link,
-  Routes,
-  Navigate,
-  Outlet,
-} from 'react-router-dom';
+import { Route, Link, Routes, Navigate, Outlet } from 'react-router-dom';
 import ListUser from './features/pages/user/list-user/list-user';
 import FormCreate from './features/pages/user/create-user/form-create';
 import CategoryList from './features/pages/category/list-category/CategoryList';
@@ -27,19 +19,40 @@ function App() {
     <div className='App'>
       <Routes>
         <Route path='/login' element={<Login />}></Route>
-        <Route path='/' element={<Navigate replace to='/admin' />} />
+        <Route path='/' element={<Navigate replace to='/login' />} />
         <Route path='/admin' element={<Admin />}>
+          <Route
+            path='/admin'
+            element={<Navigate replace to='/admin/account-user' />}
+          />
           <Route path='list-category' element={<CategoryList />}></Route>
           <Route path='list-department' element={<DepartmentList />}></Route>
           <Route path='create-category' element={<Create />}></Route>
-          <Route path='create-department' element={<CreateDepartment />}></Route>
-          <Route path="list-assign-staff-qa/:id" element={<ListStaffAndQA />}></Route>
+          <Route
+            path='create-department'
+            element={<CreateDepartment />}></Route>
+          <Route
+            path='list-assign-staff-qa/:id'
+            element={<ListStaffAndQA />}></Route>
           <Route path='update-category/:id' element={<Update />}></Route>
-          <Route path='update-department/:id' element={<UpdateDepartment />}></Route>
+          <Route
+            path='update-department/:id'
+            element={<UpdateDepartment />}></Route>
           <Route path='create-account-user' element={<FormCreate />}></Route>
           <Route path='account-user' element={<ListUser />}></Route>
         </Route>
-        <Route path='/user' element={<User />}></Route>
+        <Route path='/user' element={<User />}>
+          <Route
+            path='/user'
+            element={<Navigate replace to='/user/list-category' />}
+          />
+          <Route path='list-category' element={<CategoryList />}></Route>
+          <Route path='create-category' element={<Create />}></Route>
+          <Route path='list-department' element={<DepartmentList />}></Route>
+          <Route
+            path='create-department'
+            element={<CreateDepartment />}></Route>
+        </Route>
       </Routes>
     </div>
   );
@@ -52,7 +65,7 @@ function Admin() {
         <Link to='list-category'>Category</Link>
         <Link to='list-department'>Department</Link>
         <Link to='account-user'>AccountUser</Link>
-        <Link className='right' to='/login'>
+        <Link className='right' to='/login' onClick={() => Logout()}>
           Log out
         </Link>
       </div>
@@ -67,8 +80,11 @@ function User() {
     <div>
       <div class='navbar'>
         <Link to='#'>Home</Link>
-        <Link to='/list-category'>Category</Link>
-        <Link to='/list-department'>Department</Link>
+        <Link to='list-category'>Category</Link>
+        <Link to='list-department'>Department</Link>
+        <Link className='right' to='/login' onClick={() => Logout()}>
+          Log out
+        </Link>
       </div>
       <main>
         <Outlet />
@@ -76,4 +92,7 @@ function User() {
     </div>
   );
 }
+const Logout = () => {
+  localStorage.removeItem('user');
+};
 export default App;

@@ -3,10 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Row, Col, Modal, Form, Input } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
 import '../../../../assets/styles/_typeButton.scss';
 import './list-user.scss';
 
 import {
+  deleteUserApi,
   getListUserApi,
   putChangePasswordUserApi,
 } from '../../../../Redux/slices/userSlice';
@@ -14,6 +17,8 @@ import { Link } from 'react-router-dom';
 const ListUser = () => {
   const { listUserApi } = useSelector((state) => state.listUser);
   const dispatch = useDispatch();
+
+  const { confirm } = Modal;
   const [formUser, setFormUser] = useState({
     id: '',
     newPassword: '',
@@ -52,7 +57,7 @@ const ListUser = () => {
           size='large'
           className='ant-btn-warning'
           onClick={() => {
-            showModal(key);
+            showModal();
             setFormUser({
               id: key.id,
             });
@@ -66,8 +71,11 @@ const ListUser = () => {
       key: 'operation',
       fixed: 'right',
       width: 100,
-      render: () => (
-        <Button size='large' className='ant-btn-danger'>
+      render: (key) => (
+        <Button
+          size='large'
+          className='ant-btn-danger'
+          onClick={() => showDeleteConfirm(key.id)}>
           Delete
         </Button>
       ),
@@ -79,8 +87,7 @@ const ListUser = () => {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 },
   };
-  const showModal = (id) => {
-    console.log(id);
+  const showModal = () => {
     setIsModalVisible(true);
   };
   const handleOnChange = (e) => {
@@ -102,6 +109,21 @@ const ListUser = () => {
     setIsModalVisible(false);
   };
 
+  const showDeleteConfirm = (id) => {
+    confirm({
+      title: 'Are you sure delete this user?',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        dispatch(deleteUserApi(id));
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
   return (
     <div className='container ListUser'>
       <Row className='ListUser__title'>
@@ -118,10 +140,10 @@ const ListUser = () => {
         columns={columns}
         dataSource={listUserApi}
         size='middle'
-        pagination={{ pageSize: 50 }}
-        scroll={{ y: 240 }}
+        pagination={{ pageSize: 10 }}
+        // scroll={{ y: 240 }}
       />
-      {/* Modal */}
+      {/* Modal Change Pass*/}
       <Modal
         title='Add account user'
         visible={isModalVisible}
@@ -138,6 +160,7 @@ const ListUser = () => {
           </Form.Item>
         </Form>
       </Modal>
+      {/* Modal delete */}
     </div>
   );
 };

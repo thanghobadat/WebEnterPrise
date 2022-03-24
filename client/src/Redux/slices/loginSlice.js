@@ -7,7 +7,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const postLoginUserApi = createAsyncThunk(
   'user/postLoginUserApi',
   async (payload) => {
-    console.log(payload);
     await axios
       .post(`https://localhost:5001/api/Users/Authenticate`, {
         userName: payload.userName,

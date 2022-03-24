@@ -9,11 +9,22 @@ import { postLoginUserApi } from '../../../../Redux/slices/loginSlice';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let user;
+  useEffect(() => {
+    user = JSON.parse(localStorage.getItem('user'));
+    user ? onFinish() : navigate(`/login`);
+  }, []);
   const onFinish = (values) => {
     dispatch(postLoginUserApi(values));
-    message.success('This is a success message');
-    {
-      localStorage.getItem('user') ? navigate(`/admin`) : navigate(`/login`);
+    user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.role === 'admin') {
+      message.success('Login Success!');
+      return navigate(`/admin`);
+    } else if (user && user.role === 'staff') {
+      message.success('Login Success!');
+      return navigate(`/user`);
+    } else {
+      message.error('Login Fail!');
     }
   };
   const onFinishFailed = (errorInfo) => {
@@ -24,8 +35,8 @@ const Login = () => {
       <Form
         className='Login__form'
         name='basic'
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 20 }}
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 19 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete='off'>

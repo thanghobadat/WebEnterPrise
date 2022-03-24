@@ -57,6 +57,22 @@ export const putChangePasswordUserApi = createAsyncThunk(
       });
   },
 );
+export const deleteUserApi = createAsyncThunk(
+  'user/putChangePasswordUserApi',
+  async (payload) => {
+    await axios
+      .delete(`https://localhost:5001/api/Users/DeleteAccount`, {
+        id: payload,
+      })
+      .then((res) => {
+        // console.log('.listUserApi ~ res', res.data.resultObj);
+        return res;
+      })
+      .catch((e) => {
+        console.log('e', e);
+      });
+  },
+);
 export const userSlice = createSlice({
   name: 'user',
   initialState: {

@@ -27,7 +27,7 @@ const CreateIdeas = () => {
 		);
 	};
 
-	const registerSubmit = (e) => {
+	const uploadIdeasSubmit = (e) => {
 		e.preventDefault();
 
 		const formData = new FormData();
@@ -56,7 +56,7 @@ const CreateIdeas = () => {
 					<p className="text-3xl font-bold leading-7 text-center">
 						Upload Ideas
 					</p>
-					<form encType="multipart/form-data" onSubmit={registerSubmit}>
+					<form encType="multipart/form-data" onSubmit={uploadIdeasSubmit}>
 						<div>
 							<div className="w-full flex flex-col mt-8">
 								<label className="font-semibold leading-none">

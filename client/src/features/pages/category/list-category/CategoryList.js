@@ -6,14 +6,11 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button,Table,Col,Row,Modal } from "antd";
-import { useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import Update from '../update-category/Update';
 
 function CategoryList() {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
-  const { id } = useParams();
   const [categoryList, setCategoryList] = useState([]);
   const[filters] = useState({
     pageSize: 10,
@@ -41,8 +38,6 @@ function CategoryList() {
     };
   
     const columns = [
-		
-      
       {
         title: "Name",
         dataIndex: "name",
@@ -64,12 +59,13 @@ function CategoryList() {
 				onClick={() => {
 					handleUpdate(key.id);
 				}}
+        style={{ fontSize:'200%' }}
 			  />
 			  <DeleteOutlined
 				onClick={() => {
 					onDeleteCategory(key.id);
 				}}
-				style={{ color: "red", marginLeft: 12 }}
+				style={{ color: "red", marginLeft: 12, fontSize:'200%' }}
 			  />
 			</>
 		  );
@@ -99,14 +95,11 @@ function CategoryList() {
 		navigate(`/admin/update-category/${id}`);
 	};
 
-
-
   return (
     <div className="container ListUser">
       <Row className='ListUser__title'>
         <Col span={20}>
           <h2>Manager Category</h2>
-          
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>

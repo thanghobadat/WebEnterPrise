@@ -22,6 +22,7 @@ import Update from './features/pages/category/update-category/Update';
 import UpdateDepartment from './features/pages/department/update-department/UpdateDepartment';
 import Login from './features/pages/auth/login/Login';
 import ListStaffAndQA from './features/pages/department/assign/ListStaffAndQA';
+import Posts from './features/pages/idea/list-idea/Posts';
 function App() {
   return (
     <div className='App'>
@@ -29,6 +30,7 @@ function App() {
         <Route path='/login' element={<Login />}></Route>
         <Route path='/' element={<Navigate replace to='/admin' />} />
         <Route path='/admin' element={<Admin />}>
+          <Route path='list-idea' element={<Posts/>}></Route>
           <Route path='list-category' element={<CategoryList />}></Route>
           <Route path='list-department' element={<DepartmentList />}></Route>
           <Route path='create-category' element={<Create />}></Route>

@@ -1,4 +1,4 @@
-.post {
+/* .post {
   display: flex;
   align-items: center;
   margin: 1.5em 1em;
@@ -31,7 +31,7 @@
 }
 
 .post__right > h3 a {
-  /* font-weight: bold; */
+ 
   font-weight: 600;
   font-size: medium;
   color: #464855;
@@ -61,4 +61,4 @@
 
 p.post__info {
   margin-top: 4px;
-}
+} */

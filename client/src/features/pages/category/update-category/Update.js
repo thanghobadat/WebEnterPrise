@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
-import './update.scss';
+import './update.css';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { message } from 'antd';

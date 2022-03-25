@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import './create.scss';
+import './create.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';

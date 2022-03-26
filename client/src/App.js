@@ -16,6 +16,7 @@ import Login from './features/pages/auth/login/Login';
 import ListStaffAndQA from './features/pages/department/assign/ListStaffAndQA';
 import ViewIdeas from './features/pages/Home/ViewIdeas';
 import CreateIdeas from './features/pages/Home/CreateIdeas';
+import Post from './features/pages/idea/view-idea/Post';
 function App() {
 	return (
 		<div className="App">
@@ -32,6 +33,7 @@ function App() {
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
+					<Route path="idea/:id" element={<Post/>}></Route>
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}

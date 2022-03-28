@@ -58,6 +58,8 @@ function App() {
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
+					<Route path="create-ideas" element={<CreateIdeas />}></Route>
+					<Route path="view-idea" element={<ViewIdeas />} />
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -89,7 +91,7 @@ function User() {
 	return (
 		<div>
 			<div class="navbar">
-				<Link to="#">Home</Link>
+			<Link to="view-idea">Home</Link>
 				<Link to="list-category">Category</Link>
 				<Link to="list-department">Department</Link>
 				<Link className="right" to="/login" onClick={() => Logout()}>

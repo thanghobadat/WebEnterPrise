@@ -38,6 +38,7 @@ const CreateIdeas = () => {
 		createIdeasSubmit(formData);
 		navigate('/admin/view-idea');
 		message.success('Upload ideas success !!');
+		axios.get(`https://localhost:5001/api/Ideas/GetAllIdea`)
 	};
 
 	const addDataForm = (e) => {

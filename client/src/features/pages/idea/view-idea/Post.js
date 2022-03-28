@@ -9,10 +9,10 @@ function Post() {
   const { id } = useParams();
   const [loading, setloading] = useState(true);
   const [idea, setIdea] = useState([]);
-  const [likeActive, setLikeActive] = useState(false);
-  const [dislikeActive, setDislikeActive] = useState(false);
-  
+  const [userId, setUserId] = useState();
+  let user;
   useEffect(() => {
+    user = JSON.parse(localStorage.getItem('user'));
     getIdeaById();
   }, []);
   const getIdeaById = async () => {
@@ -22,29 +22,40 @@ function Post() {
         res => {
           setloading(false);
           setIdea(res.data.resultObj)
-          console.log(res.data.resultObj)
+          setUserId(user.id)
         }
         )
   }
-  const handleLike = async (id) => {
-    if(likeActive === false){
+
+  const handleLike = async (id, userId, like) => {
+    const config = { headers: { 'Content-Type': 'application/json' } };
+    if(like === false){
       await axios.put(
-        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea?id=${id}&number=1`
+        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+        { id, 
+          userId,
+          number: 2
+          },
+			config
       );
-      setLikeActive(true);
-      setDislikeActive(true);
+      console.log(userId)
     }else{
       return;
     }
+    
     getIdeaById()
 	}
-  const handleDisLike = async (id) => {
-		if(dislikeActive === false){
+  const handleDisLike = async (id, userId, dislike) => {
+    const config = { headers: { 'Content-Type': 'application/json' } };
+		if(dislike === false){
       await axios.put(
-        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea?id=${id}&number=-1`
+        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+        { id, 
+          userId,
+          number: 2 
+          },
+			config
       );
-      setLikeActive(true);
-      setDislikeActive(true);
     }else{
       return;
     }
@@ -57,9 +68,9 @@ function Post() {
       
         <div className="post User">
         <div className="post__left">
-          <CaretUpFilled style={{fontSize:'1.5rem' }} onClick={() =>{handleLike(idea.id)}}/>
+          <CaretUpFilled style={{fontSize:'1.5rem' }} onClick={() =>{handleLike(idea.id, userId, idea.like)}}/>
           
-          <CaretDownFilled style={{fontSize:'1.5rem' }} onClick={() =>{handleDisLike(idea.id)}}/>
+          <CaretDownFilled style={{fontSize:'1.5rem' }} onClick={() =>{handleDisLike(idea.id, userId, idea.dislike)}}/>
         </div>
         <div className="post__center">
           

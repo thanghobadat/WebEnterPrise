@@ -10,7 +10,7 @@ namespace Application.Catalog
     {
         Task<ApiResult<List<IDeaViewModel>>> GetAllIdea();
         Task<ApiResult<List<IDeaViewModel>>> GetAllIdeaUser(Guid userId);
-
+        Task<ApiResult<List<CommentViewModel>>> GetAllComment(int id);
         Task<ApiResult<IDeaViewModel>> GetIdeaById(int id);
         Task<ApiResult<bool>> CreateIdea(IdeaCreateRequest request);
         Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, List<int> categoryIdeas);

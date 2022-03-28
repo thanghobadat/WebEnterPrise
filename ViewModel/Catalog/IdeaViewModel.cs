@@ -20,5 +20,8 @@ namespace ViewModel.Catalog
         public string UserName { get; set; }
         public int AcademicYearId { get; set; }
         public string AcademicYearName { get; set; }
+        public int LikeAmount { get; set; }
+        public int DislikeAmount { get; set; }
+
     }
 }

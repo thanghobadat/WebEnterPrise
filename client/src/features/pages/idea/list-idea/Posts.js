@@ -4,48 +4,64 @@ import queryString from 'query-string';
 import axios from 'axios';
 import { CaretDownFilled, CaretUpFilled, MessageTwoTone, EyeTwoTone } from '@ant-design/icons';
 import LinesEllipsis from 'react-lines-ellipsis';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function Posts() {
   const [loading, setloading] = useState(true);
   const [postList, setPostList] = useState([]);
   const navigate = useNavigate();
-  const [likeActive, setLikeActive] = useState(false);
-  const [dislikeActive, setDislikeActive] = useState(false);
-  
+  const [userId, setUserId] = useState();
+  let user;
   useEffect(() => {
+    user = JSON.parse(localStorage.getItem('user'));
+    setUserId(user.id)
     getPostList();
   }, []);
   const getPostList = async () => {
-    await axios.get(`https://localhost:5001/api/Ideas/GetAllIdea`).then(
+    await axios.get(`https://localhost:5001/api/Ideas/GetAllIdeaUser?userId=${user.id}`).then(
       res => {
         setloading(false);
         setPostList(res.data.resultObj);
       }
     )
   }
+  
   if (loading) {
     return <p>Data is loading...</p>;
   }
-  const handleLike = async (id) => {
-    if(likeActive === false){
+  const handleLike = async (id, userId, like, dislike ) => {
+    const config = { headers: { 'Content-Type': 'application/json' } };
+    const ideaId = id;
+    if(like === false && dislike === false){
       await axios.put(
-        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea?id=${id}&number=1`
+        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+        { ideaId, 
+          userId,
+          number: 2
+          },
+			config,
       );
-      setLikeActive(true);
-      setDislikeActive(true);
-    }else{
+          like = true;
+    }
+    else{
       return;
     }
     getPostList()
 	}
-  const handleDisLike = async (id) => {
-		if(dislikeActive === false){
+  const handleDisLike = async (id, userId, like, dislike ) => {
+    const config = { headers: { 'Content-Type': 'application/json' } };
+    const ideaId = id;
+    if(like === false && dislike === false){
       await axios.put(
-        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea?id=${id}&number=-1`
+        `https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+        { ideaId, 
+          userId,
+          number: -2
+          },
+			config,
       );
-      setLikeActive(true);
-      setDislikeActive(true);
-    }else{
+          dislike = true;
+    }
+    else{
       return;
     }
     getPostList()
@@ -63,9 +79,10 @@ function Posts() {
       {postList.map((post) => (
         <div className="post ListUser">
         <div className="post__left">
-          <CaretUpFilled style={{fontSize:'1.5rem' }} onClick={() =>{handleLike(post.id)}}/>
+          <CaretUpFilled  style={{fontSize:'1.5rem', color: post.like === false ? 'color': 'green' }} onClick={() =>{handleLike(post.id, userId, post.like, post.dislike)}}/>
           {/* <span>{post.upvote}</span> */}
-          <CaretDownFilled style={{fontSize:'1.5rem' }} onClick={() =>{handleDisLike(post.id)}}/>
+          <CaretDownFilled style={{fontSize:'1.5rem', color: post.dislike === false ? 'color': 'red'  }} onClick={() =>{handleDisLike(post.id, userId, post.like, post.dislike)}}/>
+          
         </div>
         <div className="post__center">
           
@@ -87,12 +104,13 @@ function Posts() {
           <p className="post__info">
             
               {post.view} views{" "}
-              | {post.like} like{" "} 
-              | {post.dislike} dislike{" "}
+              | {post.likeAmount} like{" "} 
+              | {post.dislikeAmount} dislike{" "}
           </p>
         </div>
       </div>
       ))}
+      
     </div>
   );
 }

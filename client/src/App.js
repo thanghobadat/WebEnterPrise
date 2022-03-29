@@ -34,6 +34,7 @@ function App() {
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
 					<Route path="idea/:id" element={<Post />}></Route>
+					<Route path="idea/:id" element={<Post/>}></Route>
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}

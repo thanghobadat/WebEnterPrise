@@ -33,6 +33,7 @@ function App() {
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
+					<Route path="idea/:id" element={<Post/>}></Route>
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -49,25 +50,10 @@ function App() {
 					<Route path="create-account-user" element={<FormCreate />}></Route>
 					<Route path="account-user" element={<ListUser />}></Route>
 				</Route>
-
-				{/* Staff */}
-				<Route path="/staff" element={<Staff />}>
+				<Route path="/staff" element={<User />}>
 					<Route
 						path="/staff"
-						element={<Navigate replace to="/staff/view-idea" />}
-					/>
-					<Route path="view-idea" element={<ViewIdeas />} />
-					<Route path="create-ideas" element={<CreateIdeas />}></Route>
-					<Route path="view-idea" element={<ViewIdeas />} />
-					<Route path="create-ideas" element={<CreateIdeas />} />
-					<Route path="idea/:id" element={<Post />}></Route>
-				</Route>
-
-				{/* User */}
-				<Route path="/user" element={<User />}>
-					<Route
-						path="/user"
-						element={<Navigate replace to="/user/list-category" />}
+						element={<Navigate replace to="/staff/list-category" />}
 					/>
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>

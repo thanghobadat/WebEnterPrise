@@ -24,6 +24,12 @@ namespace BackendApi.Controllers
             var result = await _ideaService.GetAllIdea();
             return Ok(result);
         }
+        [HttpGet("GetAllComment")]
+        public async Task<IActionResult> GetAllComment(int id)
+        {
+            var result = await _ideaService.GetAllComment(id);
+            return Ok(result);
+        }
         [HttpGet("GetAllIdeaUser")]
         public async Task<IActionResult> GetAllIdeaUser(Guid userId)
         {

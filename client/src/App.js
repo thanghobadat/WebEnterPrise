@@ -41,9 +41,9 @@ function App() {
           <Route path='create-account-user' element={<FormCreate />}></Route>
           <Route path='account-user' element={<ListUser />}></Route>
         </Route>
-        <Route path='/user' element={<User />}>
+        <Route path='/staff' element={<User />}>
           <Route
-            path='/user'
+            path='/staff'
             element={<Navigate replace to='/user/list-category' />}
           />
           <Route path='list-category' element={<CategoryList />}></Route>

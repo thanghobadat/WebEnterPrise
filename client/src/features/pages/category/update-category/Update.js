@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import './update.scss';
 import axios from 'axios';
@@ -8,6 +8,9 @@ import { message } from 'antd';
 const Update = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const formRef = useRef(null);
+	const [name, setName] = useState('');
+	const [description, setDescription] = useState('');
 
 	const onFinish = (values) => {
 		const { name, description } = values;
@@ -18,6 +21,8 @@ const Update = () => {
 		const res = await axios.get(
 			`https://localhost:5001/api/Categories/GetById?categoryId=${id}`
 		);
+		setName(res.data.resultObj.name);
+		setDescription(res.data.resultObj.description);
 		return res.data.resultObj;
 	};
 
@@ -34,6 +39,11 @@ const Update = () => {
 
 	useEffect(() => {
 		getCategoryById();
+
+		formRef?.current?.setFieldsValue({
+			name: name,
+			description: description,
+		});
 	});
 
 	return (
@@ -46,6 +56,7 @@ const Update = () => {
 				onFinish={onFinish}
 				autoComplete="off"
 				className="form"
+				ref={formRef}
 			>
 				<h1>Update category</h1>
 				<Form.Item

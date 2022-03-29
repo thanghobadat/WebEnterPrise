@@ -253,6 +253,29 @@ namespace Application.Catalog
             }
             return new ApiSuccessResult<IDeaViewModel>(ideaVM);
         }
+        public async Task<ApiResult<List<CommentViewModel>>> GetAllComment(int id)
+        {
+            var comments = await _context.Comments.Where(x => x.IdeaId == id).ToListAsync();
+            if (comments == null)
+            {
+                return new ApiErrorResult<List<CommentViewModel>>("No comment exists");
+            }
+
+            var commentVM = comments.Select(x => new CommentViewModel()
+            {
+                Id = x.Id,
+                Content = x.Content,
+                IsAnonymously = x.IsAnonymously,
+                UserId = x.UserId,
+
+            }).ToList();
+            foreach (var item in commentVM)
+            {
+                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                item.Name = user.UserName;
+            }
+            return new ApiSuccessResult<List<CommentViewModel>>(commentVM);
+        }
 
         public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdea()
         {
@@ -290,6 +313,10 @@ namespace Application.Catalog
                     var category = await _context.Categories.FindAsync(ideacategory.CategoryId);
                     item.Categories.Add(category.Name);
                 }
+                var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true).ToListAsync();
+                item.LikeAmount = like.Count;
+                var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true).ToListAsync();
+                item.DislikeAmount = dislikes.Count;
             }
 
 

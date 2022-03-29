@@ -15,4 +15,14 @@
     padding: 60px;
     border-radius: 10px;
   }
+  .term {
+    u {
+      margin-left: 10px;
+    }
+    font-style: italic;
+    cursor: pointer;
+  }
+  &__btn {
+    width: 100%;
+  }
 }

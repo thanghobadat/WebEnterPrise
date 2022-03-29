@@ -58,8 +58,6 @@ function App() {
 					/>
 					<Route path="view-idea" element={<ViewIdeas />} />
 					<Route path="create-ideas" element={<CreateIdeas />}></Route>
-					<Route path="view-idea" element={<ViewIdeas />} />
-					<Route path="create-ideas" element={<CreateIdeas />} />
 					<Route path="idea/:id" element={<Post />}></Route>
 				</Route>
 

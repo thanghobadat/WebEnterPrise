@@ -277,10 +277,10 @@ namespace Application.Catalog
             return new ApiSuccessResult<List<CommentViewModel>>(commentVM);
         }
 
-        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdea(int number)
+        public async Task<ApiResult<PageResult<IDeaViewModel>>> GetAllIdea(IdeaAdminPagingRequest request)
         {
             var query = new List<Idea>();
-            if (number == 1)
+            if (request.Number == 1)
             {
 
                 query = await _context.Ideas.OrderByDescending(x => x.View).ToListAsync();
@@ -292,24 +292,26 @@ namespace Application.Catalog
 
             if (query == null)
             {
-                return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
+                return new ApiErrorResult<PageResult<IDeaViewModel>>("No Ideas exists");
             }
+            int totalRow = query.Count();
 
-
-            var data = query.Select(x => new IDeaViewModel()
-            {
-                Id = x.Id,
-                Content = x.Content,
-                CreatedAt = x.CreatedAt,
-                EditDate = x.EditDate,
-                FilePath = x.FilePath,
-                View = x.View,
-                IsAnonymously = x.IsAnonymously,
-                FinalDate = x.FinalDate,
-                UserId = x.UserId,
-                AcademicYearId = x.AcademicYearId,
-                Categories = new List<string>()
-            }).ToList();
+            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new IDeaViewModel()
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    EditDate = x.EditDate,
+                    FilePath = x.FilePath,
+                    View = x.View,
+                    IsAnonymously = x.IsAnonymously,
+                    FinalDate = x.FinalDate,
+                    UserId = x.UserId,
+                    AcademicYearId = x.AcademicYearId,
+                    Categories = new List<string>()
+                }).ToList();
 
             foreach (var item in data)
             {
@@ -330,19 +332,26 @@ namespace Application.Catalog
                 }
 
             }
-            if (number == 2)
+            if (request.Number == 2)
             {
                 data = data.OrderByDescending(x => x.UpVote).ToList();
             }
 
+            var pagedResult = new PageResult<IDeaViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Items = data
+            };
 
-            return new ApiSuccessResult<List<IDeaViewModel>>(data);
+            return new ApiSuccessResult<PageResult<IDeaViewModel>>(pagedResult);
         }
 
-        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdeaUser(Guid userId, int number)
+        public async Task<ApiResult<PageResult<IDeaViewModel>>> GetAllIdeaUser(IdeaUserPagingRequest request)
         {
             var query = new List<Idea>();
-            if (number == 1)
+            if (request.Number == 1)
             {
 
                 query = await _context.Ideas.OrderByDescending(x => x.View).ToListAsync();
@@ -353,30 +362,32 @@ namespace Application.Catalog
             }
             if (query == null)
             {
-                return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
+                return new ApiErrorResult<PageResult<IDeaViewModel>>("No Ideas exists");
             }
+            int totalRow = query.Count();
 
-
-            var data = query.Select(x => new IDeaViewModel()
-            {
-                Id = x.Id,
-                Content = x.Content,
-                CreatedAt = x.CreatedAt,
-                EditDate = x.EditDate,
-                FilePath = x.FilePath,
-                View = x.View,
-                IsAnonymously = x.IsAnonymously,
-                FinalDate = x.FinalDate,
-                UserId = x.UserId,
-                Categories = new List<string>(),
-                AcademicYearId = x.AcademicYearId
-            }).ToList();
+            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new IDeaViewModel()
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    EditDate = x.EditDate,
+                    FilePath = x.FilePath,
+                    View = x.View,
+                    IsAnonymously = x.IsAnonymously,
+                    FinalDate = x.FinalDate,
+                    UserId = x.UserId,
+                    Categories = new List<string>(),
+                    AcademicYearId = x.AcademicYearId
+                }).ToList();
 
             foreach (var item in data)
             {
                 var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
                 item.AcademicYearName = academicYear.Name;
-                var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == item.Id && x.UserId == userId);
+                var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == item.Id && x.UserId == request.UserId);
                 if (likeOrDislike != null)
                 {
                     item.Like = likeOrDislike.IsLike;
@@ -396,13 +407,19 @@ namespace Application.Catalog
                     item.Categories.Add(category.Name);
                 }
             }
-            if (number == 2)
+            if (request.Number == 2)
             {
                 data = data.OrderByDescending(x => x.UpVote).ToList();
             }
+            var pagedResult = new PageResult<IDeaViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Items = data
+            };
 
-
-            return new ApiSuccessResult<List<IDeaViewModel>>(data);
+            return new ApiSuccessResult<PageResult<IDeaViewModel>>(pagedResult);
         }
 
         public async Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request)

@@ -11,6 +11,7 @@ namespace ViewModel.Catalog
         public int View { get; set; }
         public bool Like { get; set; }
         public bool Dislike { get; set; }
+        public int UpVote { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime EditDate { get; set; }
         public DateTime FinalDate { get; set; }

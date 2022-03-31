@@ -19,9 +19,9 @@ namespace BackendApi.Controllers
         }
 
         [HttpGet("GetAllIdea")]
-        public async Task<IActionResult> GetAllIdea()
+        public async Task<IActionResult> GetAllIdea(int number)
         {
-            var result = await _ideaService.GetAllIdea();
+            var result = await _ideaService.GetAllIdea(number);
             return Ok(result);
         }
         [HttpGet("GetAllComment")]
@@ -31,9 +31,9 @@ namespace BackendApi.Controllers
             return Ok(result);
         }
         [HttpGet("GetAllIdeaUser")]
-        public async Task<IActionResult> GetAllIdeaUser(Guid userId)
+        public async Task<IActionResult> GetAllIdeaUser(Guid userId, int number)
         {
-            var result = await _ideaService.GetAllIdeaUser(userId);
+            var result = await _ideaService.GetAllIdeaUser(userId, number);
             return Ok(result);
         }
         [HttpGet("GetIdeaById")]

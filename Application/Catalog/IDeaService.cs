@@ -277,9 +277,19 @@ namespace Application.Catalog
             return new ApiSuccessResult<List<CommentViewModel>>(commentVM);
         }
 
-        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdea()
+        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdea(int number)
         {
-            var query = await _context.Ideas.ToListAsync();
+            var query = new List<Idea>();
+            if (number == 1)
+            {
+
+                query = await _context.Ideas.OrderByDescending(x => x.View).ToListAsync();
+            }
+            else
+            {
+                query = await _context.Ideas.ToListAsync();
+            }
+
             if (query == null)
             {
                 return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
@@ -305,6 +315,11 @@ namespace Application.Catalog
             {
                 var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
                 item.AcademicYearName = academicYear.Name;
+                var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == item.Id).ToListAsync();
+                item.LikeAmount = like.Count;
+                var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == item.Id).ToListAsync();
+                item.DislikeAmount = dislikes.Count;
+                item.UpVote = like.Count - dislikes.Count;
                 var user = await _userManager.FindByIdAsync(item.UserId.ToString());
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
@@ -313,19 +328,29 @@ namespace Application.Catalog
                     var category = await _context.Categories.FindAsync(ideacategory.CategoryId);
                     item.Categories.Add(category.Name);
                 }
-                var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true).ToListAsync();
-                item.LikeAmount = like.Count;
-                var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true).ToListAsync();
-                item.DislikeAmount = dislikes.Count;
+
+            }
+            if (number == 2)
+            {
+                data = data.OrderByDescending(x => x.UpVote).ToList();
             }
 
 
             return new ApiSuccessResult<List<IDeaViewModel>>(data);
         }
 
-        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdeaUser(Guid userId)
+        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdeaUser(Guid userId, int number)
         {
-            var query = await _context.Ideas.ToListAsync();
+            var query = new List<Idea>();
+            if (number == 1)
+            {
+
+                query = await _context.Ideas.OrderByDescending(x => x.View).ToListAsync();
+            }
+            else
+            {
+                query = await _context.Ideas.ToListAsync();
+            }
             if (query == null)
             {
                 return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
@@ -357,7 +382,11 @@ namespace Application.Catalog
                     item.Like = likeOrDislike.IsLike;
                     item.Dislike = likeOrDislike.IsDislike;
                 }
-
+                var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == item.Id).ToListAsync();
+                item.LikeAmount = like.Count;
+                var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == item.Id).ToListAsync();
+                item.DislikeAmount = dislikes.Count;
+                item.UpVote = like.Count - dislikes.Count;
                 var user = await _userManager.FindByIdAsync(item.UserId.ToString());
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
@@ -366,6 +395,10 @@ namespace Application.Catalog
                     var category = await _context.Categories.FindAsync(ideacategory.CategoryId);
                     item.Categories.Add(category.Name);
                 }
+            }
+            if (number == 2)
+            {
+                data = data.OrderByDescending(x => x.UpVote).ToList();
             }
 
 

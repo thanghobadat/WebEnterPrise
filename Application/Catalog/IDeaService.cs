@@ -492,6 +492,10 @@ namespace Application.Catalog
             return fileName;
         }
 
-
+        public DownloadFileViewModel DownloadZip(string filePath)
+        {
+            var fileDownload = _storageService.DownloadZip(filePath);
+            return fileDownload;
+        }
     }
 }

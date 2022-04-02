@@ -38,19 +38,16 @@ namespace BackendApi.Controllers
     [HttpPost("Register")]
     [AllowAnonymous]
 
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-      var result = await _userService.RegisterAccount(request);
-      if (!result.ResultObj)
-      {
-        return BadRequest(result);
-      }
-      return Ok(result);
-    }
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+
+            var result = await _userService.RegisterAccount(request);
+            if (!result.ResultObj)
+            {
+                return Ok(result);
+            }
+            return Ok(result);
+        }
 
     [HttpGet("GetAllAccount")]
     public async Task<IActionResult> GetAllAccount([FromQuery] string keyword)

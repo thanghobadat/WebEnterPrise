@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using ViewModel.Catalog;
 
 namespace Application.Common
 {
@@ -10,6 +11,6 @@ namespace Application.Common
         Task SaveFileAsync(Stream mediaBinaryStream, string fileName);
 
         Task DeleteFileAsync(string fileName);
-        //DownloadFileViewModel DownloadZip(string fileName);
+        DownloadFileViewModel DownloadZip(string fileName);
     }
 }

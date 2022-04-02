@@ -1,0 +1,28 @@
+/** @format */
+@import '../../../../assets/styles/colorBase';
+.Login {
+  background-image: url(../../../../assets/images/backround.gif);
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  flex-flow: none;
+  height: 100%;
+  min-height: 961px;
+  &__form {
+    background-color: $color-white !important;
+    width: 30%;
+    min-height: 200px;
+    padding: 60px;
+    border-radius: 10px;
+  }
+  .term {
+    u {
+      margin-left: 10px;
+    }
+    font-style: italic;
+    cursor: pointer;
+  }
+  &__btn {
+    width: 100%;
+  }
+}

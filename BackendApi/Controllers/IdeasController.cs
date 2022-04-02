@@ -42,6 +42,13 @@ namespace BackendApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("DownloadFile")]
+        public IActionResult DownloadFile(string fileName)
+        {
+            var response = _ideaService.DownloadZip(fileName);
+            return File(response.ArchiveData, response.FiltType, response.AchiveName);
+        }
+
         [HttpPost("CreateIdea")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> CreateIdea([FromForm] IdeaCreateRequest request)

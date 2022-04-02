@@ -1,6 +1,7 @@
 ﻿using Data.EF;
 using Data.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -101,6 +102,11 @@ namespace Application.System.Users
             {
                 return new ApiErrorResult<bool>("User does not exits");
             }
+            var likeOrDislike = await _context.LikeOrDislikes.Where(x => x.UserId == id).ToListAsync();
+            foreach (var item in likeOrDislike)
+            {
+                _context.LikeOrDislikes.Remove(item);
+            };
             var reult = await _userManager.DeleteAsync(user);
             if (reult.Succeeded)
                 return new ApiSuccessResult<bool>(true);

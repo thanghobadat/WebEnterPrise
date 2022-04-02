@@ -40,14 +40,11 @@ namespace BackendApi.Controllers
 
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+
             var result = await _userService.RegisterAccount(request);
             if (!result.ResultObj)
             {
-                return BadRequest(result);
+                return Ok(result);
             }
             return Ok(result);
         }

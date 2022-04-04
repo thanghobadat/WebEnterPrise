@@ -64,12 +64,13 @@ function CategoryList() {
 				onClick={() => {
 					handleUpdate(key.id);
 				}}
+        style={{ fontSize: '1.5rem' }}
 			  />
 			  <DeleteOutlined
 				onClick={() => {
 					onDeleteCategory(key.id);
 				}}
-				style={{ color: "red", marginLeft: 12 }}
+				style={{ color: "red", marginLeft: 12, fontSize: '1.5rem' }}
 			  />
 			</>
 		  );

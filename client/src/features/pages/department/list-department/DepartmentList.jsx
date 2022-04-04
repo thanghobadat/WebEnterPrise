@@ -56,19 +56,19 @@ function DepartmentList() {
         onClick={() => {
           handleAssign(key.id);
 				}}
-        style={{ color: "green", marginLeft: 12 }}
+        style={{ color: "green", marginLeft: 12, fontSize: '1.5rem' }}
          />
 			  <EditOutlined
 				onClick={() => {
 					handleUpdate(key.id);
 				}}
-        style={{  marginLeft: 12 }}
+        style={{  marginLeft: 12, fontSize: '1.5rem' }}
 			  />
 			  <DeleteOutlined
 				onClick={() => {
 					onDeleteDepartment(key.id);
 				}}
-				style={{ color: "red", marginLeft: 12 }}
+				style={{ color: "red", marginLeft: 12, fontSize: '1.5rem' }}
 			  />
 			</>
 		  );

@@ -15,6 +15,7 @@ function Post() {
 	const [loading, setloading] = useState(true);
 	const [idea, setIdea] = useState([]);
 	const [userId, setUserId] = useState();
+	const [checkfile, setCheckfile] = useState();
 	let user;
 	useEffect(() => {
 		user = JSON.parse(localStorage.getItem('user'));
@@ -89,6 +90,9 @@ function Post() {
 		const options = { year: "numeric", month: "long", day: "numeric" }
 		return new Date(createdAt).toLocaleDateString(undefined, options)
 	  }
+	  const getFile = async () => {
+		await axios.get(`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`)
+	  };
 	return (
 		<div className="posts">
 			<div className="post User">
@@ -107,16 +111,18 @@ function Post() {
 					<h1 className="post__info">
 						Posted by{' '}
 						{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at{' '}
-						{formatDate(idea.createdAt)}
+						{formatDate(idea.createdAt)}{' '}
+						{!idea.filePath  ? checkfile: 'with attachments'}
 					</h1>
+					
 					<LinesEllipsis
 						maxLine="10"
 						ellipsis="..."
 						basedOn="letters"
 						text={idea.content}
 					></LinesEllipsis>
-					<div>
-						<img src={`http://localhost:5001/Files/c31f6040-0e56-4478-8bae-0bdcd473bb90.jpg` } />
+					<div style={{visibility: !idea.filePath  ? 'hidden' : 'visible'}}>
+						<a href={`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`} download>Click to download</a>
 					</div>
 					<p className="post__info">
 						<MessageTwoTone style={{ marginTop: 10, fontSize: '1.5rem' }} />

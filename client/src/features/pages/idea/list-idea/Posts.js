@@ -29,7 +29,7 @@ function Posts() {
   }, [filters]);
   const getPostList = async () => {
     if (count === 0){
-      await axios.get(`https://localhost:5001/api/Ideas/GetAllIdeaUser?userId=${user.id}&Number=1&${paramsString}`).then(
+      await axios.get(`https://localhost:5001/api/Ideas/GetAllIdeaUser?userId=${user.id}&Number=0&${paramsString}`).then(
         res => {
           setloading(false);
           const data = res.data.resultObj;
@@ -44,7 +44,7 @@ function Posts() {
       )
     }
     else{
-      await axios.get(`https://localhost:5001/api/Ideas/GetAllIdeaUser?userId=${userId}&Number=1&${paramsString}`).then(
+      await axios.get(`https://localhost:5001/api/Ideas/GetAllIdeaUser?userId=${userId}&Number=0&${paramsString}`).then(
         res => {
           setloading(false);
           const data = res.data.resultObj;
@@ -59,18 +59,7 @@ function Posts() {
         }
       )
     }  
-    // await axios.get(`https://localhost:5001/api/Ideas/GetAllIdea?Number=1&${paramsString}`).then(
-    //   res => {
-    //     setloading(false);
-    //     const data = res.data.resultObj;
-    //     setPostList(data.items);
-    //     setPagination({
-    //       pageIndex: data.pageIndex,
-    //       pageSize: data.pageSize,
-    //       totalRecords : data.totalRecords,
-    //     });
-    //   }
-    // )
+
   }
   if (loading) {
     return <p>Data is loading...</p>;

@@ -35,9 +35,9 @@ const CreateIdeas = () => {
 		formData.append('IsAnonymously', anonymously);
 		formData.append('File', avatar);
 		createIdeasSubmit(formData);
-		setTimeout(()=>{
+		
 			localStore.role === 'admin' ? navigate('/admin/view-idea'): navigate('/staff/view-idea');
-		},1000)
+		
 		
 		message.success('Upload ideas success !!');
 	};

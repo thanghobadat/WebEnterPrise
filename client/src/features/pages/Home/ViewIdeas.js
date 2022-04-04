@@ -6,8 +6,8 @@ const ViewIdeas = () => {
 	return (
 		<div>
 		{ user.role === 'admin' ? 
-			<Link to='/admin/create-idea'>create idea</Link> :
-			<Link to='/staff/create-idea'>create idea</Link>
+			<Link style={{marginLeft: '45%', fontSize: '1.5rem'}} to='/admin/create-idea'>Create Idea</Link> :
+			<Link style={{marginLeft: '45%', fontSize: '1.5rem'}} to='/staff/create-idea'>Create Idea</Link>
 		}
 			<Posts/>
 		</div>

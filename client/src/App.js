@@ -3,15 +3,7 @@
 import React from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Link,
-  Routes,
-  Navigate,
-  Outlet,
-} from 'react-router-dom';
+import { Route, Link, Routes, Navigate, Outlet } from 'react-router-dom';
 import ListUser from './features/pages/user/list-user/list-user';
 import FormCreate from './features/pages/user/create-user/form-create';
 import CategoryList from './features/pages/category/list-category/CategoryList';
@@ -22,58 +14,118 @@ import Update from './features/pages/category/update-category/Update';
 import UpdateDepartment from './features/pages/department/update-department/UpdateDepartment';
 import Login from './features/pages/auth/login/Login';
 import ListStaffAndQA from './features/pages/department/assign/ListStaffAndQA';
+import ViewIdeas from './features/pages/Home/ViewIdeas';
+import CreateIdeas from './features/pages/Home/CreateIdeas';
+import Posts from './features/pages/idea/list-idea/Posts';
+import Post from './features/pages/idea/view-idea/Post';
+import Dashboard from './features/admin/dashboard.admin';
+
 function App() {
-  return (
-    <div className='App'>
-      <Routes>
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/' element={<Navigate replace to='/admin' />} />
-        <Route path='/admin' element={<Admin />}>
-          <Route path='list-category' element={<CategoryList />}></Route>
-          <Route path='list-department' element={<DepartmentList />}></Route>
-          <Route path='create-category' element={<Create />}></Route>
-          <Route path='create-department' element={<CreateDepartment />}></Route>
-          <Route path="list-assign-staff-qa/:id" element={<ListStaffAndQA />}></Route>
-          <Route path='update-category/:id' element={<Update />}></Route>
-          <Route path='update-department/:id' element={<UpdateDepartment />}></Route>
-          <Route path='create-account-user' element={<FormCreate />}></Route>
-          <Route path='account-user' element={<ListUser />}></Route>
-        </Route>
-        <Route path='/user' element={<User />}></Route>
-      </Routes>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Routes>
+				<Route path="/login" element={<Login />}></Route>
+				<Route path="/" element={<Navigate replace to="/login" />} />
+				<Route path="/admin" element={<Admin />}>
+					<Route
+						path="/admin"
+						element={<Navigate replace to="/admin/account-user" />}
+					/>
+					<Route path="view-idea" element={<ViewIdeas />} />
+					<Route path="create-idea" element={<CreateIdeas />} />
+					<Route path="list-category" element={<CategoryList />}></Route>
+					<Route path="list-department" element={<DepartmentList />}></Route>
+					<Route path="create-category" element={<Create />}></Route>
+					<Route path="idea/:id" element={<Post />}></Route>
+					<Route
+						path="create-department"
+						element={<CreateDepartment />}
+					></Route>
+					<Route
+						path="list-assign-staff-qa/:id"
+						element={<ListStaffAndQA />}
+					></Route>
+					<Route path="update-category/:id" element={<Update />}></Route>
+					<Route
+						path="update-department/:id"
+						element={<UpdateDepartment />}
+					></Route>
+					<Route path="create-account-user" element={<FormCreate />}></Route>
+					<Route path="account-user" element={<ListUser />}></Route>
+				</Route>
+				<Route path="/staff" element={<User />}>
+					<Route
+						path="/staff"
+						element={<Navigate replace to="/staff/list-category" />}
+					/>
+					<Route path="list-category" element={<CategoryList />}></Route>
+					<Route path="create-category" element={<Create />}></Route>
+					<Route path="list-department" element={<DepartmentList />}></Route>
+					<Route path="view-idea" element={<ViewIdeas />} />
+					<Route path="create-idea" element={<CreateIdeas />} />
+					<Route
+						path="create-department"
+						element={<CreateDepartment />}
+					></Route>
+				</Route>
+			</Routes>
+		</div>
+	);
 }
 function Admin() {
-  return (
-    <div>
-      <div class='navbar navMenu'>
-        <Link to='#'>Home</Link>
-        <Link to='list-category'>Category</Link>
-        <Link to='list-department'>Department</Link>
-        <Link to='account-user'>AccountUser</Link>
-        <Link className='right' to='/login'>
-          Log out
-        </Link>
-      </div>
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  );
+	return (
+		<div>
+			<div class="navbar navMenu">
+				<Link to="view-idea">Home</Link>
+				<Link to="list-category">Category</Link>
+				<Link to="list-department">Department</Link>
+				<Link to="account-user">AccountUser</Link>
+				<Link className="right" to="/login" onClick={() => Logout()}>
+					Log out
+				</Link>
+			</div>
+			<main>
+				<Outlet />
+			</main>
+		</div>
+	);
 }
+
+function Staff() {
+	return (
+		<div>
+			<div class="navbar navMenu">
+				<Link to="view-idea">Home</Link>
+				<Link to="list-category">Category</Link>
+				<Link className="right" to="/login" onClick={() => Logout()}>
+					Log out
+				</Link>
+			</div>
+			<main>
+				<Outlet />
+			</main>
+		</div>
+	);
+}
+
 function User() {
-  return (
-    <div>
-      <div class='navbar'>
-        <Link to='#'>Home</Link>
-        <Link to='/list-category'>Category</Link>
-        <Link to='/list-department'>Department</Link>
-      </div>
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  );
+	return (
+		<div>
+			<div class="navbar">
+				<Link to="view-idea">Home</Link>
+				<Link to="list-category">Category</Link>
+				<Link to="list-department">Department</Link>
+				<Link className="right" to="/login" onClick={() => Logout()}>
+					Log out
+				</Link>
+			</div>
+			<main>
+				<Outlet />
+			</main>
+		</div>
+	);
 }
+const Logout = () => {
+	localStorage.removeItem('user');
+};
 export default App;

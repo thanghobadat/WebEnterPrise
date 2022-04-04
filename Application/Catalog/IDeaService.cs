@@ -253,35 +253,75 @@ namespace Application.Catalog
             }
             return new ApiSuccessResult<IDeaViewModel>(ideaVM);
         }
-
-        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdea()
+        public async Task<ApiResult<List<CommentViewModel>>> GetAllComment(int id)
         {
-            var query = await _context.Ideas.ToListAsync();
-            if (query == null)
+            var comments = await _context.Comments.Where(x => x.IdeaId == id).ToListAsync();
+            if (comments == null)
             {
-                return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
+                return new ApiErrorResult<List<CommentViewModel>>("No comment exists");
             }
 
-
-            var data = query.Select(x => new IDeaViewModel()
+            var commentVM = comments.Select(x => new CommentViewModel()
             {
                 Id = x.Id,
                 Content = x.Content,
-                CreatedAt = x.CreatedAt,
-                EditDate = x.EditDate,
-                FilePath = x.FilePath,
-                View = x.View,
                 IsAnonymously = x.IsAnonymously,
-                FinalDate = x.FinalDate,
                 UserId = x.UserId,
-                AcademicYearId = x.AcademicYearId,
-                Categories = new List<string>()
+
             }).ToList();
+            foreach (var item in commentVM)
+            {
+                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                item.Name = user.UserName;
+            }
+            return new ApiSuccessResult<List<CommentViewModel>>(commentVM);
+        }
+
+        public async Task<ApiResult<PageResult<IDeaViewModel>>> GetAllIdea(IdeaAdminPagingRequest request)
+        {
+            var query = new List<Idea>();
+            if (request.Number == 1)
+            {
+
+                query = await _context.Ideas.OrderByDescending(x => x.View).ToListAsync();
+            }
+            else
+            {
+                query = await _context.Ideas.ToListAsync();
+            }
+
+            if (query == null)
+            {
+                return new ApiErrorResult<PageResult<IDeaViewModel>>("No Ideas exists");
+            }
+            int totalRow = query.Count();
+
+            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new IDeaViewModel()
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    EditDate = x.EditDate,
+                    FilePath = x.FilePath,
+                    View = x.View,
+                    IsAnonymously = x.IsAnonymously,
+                    FinalDate = x.FinalDate,
+                    UserId = x.UserId,
+                    AcademicYearId = x.AcademicYearId,
+                    Categories = new List<string>()
+                }).ToList();
 
             foreach (var item in data)
             {
                 var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
                 item.AcademicYearName = academicYear.Name;
+                var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == item.Id).ToListAsync();
+                item.LikeAmount = like.Count;
+                var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == item.Id).ToListAsync();
+                item.DislikeAmount = dislikes.Count;
+                item.UpVote = like.Count - dislikes.Count;
                 var user = await _userManager.FindByIdAsync(item.UserId.ToString());
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
@@ -290,47 +330,74 @@ namespace Application.Catalog
                     var category = await _context.Categories.FindAsync(ideacategory.CategoryId);
                     item.Categories.Add(category.Name);
                 }
+
+            }
+            if (request.Number == 2)
+            {
+                data = data.OrderByDescending(x => x.UpVote).ToList();
             }
 
+            var pagedResult = new PageResult<IDeaViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Items = data
+            };
 
-            return new ApiSuccessResult<List<IDeaViewModel>>(data);
+            return new ApiSuccessResult<PageResult<IDeaViewModel>>(pagedResult);
         }
 
-        public async Task<ApiResult<List<IDeaViewModel>>> GetAllIdeaUser(Guid userId)
+        public async Task<ApiResult<PageResult<IDeaViewModel>>> GetAllIdeaUser(IdeaUserPagingRequest request)
         {
-            var query = await _context.Ideas.ToListAsync();
+            var query = new List<Idea>();
+            if (request.Number == 1)
+            {
+
+                query = await _context.Ideas.OrderByDescending(x => x.View).ToListAsync();
+            }
+            else
+            {
+                query = await _context.Ideas.ToListAsync();
+            }
             if (query == null)
             {
-                return new ApiErrorResult<List<IDeaViewModel>>("No Ideas exists");
+                return new ApiErrorResult<PageResult<IDeaViewModel>>("No Ideas exists");
             }
+            int totalRow = query.Count();
 
-
-            var data = query.Select(x => new IDeaViewModel()
-            {
-                Id = x.Id,
-                Content = x.Content,
-                CreatedAt = x.CreatedAt,
-                EditDate = x.EditDate,
-                FilePath = x.FilePath,
-                View = x.View,
-                IsAnonymously = x.IsAnonymously,
-                FinalDate = x.FinalDate,
-                UserId = x.UserId,
-                Categories = new List<string>(),
-                AcademicYearId = x.AcademicYearId
-            }).ToList();
+            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new IDeaViewModel()
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    EditDate = x.EditDate,
+                    FilePath = x.FilePath,
+                    View = x.View,
+                    IsAnonymously = x.IsAnonymously,
+                    FinalDate = x.FinalDate,
+                    UserId = x.UserId,
+                    Categories = new List<string>(),
+                    AcademicYearId = x.AcademicYearId
+                }).ToList();
 
             foreach (var item in data)
             {
                 var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
                 item.AcademicYearName = academicYear.Name;
-                var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == item.Id && x.UserId == userId);
+                var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == item.Id && x.UserId == request.UserId);
                 if (likeOrDislike != null)
                 {
                     item.Like = likeOrDislike.IsLike;
                     item.Dislike = likeOrDislike.IsDislike;
                 }
-
+                var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == item.Id).ToListAsync();
+                item.LikeAmount = like.Count;
+                var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == item.Id).ToListAsync();
+                item.DislikeAmount = dislikes.Count;
+                item.UpVote = like.Count - dislikes.Count;
                 var user = await _userManager.FindByIdAsync(item.UserId.ToString());
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
@@ -340,9 +407,19 @@ namespace Application.Catalog
                     item.Categories.Add(category.Name);
                 }
             }
+            if (request.Number == 2)
+            {
+                data = data.OrderByDescending(x => x.UpVote).ToList();
+            }
+            var pagedResult = new PageResult<IDeaViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Items = data
+            };
 
-
-            return new ApiSuccessResult<List<IDeaViewModel>>(data);
+            return new ApiSuccessResult<PageResult<IDeaViewModel>>(pagedResult);
         }
 
         public async Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request)
@@ -415,6 +492,10 @@ namespace Application.Catalog
             return fileName;
         }
 
-
+        public DownloadFileViewModel DownloadZip(string filePath)
+        {
+            var fileDownload = _storageService.DownloadZip(filePath);
+            return fileDownload;
+        }
     }
 }

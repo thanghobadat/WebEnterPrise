@@ -1,6 +1,5 @@
 ﻿using Application.Catalog;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
 
@@ -19,15 +18,21 @@ namespace BackendApi.Controllers
         }
 
         [HttpGet("GetAllIdea")]
-        public async Task<IActionResult> GetAllIdea()
+        public async Task<IActionResult> GetAllIdea([FromQuery] IdeaAdminPagingRequest request)
         {
-            var result = await _ideaService.GetAllIdea();
+            var result = await _ideaService.GetAllIdea(request);
+            return Ok(result);
+        }
+        [HttpGet("GetAllComment")]
+        public async Task<IActionResult> GetAllComment(int id)
+        {
+            var result = await _ideaService.GetAllComment(id);
             return Ok(result);
         }
         [HttpGet("GetAllIdeaUser")]
-        public async Task<IActionResult> GetAllIdeaUser(Guid userId)
+        public async Task<IActionResult> GetAllIdeaUser([FromQuery] IdeaUserPagingRequest request)
         {
-            var result = await _ideaService.GetAllIdeaUser(userId);
+            var result = await _ideaService.GetAllIdeaUser(request);
             return Ok(result);
         }
         [HttpGet("GetIdeaById")]
@@ -35,6 +40,13 @@ namespace BackendApi.Controllers
         {
             var result = await _ideaService.GetIdeaById(id);
             return Ok(result);
+        }
+
+        [HttpGet("DownloadFile")]
+        public IActionResult DownloadFile(string fileName)
+        {
+            var response = _ideaService.DownloadZip(fileName);
+            return File(response.ArchiveData, response.FiltType, response.AchiveName);
         }
 
         [HttpPost("CreateIdea")]

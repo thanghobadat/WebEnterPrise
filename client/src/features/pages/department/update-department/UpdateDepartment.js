@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -7,6 +7,9 @@ import { message } from 'antd';
 const UpdateDepartment = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const formRef = useRef(null);
+	const [name, setName] = useState('');
+	const [description, setDescription] = useState('');
 
 	const onFinish = (values) => {
 		const { name, description } = values;
@@ -17,6 +20,8 @@ const UpdateDepartment = () => {
 		const res = await axios.get(
 			`https://localhost:5001/api/Departments/GetDepartmentById?id=${id}`
 		);
+		setName(res.data.resultObj.name);
+		setDescription(res.data.resultObj.description);
 		return res.data.resultObj;
 	};
 
@@ -33,6 +38,11 @@ const UpdateDepartment = () => {
 
 	useEffect(() => {
 		getDepartmentById();
+
+		formRef?.current?.setFieldsValue({
+			name: name,
+			description: description,
+		});
 	});
 
 	return (
@@ -45,6 +55,7 @@ const UpdateDepartment = () => {
 				onFinish={onFinish}
 				autoComplete="off"
 				className="form"
+				ref={formRef}
 			>
 				<h1>Update department</h1>
 				<Form.Item

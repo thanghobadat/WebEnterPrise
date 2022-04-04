@@ -10,7 +10,6 @@ export const getListUserApi = createAsyncThunk(
     const res = await axios
       .get(`https://localhost:5001/api/Users/GetAllAccount`)
       .then((res) => {
-        // console.log('.listUserApi ~ res', res.data.resultObj);
         return res;
       })
       .catch((e) => {
@@ -21,7 +20,7 @@ export const getListUserApi = createAsyncThunk(
 );
 export const postRegisterUserApi = createAsyncThunk(
   'user/postRegisterUserApi',
-  async (payload) => {
+  async (payload, rejectWithValue) => {
     await axios
       .post(`https://localhost:5001/api/Users/Register`, {
         userName: payload.userName,
@@ -32,11 +31,11 @@ export const postRegisterUserApi = createAsyncThunk(
         password: payload.password,
       })
       .then((res) => {
-        // console.log('.listUserApi ~ res', res.data.resultObj);
+        console.log('res', res);
         return res;
       })
-      .catch((e) => {
-        console.log('e', e);
+      .catch((error) => {
+        return rejectWithValue(error);
       });
   },
 );
@@ -54,6 +53,23 @@ export const putChangePasswordUserApi = createAsyncThunk(
       })
       .catch((e) => {
         console.log('e', e);
+        return e;
+      });
+  },
+);
+export const deleteUserApi = createAsyncThunk(
+  'user/putChangePasswordUserApi',
+  async (payload) => {
+    await axios
+      .delete(`https://localhost:5001/api/Users/DeleteAccount`, {
+        id: payload,
+      })
+      .then((res) => {
+        // console.log('.listUserApi ~ res', res.data.resultObj);
+        return res;
+      })
+      .catch((e) => {
+        console.log('e', e);
       });
   },
 );
@@ -61,6 +77,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     listUserApi: [],
+    errorMss: '',
     loading: false,
   },
   reducers: {},
@@ -73,6 +90,11 @@ export const userSlice = createSlice({
     [postRegisterUserApi.pending]: (state, action) => {
       state.loading = true;
     },
+    [postRegisterUserApi.rejected]: (state, action) => {
+      console.log(action);
+      state.errorMss = action.message;
+    },
+    [postRegisterUserApi.fulfilled]: (state, action) => {},
   },
 });
 

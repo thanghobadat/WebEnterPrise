@@ -93,6 +93,7 @@ function Posts() {
         </div>
       </div>
       ))}
+      
     </div>
   );
 }

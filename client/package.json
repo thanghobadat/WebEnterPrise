@@ -13,6 +13,7 @@
     "bootstrap": "^5.1.3",
     "font-awesome": "^4.7.0",
     "formik": "^2.2.9",
+    "js-file-download": "^0.4.12",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.0",

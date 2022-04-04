@@ -18,6 +18,7 @@ import ViewIdeas from './features/pages/Home/ViewIdeas';
 import CreateIdeas from './features/pages/Home/CreateIdeas';
 import Posts from './features/pages/idea/list-idea/Posts';
 import Post from './features/pages/idea/view-idea/Post';
+
 function App() {
 	return (
 		<div className="App">
@@ -30,11 +31,11 @@ function App() {
 						element={<Navigate replace to="/admin/account-user" />}
 					/>
 					<Route path="view-idea" element={<ViewIdeas />} />
-					<Route path="create-idea" element={<CreateIdeas/>}/>
+					<Route path="create-idea" element={<CreateIdeas />} />
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
-					<Route path="idea/:id" element={<Post/>}></Route>
+					<Route path="idea/:id" element={<Post />}></Route>
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -60,7 +61,7 @@ function App() {
 					<Route path="create-category" element={<Create />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="view-idea" element={<ViewIdeas />} />
-					<Route path="create-idea" element={<CreateIdeas/>}/>
+					<Route path="create-idea" element={<CreateIdeas />} />
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -116,7 +117,6 @@ function User() {
 				<Link className="right" to="/login" onClick={() => Logout()}>
 					Log out
 				</Link>
-
 			</div>
 			<main>
 				<Outlet />

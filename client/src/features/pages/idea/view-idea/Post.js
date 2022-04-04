@@ -14,11 +14,13 @@ function Post() {
 	const { id } = useParams();
 	const [loading, setloading] = useState(true);
 	const [idea, setIdea] = useState([]);
-	const [likeActive, setLikeActive] = useState(false);
-	const [dislikeActive, setDislikeActive] = useState(false);
-
+	const [userId, setUserId] = useState();
+	let user;
 	useEffect(() => {
+		user = JSON.parse(localStorage.getItem('user'));
+    	setUserId(user.id)
 		getIdeaById();
+		
 	}, []);
 	const getIdeaById = async () => {
 		await axios
@@ -29,47 +31,75 @@ function Post() {
 				console.log(res.data.resultObj);
 			});
 	};
-	const handleLike = async (id) => {
-		if (likeActive === false) {
-			await axios.put(
-				`https://localhost:5001/api/Ideas/LikeOrDislikeIdea?id=${id}&number=1`
-			);
-			setLikeActive(true);
-			setDislikeActive(true);
-		} else {
-			return;
+	const handleLike = async (id, userId, like, dislike ) => {
+		const config = { headers: { 'Content-Type': 'application/json' } };
+		const ideaId = id;
+		if(like === false && dislike === false ){
+		  await axios.put(
+			`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+			{ ideaId, 
+			  userId,
+			  number: 2
+			  },
+				config,
+		  );
+		  like = true;
 		}
-		getIdeaById();
-	};
-	const handleDisLike = async (id) => {
-		if (dislikeActive === false) {
-			await axios.put(
-				`https://localhost:5001/api/Ideas/LikeOrDislikeIdea?id=${id}&number=-1`
-			);
-			setLikeActive(true);
-			setDislikeActive(true);
-		} else {
-			return;
+		else if(like === false && dislike === true ){
+		  await axios.put(
+			`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+			{ ideaId, 
+			  userId,
+			  number: 1
+			  },
+				config,
+		  );
+		  getIdeaById();   
+		} 
 		}
-		getIdeaById();
-	};
-
+	  const handleDisLike = async (id, userId, like, dislike ) => {
+		const config = { headers: { 'Content-Type': 'application/json' } };
+		const ideaId = id;
+		if(like === false && dislike === false){
+		  await axios.put(
+			`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+			{ ideaId, 
+			  userId,
+			  number: -2
+			  },
+				config,
+		  );
+		  getIdeaById();
+			  
+		}
+		else if(like === true && dislike === false){
+		  await axios.put(
+			`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
+			{ ideaId, 
+			  userId,
+			  number: -1
+			  },
+				config,
+		  );
+		  getIdeaById();
+			  
+		}
+		}
+	const formatDate = (createdAt) => {
+		const options = { year: "numeric", month: "long", day: "numeric" }
+		return new Date(createdAt).toLocaleDateString(undefined, options)
+	  }
 	return (
 		<div className="posts">
 			<div className="post User">
 				<div className="post__left">
-					<CaretUpFilled
-						style={{ fontSize: '1.5rem' }}
-						onClick={() => {
-							handleLike(idea.id);
-						}}
-					/>
+				<CaretUpFilled  
+					style={{fontSize:'1.5rem', color: idea.like === false ? 'black': 'green' }} 
+					onClick={() =>{handleLike(idea.id, userId, idea.like, idea.dislike)}}/>
 
 					<CaretDownFilled
-						style={{ fontSize: '1.5rem' }}
-						onClick={() => {
-							handleDisLike(idea.id);
-						}}
+						style={{fontSize:'1.5rem', color: idea.dislike === false ? 'black': 'red'  }} 
+						onClick={() =>{handleDisLike(idea.id, userId, idea.like, idea.dislike)}}
 					/>
 				</div>
 				<div className="post__center"></div>
@@ -77,7 +107,7 @@ function Post() {
 					<h1 className="post__info">
 						Posted by{' '}
 						{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at{' '}
-						{idea.createdAt}
+						{formatDate(idea.createdAt)}
 					</h1>
 					<LinesEllipsis
 						maxLine="10"
@@ -86,7 +116,7 @@ function Post() {
 						text={idea.content}
 					></LinesEllipsis>
 					<div>
-						<img src={idea.filePath} />
+						<img src={`http://localhost:5001/Files/c31f6040-0e56-4478-8bae-0bdcd473bb90.jpg` } />
 					</div>
 					<p className="post__info">
 						<MessageTwoTone style={{ marginTop: 10, fontSize: '1.5rem' }} />

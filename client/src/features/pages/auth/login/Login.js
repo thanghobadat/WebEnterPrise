@@ -1,55 +1,27 @@
 /** @format */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './loginStyle.scss';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Button, Row, message, Modal, Spin, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined, AuditOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Row, message, Spin} from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { postLoginUserApi } from '../../../../Redux/slices/loginSlice';
-import FormItem from 'antd/lib/form/FormItem';
-const term =
-  'Welcome to The Register. The Register is a news organisation owned and operated by Situation Publishing that allows users who have created an account with us (“Members”) to post comments on contributions/articles and to receive newsletters through email subscriptions.';
+
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [visible, setVisible] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const [modalText, setModalText] = React.useState(term);
-  const [acceptTerm, setAcceptTerm] = React.useState(false);
   let user;
   const onFinish = (values) => {
-    console.log(values);
     dispatch(postLoginUserApi(values));
     user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.role === 'admin' && acceptTerm === true) {
+    if (user && user.role === 'admin') {
       message.success('Login Success!');
       return navigate(`/admin`);
-    } else if (user && user.role === 'staff' && acceptTerm === true) {
+    } else if (user && user.role === 'staff') {
       message.success('Login Success!');
       return navigate(`/staff`);
-    } else if (user && acceptTerm === false) {
-      message.error('Read and Accept Terms & Conditions Agreement!');
-    } else {
-      message.error('Login Fail!');
     }
-  };
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const handleOk = () => {
-    setModalText(<Spin />);
-    setConfirmLoading(true);
-    setAcceptTerm(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 1500);
-  };
-
-  const handleCancel = () => {
-    setVisible(false);
   };
   return (
     <Row className='Login'>
@@ -87,18 +59,6 @@ const Login = () => {
             placeholder='Password'
           />
         </Form.Item>
-        <FormItem className='term'>
-          <AuditOutlined />
-          <u onClick={showModal}>Terms & Conditions Agreement</u>
-          <Modal
-            title='Terms & Conditions Agreement'
-            visible={visible}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}>
-            <p>{modalText}</p>
-          </Modal>
-        </FormItem>
         <Form.Item>
           <Button
             type='primary'

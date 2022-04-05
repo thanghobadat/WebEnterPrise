@@ -25,13 +25,13 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("Academic year is exist");
             }
 
-            var lastAcademicYear = await _context.AcademicYears.LastOrDefaultAsync();
-            if (academicYear == null)
+            var lastAcademicYear = await _context.AcademicYears.OrderBy(x => x.EndDate).LastOrDefaultAsync();
+            if (lastAcademicYear == null)
             {
                 return new ApiErrorResult<bool>("No academic year exists, please create a new academic year");
             }
 
-            if (request.StartDate < academicYear.EndDate)
+            if (request.StartDate < lastAcademicYear.EndDate)
             {
                 return new ApiErrorResult<bool>("The start date of the new academic year cannot be the day before the last day of the previous academic year, please choose again");
             }
@@ -49,7 +49,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<AcademicYearViewModel>> GetAcademicYearById(int id)

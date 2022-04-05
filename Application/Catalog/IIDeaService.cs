@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
 using ViewModel.Common;
@@ -11,11 +12,14 @@ namespace Application.Catalog
         Task<ApiResult<PageResult<IDeaViewModel>>> GetAllIdeaUser(IdeaUserPagingRequest request);
         Task<ApiResult<List<CommentViewModel>>> GetAllComment(int id);
         Task<ApiResult<IDeaViewModel>> GetIdeaById(int id);
+        Task<ApiResult<IDeaViewModel>> GetIdeaByIdUser(int id, Guid userId);
         Task<ApiResult<bool>> CreateIdea(IdeaCreateRequest request);
         Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, List<int> categoryIdeas);
         Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request);
         Task<ApiResult<bool>> CountViewIdea(int id);
         Task<ApiResult<bool>> CommentIdea(CommentCreateRequest request);
+
+        Task<ApiResult<List<AnalyzeIdeaByAcademicViewModel>>> AnalyzeIdeaByAcademicYear();
         DownloadFileViewModel DownloadZip(string filePath);
 
 

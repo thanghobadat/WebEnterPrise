@@ -1,6 +1,5 @@
 ﻿using Data.EF;
 using Data.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -13,11 +12,9 @@ namespace Application.Catalog
     public class DepartmentService : IDepartmentService
     {
         private readonly WebEnterpriseDbcontext _context;
-        private readonly UserManager<AppUser> _userManager;
-        public DepartmentService(WebEnterpriseDbcontext context, UserManager<AppUser> userManager)
+        public DepartmentService(WebEnterpriseDbcontext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         public async Task<ApiResult<bool>> AssignDepartment(int id, Guid userId)
@@ -27,7 +24,7 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("Department doesn't exist");
             }
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _context.AppUsers.FindAsync(userId);
             if (user == null)
             {
                 return new ApiErrorResult<bool>("User does not exits");
@@ -39,7 +36,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<bool>> CreateDepartment(DepartmentViewModel request)
@@ -63,7 +60,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<bool>> DeleteDepartment(int id)
@@ -88,7 +85,7 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<DepartmentViewModel>> GetDepartmentById(int id)
@@ -163,7 +160,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
     }
 }

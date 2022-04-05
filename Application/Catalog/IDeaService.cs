@@ -148,7 +148,7 @@ namespace Application.Catalog
 
         public async Task<ApiResult<bool>> CreateIdea(IdeaCreateRequest request)
         {
-            var academicYear = await _context.AcademicYears.FirstOrDefaultAsync(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now);
+            var academicYear = await _context.AcademicYears.OrderBy(x => x.EndDate).LastOrDefaultAsync(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now);
             if (academicYear == null)
             {
                 return new ApiErrorResult<bool>("Current time does not belong to any school year, please create corresponding school year");
@@ -243,6 +243,7 @@ namespace Application.Catalog
                 IsAnonymously = idea.IsAnonymously,
                 FinalDate = idea.FinalDate,
                 UserId = idea.UserId,
+                AcademicYearId = idea.AcademicYearId,
                 Categories = new List<string>()
             };
 
@@ -251,6 +252,15 @@ namespace Application.Catalog
                 var category = await _context.Categories.FindAsync(item.CategoryId);
                 ideaVM.Categories.Add(category.Name);
             }
+
+            var academicYear = await _context.AcademicYears.FindAsync(ideaVM.AcademicYearId);
+            ideaVM.AcademicYearName = academicYear.Name;
+            var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == ideaVM.Id).ToListAsync();
+            ideaVM.LikeAmount = like.Count;
+            var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == ideaVM.Id).ToListAsync();
+            ideaVM.DislikeAmount = dislikes.Count;
+            ideaVM.UpVote = like.Count - dislikes.Count;
+
             return new ApiSuccessResult<IDeaViewModel>(ideaVM);
         }
         public async Task<ApiResult<List<CommentViewModel>>> GetAllComment(int id)
@@ -496,6 +506,74 @@ namespace Application.Catalog
         {
             var fileDownload = _storageService.DownloadZip(filePath);
             return fileDownload;
+        }
+
+        public async Task<ApiResult<IDeaViewModel>> GetIdeaByIdUser(int id, Guid userId)
+        {
+            var idea = await _context.Ideas.FindAsync(id);
+            if (idea == null)
+            {
+                return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
+            }
+            var categoryIdeas = await _context.IdeaCategories.Where(x => x.IdeaId == id).ToListAsync();
+            var user = await _userManager.FindByIdAsync(idea.UserId.ToString());
+
+            var ideaVM = new IDeaViewModel()
+            {
+                Id = idea.Id,
+                Content = idea.Content,
+                CreatedAt = idea.CreatedAt,
+                EditDate = idea.EditDate,
+                FilePath = idea.FilePath,
+                View = idea.View,
+                UserName = user.UserName,
+                IsAnonymously = idea.IsAnonymously,
+                FinalDate = idea.FinalDate,
+                UserId = idea.UserId,
+                AcademicYearId = idea.AcademicYearId,
+                Categories = new List<string>()
+            };
+
+            foreach (var item in categoryIdeas)
+            {
+                var category = await _context.Categories.FindAsync(item.CategoryId);
+                ideaVM.Categories.Add(category.Name);
+            }
+
+            var academicYear = await _context.AcademicYears.FindAsync(ideaVM.AcademicYearId);
+            ideaVM.AcademicYearName = academicYear.Name;
+            var likeOrDislike = await _context.LikeOrDislikes.FirstOrDefaultAsync(x => x.IdeaId == ideaVM.Id && x.UserId == userId);
+            if (likeOrDislike != null)
+            {
+                ideaVM.Like = likeOrDislike.IsLike;
+                ideaVM.Dislike = likeOrDislike.IsDislike;
+            }
+            var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == ideaVM.Id).ToListAsync();
+            ideaVM.LikeAmount = like.Count;
+            var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == ideaVM.Id).ToListAsync();
+            ideaVM.DislikeAmount = dislikes.Count;
+            ideaVM.UpVote = like.Count - dislikes.Count;
+
+            return new ApiSuccessResult<IDeaViewModel>(ideaVM);
+        }
+
+        public async Task<ApiResult<List<AnalyzeIdeaByAcademicViewModel>>> AnalyzeIdeaByAcademicYear()
+        {
+            var analyzes = new List<AnalyzeIdeaByAcademicViewModel>();
+            var academicYears = await _context.AcademicYears.ToListAsync();
+
+            foreach (var year in academicYears)
+            {
+                var ideas = await _context.Ideas.Where(x => x.AcademicYearId == year.Id).ToListAsync();
+                var analyze = new AnalyzeIdeaByAcademicViewModel()
+                {
+                    AcademicYeahId = year.Id,
+                    Name = year.Name,
+                    CountIdea = ideas.Count
+                };
+                analyzes.Add(analyze);
+            }
+            return new ApiSuccessResult<List<AnalyzeIdeaByAcademicViewModel>>(analyzes);
         }
     }
 }

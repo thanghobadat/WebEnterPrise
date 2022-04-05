@@ -2,25 +2,38 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Row, Col, Modal, Form, Input, Select } from 'antd';
+import {
+  Table,
+  Button,
+  Row,
+  Col,
+  Modal,
+  Form,
+  Input,
+  Spin,
+  message,
+} from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import validatorForm from '../validation';
 import '../../../../assets/styles/_typeButton.scss';
 import './list-user.scss';
 
 import {
+  deleteUserApi,
   getListUserApi,
-  postRegisterUserApi,
   putChangePasswordUserApi,
 } from '../../../../Redux/slices/userSlice';
 import { Link } from 'react-router-dom';
 const ListUser = () => {
   const { listUserApi } = useSelector((state) => state.listUser);
   const dispatch = useDispatch();
+  const rgPass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Z][a-zA-Z0-9!@#$%^&*]{7,15}$/;
+  const { confirm } = Modal;
   const [formUser, setFormUser] = useState({
     id: '',
     newPassword: '',
+    confirmPassword: '',
   });
-
-  const { Option } = Select;
   useEffect(() => {
     dispatch(getListUserApi());
   }, []);
@@ -55,7 +68,7 @@ const ListUser = () => {
           size='large'
           className='ant-btn-warning'
           onClick={() => {
-            showModal(key);
+            showModal();
             setFormUser({
               id: key.id,
             });
@@ -69,8 +82,11 @@ const ListUser = () => {
       key: 'operation',
       fixed: 'right',
       width: 100,
-      render: () => (
-        <Button size='large' className='ant-btn-danger'>
+      render: (key) => (
+        <Button
+          size='large'
+          className='ant-btn-danger'
+          onClick={() => showDeleteConfirm(key.id)}>
           Delete
         </Button>
       ),
@@ -79,32 +95,47 @@ const ListUser = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const layout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
+    labelCol: { span: 6 },
+    wrapperCol: { span: 18 },
   };
-  const showModal = (id) => {
-    console.log(id);
+  const showModal = () => {
     setIsModalVisible(true);
   };
   const handleOnChange = (e) => {
     if (e.target) {
       setFormUser({ ...formUser, [e.target.name]: e.target.value });
-      console.log(e.target.value);
     } else {
       setFormUser({ ...formUser });
     }
   };
-
   const handleOk = () => {
-    dispatch(putChangePasswordUserApi({ ...formUser }));
-    setIsModalVisible(false);
-    console.log(formUser);
+    console.log(formUser.confirmPassword === formUser.newPassword);
+    if (formUser.confirmPassword === formUser.newPassword) {
+      dispatch(putChangePasswordUserApi({ ...formUser }));
+      message.success('Change password is success!');
+      setIsModalVisible(false);
+    } else {
+      message.error('Confirm password not success!');
+    }
   };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
+  const showDeleteConfirm = (id) => {
+    confirm({
+      title: 'Are you sure delete this user?',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        dispatch(deleteUserApi(id));
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
   return (
     <div className='container ListUser'>
       <Row className='ListUser__title'>
@@ -113,29 +144,45 @@ const ListUser = () => {
         </Col>
         <Col span={4}>
           <Button type='primary' size='large'>
-            <Link to='/create-account-user'> Add</Link>
+            <Link to='/admin/create-account-user'> Add</Link>
           </Button>
         </Col>
       </Row>
       <Table
         columns={columns}
-        dataSource={listUserApi}
+        dataSource={listUserApi || <Spin />}
         size='middle'
-        pagination={{ pageSize: 50 }}
-        scroll={{ y: 240 }}
       />
-      {/* Modal */}
+      {/* Modal Change Pass*/}
       <Modal
         title='Add account user'
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}>
-        <Form {...layout} name='nest-messages'>
-          <Form.Item label='New Password'>
-            <Input
+        <Form {...layout} name='nest-messages' validateMessages={validatorForm}>
+          <Form.Item
+            label='New Password'
+            name='newPassword'
+            rules={[
+              { required: true },
+              { type: 'regexp' },
+              {
+                pattern: new RegExp(rgPass),
+                mess: 'include first uppercase letter, lowercase letter, number, special character',
+              },
+            ]}>
+            <Input.Password
               name='newPassword'
               onChange={(e) => handleOnChange(e)}
               value={formUser.newPassword}
+              placeholder='Enter new password'
+            />
+          </Form.Item>
+          <Form.Item label='Confirm Password'>
+            <Input.Password
+              name='confirmPassword'
+              onChange={(e) => handleOnChange(e)}
+              value={formUser.confirmPassword}
               placeholder='Enter new password'
             />
           </Form.Item>

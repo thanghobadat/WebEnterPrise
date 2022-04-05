@@ -1,5 +1,6 @@
 ﻿using Application.Catalog;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
 
@@ -41,7 +42,18 @@ namespace BackendApi.Controllers
             var result = await _ideaService.GetIdeaById(id);
             return Ok(result);
         }
-
+        [HttpGet("GetIdeaByIdUser")]
+        public async Task<IActionResult> GetIdeaByIdUser(int id, Guid userId)
+        {
+            var result = await _ideaService.GetIdeaByIdUser(id, userId);
+            return Ok(result);
+        }
+        [HttpGet("AnalyzeIdeaByAcademicYear")]
+        public async Task<IActionResult> AnalyzeIdeaByAcademicYear()
+        {
+            var result = await _ideaService.AnalyzeIdeaByAcademicYear();
+            return Ok(result);
+        }
         [HttpGet("DownloadFile")]
         public IActionResult DownloadFile(string fileName)
         {

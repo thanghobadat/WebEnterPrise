@@ -11,11 +11,11 @@ namespace Data.Migrations
                 name: "AcademicYears",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,11 +26,11 @@ namespace Data.Migrations
                 name: "AppRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RoleId = table.Column<Guid>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,11 +41,11 @@ namespace Data.Migrations
                 name: "AppRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    NormalizedName = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,11 +56,11 @@ namespace Data.Migrations
                 name: "AppUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<Guid>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,10 +71,10 @@ namespace Data.Migrations
                 name: "AppUserLogins",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProviderKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<Guid>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: true),
+                    ProviderKey = table.Column<string>(nullable: true),
+                    ProviderDisplayName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,8 +85,8 @@ namespace Data.Migrations
                 name: "AppUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,10 +97,10 @@ namespace Data.Migrations
                 name: "AppUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<Guid>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,10 +111,10 @@ namespace Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,10 +125,10 @@ namespace Data.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,13 +139,13 @@ namespace Data.Migrations
                 name: "MailSettings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Host = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Port = table.Column<int>(type: "int", nullable: false)
+                    Email = table.Column<string>(nullable: false),
+                    DisplayName = table.Column<string>(nullable: false),
+                    Host = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    Port = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,23 +156,23 @@ namespace Data.Migrations
                 name: "AppUsers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    NormalizedUserName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    NormalizedEmail = table.Column<string>(nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    DepartmentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,17 +189,17 @@ namespace Data.Migrations
                 name: "Ideas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    View = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 22, 12, 52, 4, 169, DateTimeKind.Local).AddTicks(3253)),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 3, 29, 12, 52, 4, 170, DateTimeKind.Local).AddTicks(1608)),
-                    FinalDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 4, 2, 12, 52, 4, 170, DateTimeKind.Local).AddTicks(2048)),
-                    IsAnonymously = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AcademicYearId = table.Column<int>(type: "int", nullable: false)
+                    Content = table.Column<string>(nullable: false),
+                    FilePath = table.Column<string>(nullable: true),
+                    View = table.Column<int>(nullable: false, defaultValue: 0),
+                    CreatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2022, 4, 5, 8, 15, 1, 232, DateTimeKind.Local).AddTicks(352)),
+                    EditDate = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2022, 4, 12, 8, 15, 1, 232, DateTimeKind.Local).AddTicks(9036)),
+                    FinalDate = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2022, 4, 16, 8, 15, 1, 232, DateTimeKind.Local).AddTicks(9378)),
+                    IsAnonymously = table.Column<bool>(nullable: false, defaultValue: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    AcademicYearId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,36 +222,36 @@ namespace Data.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAnonymously = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    IdeaId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Content = table.Column<string>(nullable: false),
+                    IsAnonymously = table.Column<bool>(nullable: false, defaultValue: false),
+                    IdeaId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Comments_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Ideas_IdeaId",
                         column: x => x.IdeaId,
                         principalTable: "Ideas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "IdeaCategories",
                 columns: table => new
                 {
-                    IdeaId = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    IdeaId = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,24 +274,24 @@ namespace Data.Migrations
                 name: "LikeOrDislikes",
                 columns: table => new
                 {
-                    IdeaId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsLike = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    IsDislike = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    IdeaId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    IsLike = table.Column<bool>(nullable: false, defaultValue: false),
+                    IsDislike = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LikeOrDislikes", x => new { x.IdeaId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_LikeOrDislikes_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_LikeOrDislikes_Ideas_IdeaId",
                         column: x => x.IdeaId,
                         principalTable: "Ideas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LikeOrDislikes_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -310,23 +310,23 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("53d78053-d999-4fd3-a14d-50e476960cca"), "ddce15fc-e12c-4bbf-98e8-e5f20f42b002", "Administrator role", "admin", "admin" },
-                    { new Guid("25c55e6a-d027-4fc9-a4cd-ed7eca4a7067"), "2f8175db-f4b1-43c2-bc54-ab7e3a1c5efe", "QA Manager role", "QAManager", "QAManager" },
-                    { new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"), "069a4467-7383-4caf-b0a1-e0e9937a44d5", "QA Coordinator role", "QACoordinator", "QACoordinator" },
-                    { new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"), "ba3c0e3c-23ce-4c77-a54b-97348e94b256", "Staff role", "staff", "staff" }
+                    { new Guid("1dc1d809-44b4-41b0-adee-4d065514deac"), "951ba16b-0687-4b92-b5b2-81533f991fed", "Administrator role", "admin", "admin" },
+                    { new Guid("0cbb2642-9baf-4c67-b7ac-e779725f4fde"), "49b5058f-32b2-4727-a413-205f6885207b", "QA Manager role", "QAManager", "QAManager" },
+                    { new Guid("c0ae3cf5-18ad-4a30-a5d3-8e3a453f05e0"), "ac8ab307-3159-4673-be4b-580dee3725ce", "QA Coordinator role", "QACoordinator", "QACoordinator" },
+                    { new Guid("3aa8dd63-ed0c-4837-b5b5-dff8baa22675"), "d5578ae0-4d0f-42c0-a587-8df2cd0caf3b", "Staff role", "staff", "staff" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AppUserRoles",
-                columns: new[] { "RoleId", "UserId" },
+                columns: new[] { "UserId", "RoleId" },
                 values: new object[,]
                 {
-                    { new Guid("53d78053-d999-4fd3-a14d-50e476960cca"), new Guid("558b81cc-9376-49c4-8f82-467988807134") },
-                    { new Guid("25c55e6a-d027-4fc9-a4cd-ed7eca4a7067"), new Guid("e208e482-4dfb-4a49-bc41-f8a5abbe5f91") },
-                    { new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"), new Guid("0e2066a4-ff28-4f4d-83dc-ea14ce13ea18") },
-                    { new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"), new Guid("ddb5db77-b6b3-470a-9af1-ee5af8a99928") },
-                    { new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"), new Guid("efb6f2bb-b30a-49ae-9ab4-fe76ed16885e") },
-                    { new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"), new Guid("5e9962d7-8b63-4e1a-943c-24c17d2f25de") }
+                    { new Guid("62c98f45-b822-4744-bbde-0766a031fbf5"), new Guid("1dc1d809-44b4-41b0-adee-4d065514deac") },
+                    { new Guid("c05a404a-60ee-45a9-ac75-6745ff2e285c"), new Guid("0cbb2642-9baf-4c67-b7ac-e779725f4fde") },
+                    { new Guid("50ae9836-3f80-4874-9602-f130c0072195"), new Guid("c0ae3cf5-18ad-4a30-a5d3-8e3a453f05e0") },
+                    { new Guid("90434e7d-8dfa-44da-8839-2a478fc2145d"), new Guid("c0ae3cf5-18ad-4a30-a5d3-8e3a453f05e0") },
+                    { new Guid("2ad24c53-df48-4289-8121-d4ae9e79c766"), new Guid("3aa8dd63-ed0c-4837-b5b5-dff8baa22675") },
+                    { new Guid("2aac2b7a-6be4-4689-b574-c1f7eba19a3a"), new Guid("3aa8dd63-ed0c-4837-b5b5-dff8baa22675") }
                 });
 
             migrationBuilder.InsertData(
@@ -334,8 +334,8 @@ namespace Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DepartmentId", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("558b81cc-9376-49c4-8f82-467988807134"), 0, "10421817-1b88-44b5-83f1-145184c20b9a", new DateTime(2022, 3, 22, 12, 52, 4, 194, DateTimeKind.Local).AddTicks(9162), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "admin", "AQAAAAEAACcQAAAAEHPeIfPmTAYJqrVo5OaqNqbkGqDP7eyZ261h5ZuO7Pzh7vt4uxZCz7hpsXatrit80w==", "0123", false, "", false, "admin" },
-                    { new Guid("e208e482-4dfb-4a49-bc41-f8a5abbe5f91"), 0, "0f3e4549-b85f-4844-88ce-64ce01a62c95", new DateTime(2022, 3, 22, 12, 52, 4, 201, DateTimeKind.Local).AddTicks(9387), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "manager", "AQAAAAEAACcQAAAAEIdw4WHocFRDyC4J7QpvxNagVt9NVTCEiHGOc7Ep6UkorcmdOaZoS60Jf8QZeJTutg==", "0123", false, "", false, "manager" }
+                    { new Guid("62c98f45-b822-4744-bbde-0766a031fbf5"), 0, "6a934a09-cf4f-4b45-94b2-3a9d18cdc1a0", new DateTime(2022, 4, 5, 8, 15, 1, 258, DateTimeKind.Local).AddTicks(819), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "admin", "AQAAAAEAACcQAAAAEEvSetDBj51euox8sNzKgskUyhju9+otAktonhGFcwUKeGGLl+dVgwp8D1SYasK0fQ==", "0123", false, "", false, "admin" },
+                    { new Guid("c05a404a-60ee-45a9-ac75-6745ff2e285c"), 0, "79e57ba7-7a36-4b21-91f7-e77431382eda", new DateTime(2022, 4, 5, 8, 15, 1, 265, DateTimeKind.Local).AddTicks(926), null, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "manager", "AQAAAAEAACcQAAAAEBGyo/V0XhizrelW2rr2umEzeHSO5+ENF4tKafW/c9aQNsOQ4HlV40vqbVuYmjFOHg==", "0123", false, "", false, "manager" }
                 });
 
             migrationBuilder.InsertData(
@@ -352,10 +352,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DepartmentId", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("0e2066a4-ff28-4f4d-83dc-ea14ce13ea18"), 0, "81db2eaa-3cab-4bb5-8836-313cb742627f", new DateTime(2022, 3, 22, 12, 52, 4, 208, DateTimeKind.Local).AddTicks(7193), 1, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "QACoordinatorAcademic", "AQAAAAEAACcQAAAAEGLftVUgxnOWlhzgQEZdiy01xP1DDJ3qao9UClKWAr9DaD7EUcDkXY87Gfpe1Cu7tQ==", "0123", false, "", false, "QACoordinatorAcademic" },
-                    { new Guid("efb6f2bb-b30a-49ae-9ab4-fe76ed16885e"), 0, "b487deef-8c61-4656-9e30-62fee202c0e8", new DateTime(2022, 3, 22, 12, 52, 4, 222, DateTimeKind.Local).AddTicks(3745), 1, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "StaffAcademic", "AQAAAAEAACcQAAAAEJAX9FlCEjSKETz7I5h+298Ivnhi0jrwJxHEgXi5G7s7qoLrw27WqciJ/TBth9FJWQ==", "0123", false, "", false, "StaffAcademic" },
-                    { new Guid("ddb5db77-b6b3-470a-9af1-ee5af8a99928"), 0, "c834d332-2982-429a-a60d-05154e3f68c3", new DateTime(2022, 3, 22, 12, 52, 4, 215, DateTimeKind.Local).AddTicks(5632), 2, "hungnd342000@gmail.com", true, false, null, "hungnd342000@gmail.com", "QACoordinatorSupport", "AQAAAAEAACcQAAAAEBEbwWnYtsPa4lY1xJ7VvZAWuq6+UzfhKSJ9oiNCi/RNC9u/qaIqu4/AnOEgc6xBpg==", "0123", false, "", false, "QACoordinatorSupport" },
-                    { new Guid("5e9962d7-8b63-4e1a-943c-24c17d2f25de"), 0, "660b49c3-2270-4906-b057-8d54b5ac8927", new DateTime(2022, 3, 22, 12, 52, 4, 229, DateTimeKind.Local).AddTicks(1796), 2, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "StaffSupport", "AQAAAAEAACcQAAAAEM0PNHk0pOY3v2Z8T7pWFv9c4P+BBnVR3KjYXGpKkxluxpKkZpuWC10icflLKnl9EA==", "0123", false, "", false, "StaffSupport" }
+                    { new Guid("50ae9836-3f80-4874-9602-f130c0072195"), 0, "0b5dce54-e06d-42e3-8e77-e6de719a8542", new DateTime(2022, 4, 5, 8, 15, 1, 271, DateTimeKind.Local).AddTicks(8995), 1, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "QACoordinatorAcademic", "AQAAAAEAACcQAAAAEC2mAU6VwU81zZC+tYMLDJAmSuv2YvmmPuntTXCRaQ3YpSLzck1o1t4VoT88KNdvow==", "0123", false, "", false, "QACoordinatorAcademic" },
+                    { new Guid("2ad24c53-df48-4289-8121-d4ae9e79c766"), 0, "624bf962-bee5-4ef6-b328-5ab82730d3ce", new DateTime(2022, 4, 5, 8, 15, 1, 285, DateTimeKind.Local).AddTicks(6271), 1, "hoangthanh01022000@gmail.com", true, false, null, "hoangthanh01022000@gmail.com", "StaffAcademic", "AQAAAAEAACcQAAAAEMb/7s8j188udRlsaLHQZWJNe5/1N9FGYaf1OqjqYnW7PkPnGcyyHmFcV8d3q7fk4A==", "0123", false, "", false, "StaffAcademic" },
+                    { new Guid("90434e7d-8dfa-44da-8839-2a478fc2145d"), 0, "a0b9651c-93bb-438b-949c-315ad9df846f", new DateTime(2022, 4, 5, 8, 15, 1, 278, DateTimeKind.Local).AddTicks(7983), 2, "hungnd342000@gmail.com", true, false, null, "hungnd342000@gmail.com", "QACoordinatorSupport", "AQAAAAEAACcQAAAAEFIMKDJvVZE46b7JEulnvR0lXPfeq0KnqA94ERTrbflcp68DN/ADDdQMtJRLf8TrEw==", "0123", false, "", false, "QACoordinatorSupport" },
+                    { new Guid("2aac2b7a-6be4-4689-b574-c1f7eba19a3a"), 0, "83ea2f69-c1c5-46e1-8e09-b0a998033966", new DateTime(2022, 4, 5, 8, 15, 1, 292, DateTimeKind.Local).AddTicks(5201), 2, "nguyenthtran.dev@gmail.com", true, false, null, "nguyenthtran.dev@gmail.com", "StaffSupport", "AQAAAAEAACcQAAAAEA51WtXRjoXlv7o+GrlR+X4h23tQzsiqZ6eLJ4lbXk9OrTvUAkmCRLIxhNAPqGxZGg==", "0123", false, "", false, "StaffSupport" }
                 });
 
             migrationBuilder.CreateIndex(

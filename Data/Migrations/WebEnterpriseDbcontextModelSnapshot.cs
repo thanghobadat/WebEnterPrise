@@ -15,8 +15,8 @@ namespace Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("ProductVersion", "3.1.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Data.Entities.AcademicYear", b =>
@@ -70,8 +70,8 @@ namespace Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -86,32 +86,32 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("53d78053-d999-4fd3-a14d-50e476960cca"),
-                            ConcurrencyStamp = "ddce15fc-e12c-4bbf-98e8-e5f20f42b002",
+                            Id = new Guid("1dc1d809-44b4-41b0-adee-4d065514deac"),
+                            ConcurrencyStamp = "951ba16b-0687-4b92-b5b2-81533f991fed",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = new Guid("25c55e6a-d027-4fc9-a4cd-ed7eca4a7067"),
-                            ConcurrencyStamp = "2f8175db-f4b1-43c2-bc54-ab7e3a1c5efe",
+                            Id = new Guid("0cbb2642-9baf-4c67-b7ac-e779725f4fde"),
+                            ConcurrencyStamp = "49b5058f-32b2-4727-a413-205f6885207b",
                             Description = "QA Manager role",
                             Name = "QAManager",
                             NormalizedName = "QAManager"
                         },
                         new
                         {
-                            Id = new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947"),
-                            ConcurrencyStamp = "069a4467-7383-4caf-b0a1-e0e9937a44d5",
+                            Id = new Guid("c0ae3cf5-18ad-4a30-a5d3-8e3a453f05e0"),
+                            ConcurrencyStamp = "ac8ab307-3159-4673-be4b-580dee3725ce",
                             Description = "QA Coordinator role",
                             Name = "QACoordinator",
                             NormalizedName = "QACoordinator"
                         },
                         new
                         {
-                            Id = new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2"),
-                            ConcurrencyStamp = "ba3c0e3c-23ce-4c77-a54b-97348e94b256",
+                            Id = new Guid("3aa8dd63-ed0c-4837-b5b5-dff8baa22675"),
+                            ConcurrencyStamp = "d5578ae0-4d0f-42c0-a587-8df2cd0caf3b",
                             Description = "Staff role",
                             Name = "staff",
                             NormalizedName = "staff"
@@ -181,16 +181,16 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("558b81cc-9376-49c4-8f82-467988807134"),
+                            Id = new Guid("62c98f45-b822-4744-bbde-0766a031fbf5"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "10421817-1b88-44b5-83f1-145184c20b9a",
-                            CreatedAt = new DateTime(2022, 3, 22, 12, 52, 4, 194, DateTimeKind.Local).AddTicks(9162),
+                            ConcurrencyStamp = "6a934a09-cf4f-4b45-94b2-3a9d18cdc1a0",
+                            CreatedAt = new DateTime(2022, 4, 5, 8, 15, 1, 258, DateTimeKind.Local).AddTicks(819),
                             Email = "hoangthanh01022000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "hoangthanh01022000@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHPeIfPmTAYJqrVo5OaqNqbkGqDP7eyZ261h5ZuO7Pzh7vt4uxZCz7hpsXatrit80w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEvSetDBj51euox8sNzKgskUyhju9+otAktonhGFcwUKeGGLl+dVgwp8D1SYasK0fQ==",
                             PhoneNumber = "0123",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -199,16 +199,16 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e208e482-4dfb-4a49-bc41-f8a5abbe5f91"),
+                            Id = new Guid("c05a404a-60ee-45a9-ac75-6745ff2e285c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f3e4549-b85f-4844-88ce-64ce01a62c95",
-                            CreatedAt = new DateTime(2022, 3, 22, 12, 52, 4, 201, DateTimeKind.Local).AddTicks(9387),
+                            ConcurrencyStamp = "79e57ba7-7a36-4b21-91f7-e77431382eda",
+                            CreatedAt = new DateTime(2022, 4, 5, 8, 15, 1, 265, DateTimeKind.Local).AddTicks(926),
                             Email = "hoangthanh01022000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "hoangthanh01022000@gmail.com",
                             NormalizedUserName = "manager",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIdw4WHocFRDyC4J7QpvxNagVt9NVTCEiHGOc7Ep6UkorcmdOaZoS60Jf8QZeJTutg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBGyo/V0XhizrelW2rr2umEzeHSO5+ENF4tKafW/c9aQNsOQ4HlV40vqbVuYmjFOHg==",
                             PhoneNumber = "0123",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -217,17 +217,17 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0e2066a4-ff28-4f4d-83dc-ea14ce13ea18"),
+                            Id = new Guid("50ae9836-3f80-4874-9602-f130c0072195"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "81db2eaa-3cab-4bb5-8836-313cb742627f",
-                            CreatedAt = new DateTime(2022, 3, 22, 12, 52, 4, 208, DateTimeKind.Local).AddTicks(7193),
+                            ConcurrencyStamp = "0b5dce54-e06d-42e3-8e77-e6de719a8542",
+                            CreatedAt = new DateTime(2022, 4, 5, 8, 15, 1, 271, DateTimeKind.Local).AddTicks(8995),
                             DepartmentId = 1,
                             Email = "nguyenthtran.dev@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "nguyenthtran.dev@gmail.com",
                             NormalizedUserName = "QACoordinatorAcademic",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGLftVUgxnOWlhzgQEZdiy01xP1DDJ3qao9UClKWAr9DaD7EUcDkXY87Gfpe1Cu7tQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEC2mAU6VwU81zZC+tYMLDJAmSuv2YvmmPuntTXCRaQ3YpSLzck1o1t4VoT88KNdvow==",
                             PhoneNumber = "0123",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -236,17 +236,17 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ddb5db77-b6b3-470a-9af1-ee5af8a99928"),
+                            Id = new Guid("90434e7d-8dfa-44da-8839-2a478fc2145d"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c834d332-2982-429a-a60d-05154e3f68c3",
-                            CreatedAt = new DateTime(2022, 3, 22, 12, 52, 4, 215, DateTimeKind.Local).AddTicks(5632),
+                            ConcurrencyStamp = "a0b9651c-93bb-438b-949c-315ad9df846f",
+                            CreatedAt = new DateTime(2022, 4, 5, 8, 15, 1, 278, DateTimeKind.Local).AddTicks(7983),
                             DepartmentId = 2,
                             Email = "hungnd342000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "hungnd342000@gmail.com",
                             NormalizedUserName = "QACoordinatorSupport",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBEbwWnYtsPa4lY1xJ7VvZAWuq6+UzfhKSJ9oiNCi/RNC9u/qaIqu4/AnOEgc6xBpg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFIMKDJvVZE46b7JEulnvR0lXPfeq0KnqA94ERTrbflcp68DN/ADDdQMtJRLf8TrEw==",
                             PhoneNumber = "0123",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -255,17 +255,17 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("efb6f2bb-b30a-49ae-9ab4-fe76ed16885e"),
+                            Id = new Guid("2ad24c53-df48-4289-8121-d4ae9e79c766"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b487deef-8c61-4656-9e30-62fee202c0e8",
-                            CreatedAt = new DateTime(2022, 3, 22, 12, 52, 4, 222, DateTimeKind.Local).AddTicks(3745),
+                            ConcurrencyStamp = "624bf962-bee5-4ef6-b328-5ab82730d3ce",
+                            CreatedAt = new DateTime(2022, 4, 5, 8, 15, 1, 285, DateTimeKind.Local).AddTicks(6271),
                             DepartmentId = 1,
                             Email = "hoangthanh01022000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "hoangthanh01022000@gmail.com",
                             NormalizedUserName = "StaffAcademic",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJAX9FlCEjSKETz7I5h+298Ivnhi0jrwJxHEgXi5G7s7qoLrw27WqciJ/TBth9FJWQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMb/7s8j188udRlsaLHQZWJNe5/1N9FGYaf1OqjqYnW7PkPnGcyyHmFcV8d3q7fk4A==",
                             PhoneNumber = "0123",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -274,17 +274,17 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5e9962d7-8b63-4e1a-943c-24c17d2f25de"),
+                            Id = new Guid("2aac2b7a-6be4-4689-b574-c1f7eba19a3a"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "660b49c3-2270-4906-b057-8d54b5ac8927",
-                            CreatedAt = new DateTime(2022, 3, 22, 12, 52, 4, 229, DateTimeKind.Local).AddTicks(1796),
+                            ConcurrencyStamp = "83ea2f69-c1c5-46e1-8e09-b0a998033966",
+                            CreatedAt = new DateTime(2022, 4, 5, 8, 15, 1, 292, DateTimeKind.Local).AddTicks(5201),
                             DepartmentId = 2,
                             Email = "nguyenthtran.dev@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "nguyenthtran.dev@gmail.com",
                             NormalizedUserName = "StaffSupport",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM0PNHk0pOY3v2Z8T7pWFv9c4P+BBnVR3KjYXGpKkxluxpKkZpuWC10icflLKnl9EA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA51WtXRjoXlv7o+GrlR+X4h23tQzsiqZ6eLJ4lbXk9OrTvUAkmCRLIxhNAPqGxZGg==",
                             PhoneNumber = "0123",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -403,12 +403,12 @@ namespace Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 3, 22, 12, 52, 4, 169, DateTimeKind.Local).AddTicks(3253));
+                        .HasDefaultValue(new DateTime(2022, 4, 5, 8, 15, 1, 232, DateTimeKind.Local).AddTicks(352));
 
                     b.Property<DateTime>("EditDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 3, 29, 12, 52, 4, 170, DateTimeKind.Local).AddTicks(1608));
+                        .HasDefaultValue(new DateTime(2022, 4, 12, 8, 15, 1, 232, DateTimeKind.Local).AddTicks(9036));
 
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
@@ -416,7 +416,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("FinalDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 4, 2, 12, 52, 4, 170, DateTimeKind.Local).AddTicks(2048));
+                        .HasDefaultValue(new DateTime(2022, 4, 16, 8, 15, 1, 232, DateTimeKind.Local).AddTicks(9378));
 
                     b.Property<bool>("IsAnonymously")
                         .ValueGeneratedOnAdd()
@@ -590,33 +590,33 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("558b81cc-9376-49c4-8f82-467988807134"),
-                            RoleId = new Guid("53d78053-d999-4fd3-a14d-50e476960cca")
+                            UserId = new Guid("62c98f45-b822-4744-bbde-0766a031fbf5"),
+                            RoleId = new Guid("1dc1d809-44b4-41b0-adee-4d065514deac")
                         },
                         new
                         {
-                            UserId = new Guid("e208e482-4dfb-4a49-bc41-f8a5abbe5f91"),
-                            RoleId = new Guid("25c55e6a-d027-4fc9-a4cd-ed7eca4a7067")
+                            UserId = new Guid("c05a404a-60ee-45a9-ac75-6745ff2e285c"),
+                            RoleId = new Guid("0cbb2642-9baf-4c67-b7ac-e779725f4fde")
                         },
                         new
                         {
-                            UserId = new Guid("0e2066a4-ff28-4f4d-83dc-ea14ce13ea18"),
-                            RoleId = new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947")
+                            UserId = new Guid("50ae9836-3f80-4874-9602-f130c0072195"),
+                            RoleId = new Guid("c0ae3cf5-18ad-4a30-a5d3-8e3a453f05e0")
                         },
                         new
                         {
-                            UserId = new Guid("ddb5db77-b6b3-470a-9af1-ee5af8a99928"),
-                            RoleId = new Guid("1e275fdf-041e-4c60-a750-4d3ec08cf947")
+                            UserId = new Guid("90434e7d-8dfa-44da-8839-2a478fc2145d"),
+                            RoleId = new Guid("c0ae3cf5-18ad-4a30-a5d3-8e3a453f05e0")
                         },
                         new
                         {
-                            UserId = new Guid("efb6f2bb-b30a-49ae-9ab4-fe76ed16885e"),
-                            RoleId = new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2")
+                            UserId = new Guid("2ad24c53-df48-4289-8121-d4ae9e79c766"),
+                            RoleId = new Guid("3aa8dd63-ed0c-4837-b5b5-dff8baa22675")
                         },
                         new
                         {
-                            UserId = new Guid("5e9962d7-8b63-4e1a-943c-24c17d2f25de"),
-                            RoleId = new Guid("1a63efbd-8a4b-4cab-8aa2-23886aeeb5f2")
+                            UserId = new Guid("2aac2b7a-6be4-4689-b574-c1f7eba19a3a"),
+                            RoleId = new Guid("3aa8dd63-ed0c-4837-b5b5-dff8baa22675")
                         });
                 });
 
@@ -645,8 +645,6 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.Department", "Department")
                         .WithMany("AppUser")
                         .HasForeignKey("DepartmentId");
-
-                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Data.Entities.Comment", b =>
@@ -662,10 +660,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Idea");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entities.Idea", b =>
@@ -681,10 +675,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AcademicYear");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entities.IdeaCategory", b =>
@@ -700,10 +690,6 @@ namespace Data.Migrations
                         .HasForeignKey("IdeaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Idea");
                 });
 
             modelBuilder.Entity("Data.Entities.LikeOrDislike", b =>
@@ -719,43 +705,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Idea");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Data.Entities.AcademicYear", b =>
-                {
-                    b.Navigation("Ideas");
-                });
-
-            modelBuilder.Entity("Data.Entities.AppUser", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Ideas");
-
-                    b.Navigation("LikeOrDislikes");
-                });
-
-            modelBuilder.Entity("Data.Entities.Category", b =>
-                {
-                    b.Navigation("IdeaCategories");
-                });
-
-            modelBuilder.Entity("Data.Entities.Department", b =>
-                {
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Data.Entities.Idea", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("IdeaCategories");
-
-                    b.Navigation("LikeOrDislikes");
                 });
 #pragma warning restore 612, 618
         }

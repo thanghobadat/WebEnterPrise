@@ -31,6 +31,7 @@ function App() {
 						path="/admin"
 						element={<Navigate replace to="/admin/account-user" />}
 					/>
+					<Route path="dashboard" element={<Dashboard/>} />
 					<Route path="view-idea" element={<ViewIdeas />} />
 					<Route path="create-idea" element={<CreateIdeas />} />
 					<Route path="list-category" element={<CategoryList />}></Route>
@@ -76,6 +77,7 @@ function Admin() {
 	return (
 		<div>
 			<div class="navbar navMenu">
+				<Link to="dashboard">Dashboard</Link>
 				<Link to="view-idea">Home</Link>
 				<Link to="list-category">Category</Link>
 				<Link to="list-department">Department</Link>

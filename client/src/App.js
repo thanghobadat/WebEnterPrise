@@ -16,7 +16,9 @@ import Login from './features/pages/auth/login/Login';
 import ListStaffAndQA from './features/pages/department/assign/ListStaffAndQA';
 import ViewIdeas from './features/pages/Home/ViewIdeas';
 import CreateIdeas from './features/pages/Home/CreateIdeas';
+import Posts from './features/pages/idea/list-idea/Posts';
 import Post from './features/pages/idea/view-idea/Post';
+
 function App() {
 	return (
 		<div className="App">
@@ -29,11 +31,11 @@ function App() {
 						element={<Navigate replace to="/admin/account-user" />}
 					/>
 					<Route path="view-idea" element={<ViewIdeas />} />
-
+					<Route path="create-idea" element={<CreateIdeas />} />
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
-					<Route path="idea/:id" element={<Post/>}></Route>
+					<Route path="idea/:id" element={<Post />}></Route>
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -58,6 +60,8 @@ function App() {
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
+					<Route path="view-idea" element={<ViewIdeas />} />
+					<Route path="create-idea" element={<CreateIdeas />} />
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -107,7 +111,7 @@ function User() {
 	return (
 		<div>
 			<div class="navbar">
-				<Link to="#">Home</Link>
+				<Link to="view-idea">Home</Link>
 				<Link to="list-category">Category</Link>
 				<Link to="list-department">Department</Link>
 				<Link className="right" to="/login" onClick={() => Logout()}>

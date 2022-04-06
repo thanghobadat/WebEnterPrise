@@ -94,6 +94,7 @@ namespace Application.System.Users
             return new ApiSuccessResult<bool>(true);
         }
 
+
         public async Task<ApiResult<bool>> DeleteAccount(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -105,7 +106,7 @@ namespace Application.System.Users
             foreach (var item in likeOrDislike)
             {
                 _context.LikeOrDislikes.Remove(item);
-            };
+            }
             var reult = await _userManager.DeleteAsync(user);
             if (reult.Succeeded)
                 return new ApiSuccessResult<bool>(true);

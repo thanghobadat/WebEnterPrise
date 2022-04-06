@@ -108,6 +108,14 @@ namespace BackendApi.Controllers
             var result = await _ideaService.CountViewIdea(id);
             return Ok(result);
         }
+        [HttpPut("UpdateIdea")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateIdea([FromForm] IdeaUpdateRequest request)
+        {
+            var result = await _ideaService.UpdateIdea(request);
+            return Ok(result);
+        }
+
 
     }
 }

@@ -57,6 +57,7 @@ namespace UnitTest
             // Act
             var result = await _academicService.GetAcademicYearById(id);
             // Assert
+            Assert.IsTrue(result.IsSuccessed);
             Assert.IsNotNull(result.ResultObj);
         }
         [Test]
@@ -72,6 +73,7 @@ namespace UnitTest
             // Act
             var result = await _academicService.GetAcademicYearPaging(request);
             // Assert
+            Assert.IsTrue(result.IsSuccessed);
             Assert.IsNotNull(result.ResultObj);
         }
         [Test]

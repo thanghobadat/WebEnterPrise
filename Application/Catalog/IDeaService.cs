@@ -66,13 +66,13 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("Idea doesn't exist");
             }
-            var userIdea = await _userManager.FindByIdAsync(idea.UserId.ToString());
+            var userIdea = await _context.AppUsers.FindAsync(idea.UserId);
             if (userIdea == null)
             {
                 return new ApiErrorResult<bool>("User does not exits");
             }
 
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            var user = await _context.AppUsers.FindAsync(request.UserId);
             if (user == null)
             {
                 return new ApiErrorResult<bool>("User does not exits");
@@ -125,7 +125,7 @@ namespace Application.Catalog
                 }
                 smtp.Disconnect(true);
             }
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
         }
 
         public async Task<ApiResult<bool>> CountViewIdea(int id)
@@ -142,7 +142,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("An error occurred, please try again");
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
 
         }
 
@@ -229,7 +229,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
             }
             var categoryIdeas = await _context.IdeaCategories.Where(x => x.IdeaId == id).ToListAsync();
-            var user = await _userManager.FindByIdAsync(idea.UserId.ToString());
+            var user = await _context.AppUsers.FindAsync(idea.UserId);
 
             var ideaVM = new IDeaViewModel()
             {
@@ -281,7 +281,7 @@ namespace Application.Catalog
             }).ToList();
             foreach (var item in commentVM)
             {
-                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                var user = await _context.AppUsers.FindAsync(item.UserId);
                 item.Name = user.UserName;
             }
             return new ApiSuccessResult<List<CommentViewModel>>(commentVM);
@@ -327,12 +327,13 @@ namespace Application.Catalog
             {
                 var academicYear = await _context.AcademicYears.FindAsync(item.AcademicYearId);
                 item.AcademicYearName = academicYear.Name;
+
                 var like = await _context.LikeOrDislikes.Where(x => x.IsLike == true && x.IdeaId == item.Id).ToListAsync();
                 item.LikeAmount = like.Count;
                 var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == item.Id).ToListAsync();
                 item.DislikeAmount = dislikes.Count;
                 item.UpVote = like.Count - dislikes.Count;
-                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                var user = await _context.AppUsers.FindAsync(item.UserId);
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
                 foreach (var ideacategory in ideaCategories)
@@ -408,7 +409,7 @@ namespace Application.Catalog
                 var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == item.Id).ToListAsync();
                 item.DislikeAmount = dislikes.Count;
                 item.UpVote = like.Count - dislikes.Count;
-                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                var user = await _context.AppUsers.FindAsync(item.UserId);
                 item.UserName = user.UserName;
                 var ideaCategories = await _context.IdeaCategories.Where(x => x.IdeaId == item.Id).ToListAsync();
                 foreach (var ideacategory in ideaCategories)
@@ -489,7 +490,7 @@ namespace Application.Catalog
                     await _context.SaveChangesAsync();
                     break;
             }
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>(true);
 
 
         }
@@ -516,7 +517,7 @@ namespace Application.Catalog
                 return new ApiErrorResult<IDeaViewModel>("Ideas doesn't exists");
             }
             var categoryIdeas = await _context.IdeaCategories.Where(x => x.IdeaId == id).ToListAsync();
-            var user = await _userManager.FindByIdAsync(idea.UserId.ToString());
+            var user = await _context.AppUsers.FindAsync(idea.UserId);
 
             var ideaVM = new IDeaViewModel()
             {
@@ -567,13 +568,34 @@ namespace Application.Catalog
                 var ideas = await _context.Ideas.Where(x => x.AcademicYearId == year.Id).ToListAsync();
                 var analyze = new AnalyzeIdeaByAcademicViewModel()
                 {
-                    AcademicYeahId = year.Id,
+                    AcademicYearId = year.Id,
                     Name = year.Name,
                     CountIdea = ideas.Count
                 };
                 analyzes.Add(analyze);
             }
             return new ApiSuccessResult<List<AnalyzeIdeaByAcademicViewModel>>(analyzes);
+        }
+
+        public async Task<ApiResult<bool>> UpdateIdea(IdeaUpdateRequest request)
+        {
+            var idea = await _context.Ideas.FindAsync(request.Id);
+            if (idea == null)
+            {
+                return new ApiErrorResult<bool>("Don't find idea, please try again ");
+            }
+            idea.Content = request.Content;
+            if (request.File != null)
+            {
+                if (idea.FilePath != null)
+                {
+                    await _storageService.DeleteFileAsync(idea.FilePath);
+
+                }
+                idea.FilePath = await this.SaveFile(request.File);
+            }
+            await _context.SaveChangesAsync();
+            return new ApiSuccessResult<bool>(true);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace Application.Catalog
         Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request);
         Task<ApiResult<bool>> CountViewIdea(int id);
         Task<ApiResult<bool>> CommentIdea(CommentCreateRequest request);
+        Task<ApiResult<bool>> UpdateIdea(IdeaUpdateRequest request);
 
         Task<ApiResult<List<AnalyzeIdeaByAcademicViewModel>>> AnalyzeIdeaByAcademicYear();
         DownloadFileViewModel DownloadZip(string filePath);

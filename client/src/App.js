@@ -21,7 +21,7 @@ import Post from './features/pages/idea/view-idea/Post';
 import ListAcademicYear from './features/pages/academicYear/listAcademicYear';
 import CreateAcademicYear from './features/pages/academicYear/CreateAcademicYear';
 import EditIdea from './features/pages/idea/edit-idea/EditIdea';
-
+import Analyze from './features/pages/analyze/analyze';
 function App() {
 	return (
 		<div className="App">
@@ -53,6 +53,7 @@ function App() {
 						path="update-department/:id"
 						element={<UpdateDepartment />}
 					></Route>
+					<Route path="analyze" element={<Analyze />}></Route>
 					<Route path="create-account-user" element={<FormCreate />}></Route>
 					<Route path="account-user" element={<ListUser />}></Route>
 					<Route path="list-academic" element={<ListAcademicYear />}></Route>
@@ -90,6 +91,7 @@ function Admin() {
 				<Link to="list-academic">Academic year</Link>
 				<Link to="list-category">Category</Link>
 				<Link to="list-department">Department</Link>
+				<Link to="analyze">Analyze</Link>
 				<Link to="account-user">AccountUser</Link>
 				<Link className="right" to="/login" onClick={() => Logout()}>
 					Log out

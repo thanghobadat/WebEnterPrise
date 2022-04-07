@@ -186,14 +186,21 @@ function Posts() {
 							Posted by{' '}
 							{post.isAnonymously !== true ? post.userName : 'Anonymously'} at{' '}
 							{post.createdAt.slice(0, 10)}
-							<a
-								style={{ marginLeft: 12, fontSize: '1rem' }}
+							<button
+								style={{
+									marginLeft: 12,
+									fontSize: '1rem',
+									border: '1px solid',
+									padding: '4px 10px',
+									borderRadius: '3px',
+									color: '#00092C',
+								}}
 								onClick={() => {
 									navigate(`/staff/edit-idea/${post.id}`);
 								}}
 							>
 								<span class="label label-danger">Edit idea</span>
-							</a>
+							</button>
 						</h1>
 						<LinesEllipsis
 							maxLine="10"

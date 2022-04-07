@@ -4,26 +4,25 @@ import { message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditIdea = () => {
+	var retrievedObject = localStorage.getItem('user');
+	var localStore = JSON.parse(retrievedObject);
+	const userId = localStore.id;
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const [content, setContent] = useState('');
-	const [files, setFile] = useState('');
-	const [values, setValues] = useState([]);
-
-	// use
-
+	const [fileNew, setFileNew] = useState(null);
 	const getIdeaById = async () => {
 		const res = await axios.get(
 			`https://localhost:5001/api/Ideas/GetIdeaById?id=${id}`
 		);
 
 		setContent(res.data.resultObj.content);
-		setFile(res.data.resultObj.filePath);
 		return res.data.resultObj;
 	};
 
 	useEffect(() => {
 		getIdeaById();
-	});
+	}, []);
 
 	const editIdeasSubmit = async (userData) => {
 		const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -34,13 +33,30 @@ const EditIdea = () => {
 		);
 	};
 
-	const createCarSubmit = (e) => {
+	const uploadImagesChange = (e) => {
+		if (e.target.name === 'avatar') {
+			console.log(e.target.files[0]);
+			setFileNew(e.target.files[0]);
+		} else {
+			return;
+		}
+	};
+
+	const uploadIdeasSubmit = (e) => {
 		e.preventDefault();
 
 		const formData = new FormData();
-		formData.set('name', name);
+		formData.append('Id', parseInt(id));
+		formData.append('Content', content);
+		formData.append('File', fileNew);
 
-		editIdeasSubmit(id, formData);
+		editIdeasSubmit(formData);
+		setTimeout(() => {
+			localStore.role === 'admin'
+				? navigate('/admin/view-idea')
+				: navigate('/staff/view-idea');
+		}, 1000);
+		message.success('Update ideas success !!');
 	};
 
 	return (
@@ -68,15 +84,14 @@ const EditIdea = () => {
 						<div className="md:flex items-center mt-8">
 							<div className="w-full flex flex-col">
 								<label className="font-semibold leading-none">
-									Upload supporting documents ideas
+									Upload supporting documents ideas (If empty, the old file will
+									be kept)
 								</label>
-								<label className="font-semibold leading-none">{files}</label>
 								<input
 									type="file"
-									required
 									name="avatar"
 									accept="image/*"
-									onChange={uploadFilesChange}
+									onChange={uploadImagesChange}
 									className="leading-none text-gray-900 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-100 border rounded border-gray-200"
 								/>
 							</div>

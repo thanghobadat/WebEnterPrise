@@ -20,7 +20,7 @@ const CreateAcademicYear = () => {
 	const createAcademicSubmit = async (name, startDay, endDay) => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 
-		await axios.post(
+		const { data } = await axios.post(
 			`https://localhost:5001/api/Academic/CreateAcademicYear`,
 			{
 				name: name,
@@ -29,8 +29,12 @@ const CreateAcademicYear = () => {
 			},
 			config
 		);
-		navigate('/admin/list-academic');
-		message.success('Create academic year success !!');
+		if (data.isSuccessed === false) {
+			message.error(data.message);
+		} else {
+			navigate('/admin/list-academic');
+			message.success('Create academic year success !!');
+		}
 	};
 
 	const onFinish = (values) => {
@@ -56,11 +60,21 @@ const CreateAcademicYear = () => {
 				>
 					<Input />
 				</Form.Item>
-				<Form.Item label="Start day">
+				<Form.Item
+					label="Start day"
+					name="startDay"
+					rules={[
+						{ required: true, message: 'Please choose start date time!' },
+					]}
+				>
 					<DatePicker showTime onChange={onChangeStartDay} />
 				</Form.Item>
 
-				<Form.Item label="End day">
+				<Form.Item
+					label="End day"
+					name="date"
+					rules={[{ required: true, message: 'Please choose end date time!' }]}
+				>
 					<DatePicker showTime onChange={onChangeEndDay} />
 				</Form.Item>
 

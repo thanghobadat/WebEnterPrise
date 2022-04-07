@@ -23,7 +23,7 @@ const CreateIdeas = () => {
 			`https://localhost:5001/api/Ideas/CreateIdea`,
 			userData,
 			config
-		); 
+		);
 	};
 
 	const uploadIdeasSubmit = (e) => {
@@ -35,11 +35,13 @@ const CreateIdeas = () => {
 		formData.append('IsAnonymously', anonymously);
 		formData.append('File', avatar);
 		createIdeasSubmit(formData);
-		setTimeout(()=>{
-			localStore.role === 'admin' ? navigate('/admin/view-idea'): navigate('/staff/view-idea');
-		},1000)
-		
-		message.success('Upload ideas success !!');
+		setTimeout(() => {
+			localStore.role === 'admin'
+				? navigate('/admin/view-idea')
+				: navigate('/staff/view-idea');
+		}, 1000);
+
+		message.success('Create ideas success !!');
 	};
 
 	const addDataForm = (e) => {
@@ -56,7 +58,7 @@ const CreateIdeas = () => {
 			<div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mb-12">
 				<div className="bg-white w-full shadow rounded p-8 sm:p-12 -mt-72">
 					<p className="text-3xl font-bold leading-7 text-center">
-						Upload Ideas
+						Create Ideas
 					</p>
 					<form encType="multipart/form-data" onSubmit={uploadIdeasSubmit}>
 						<div>

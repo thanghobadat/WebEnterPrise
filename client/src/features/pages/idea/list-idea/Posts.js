@@ -65,16 +65,17 @@ function Posts() {
 				});
 		}
 	};
+
 	if (loading) {
 		return <p>Data is loading...</p>;
 	}
+
 	function handlePageChange(newPage) {
 		console.log('New page: ', newPage);
 		setFilters({
 			...filters,
 			pageIndex: newPage,
 		});
-		console.log(paramsString);
 	}
 
 	const handleLike = async (id, userId, like, dislike) => {
@@ -188,10 +189,10 @@ function Posts() {
 							<a
 								style={{ marginLeft: 12, fontSize: '1rem' }}
 								onClick={() => {
-									handleView(post.id);
+									navigate(`/staff/edit-idea/${post.id}`);
 								}}
 							>
-								<span class="label label-danger">More</span>
+								<span class="label label-danger">Edit idea</span>
 							</a>
 						</h1>
 						<LinesEllipsis
@@ -213,6 +214,14 @@ function Posts() {
 						>
 							Download files
 						</button>
+						<a
+							style={{ marginLeft: 12, fontSize: '1rem' }}
+							onClick={() => {
+								handleView(post.id);
+							}}
+						>
+							<span class="label label-danger">See more</span>
+						</a>
 					</div>
 				</div>
 			))}

@@ -18,6 +18,9 @@ import ViewIdeas from './features/pages/Home/ViewIdeas';
 import CreateIdeas from './features/pages/Home/CreateIdeas';
 import Posts from './features/pages/idea/list-idea/Posts';
 import Post from './features/pages/idea/view-idea/Post';
+import ListAcademicYear from './features/pages/academicYear/listAcademicYear';
+import CreateAcademicYear from './features/pages/academicYear/CreateAcademicYear';
+import EditIdea from './features/pages/idea/edit-idea/EditIdea';
 
 function App() {
 	return (
@@ -30,6 +33,7 @@ function App() {
 						path="/admin"
 						element={<Navigate replace to="/admin/account-user" />}
 					/>
+
 					<Route path="view-idea" element={<ViewIdeas />} />
 					<Route path="create-idea" element={<CreateIdeas />} />
 					<Route path="list-category" element={<CategoryList />}></Route>
@@ -51,17 +55,24 @@ function App() {
 					></Route>
 					<Route path="create-account-user" element={<FormCreate />}></Route>
 					<Route path="account-user" element={<ListUser />}></Route>
+					<Route path="list-academic" element={<ListAcademicYear />}></Route>
+					<Route
+						path="create-academic"
+						element={<CreateAcademicYear />}
+					></Route>
 				</Route>
 				<Route path="/staff" element={<User />}>
 					<Route
 						path="/staff"
 						element={<Navigate replace to="/staff/list-category" />}
 					/>
+
 					<Route path="list-category" element={<CategoryList />}></Route>
 					<Route path="create-category" element={<Create />}></Route>
 					<Route path="list-department" element={<DepartmentList />}></Route>
 					<Route path="view-idea" element={<ViewIdeas />} />
 					<Route path="create-idea" element={<CreateIdeas />} />
+					<Route path="edit-idea/:id" element={<EditIdea />} />
 					<Route
 						path="create-department"
 						element={<CreateDepartment />}
@@ -76,6 +87,7 @@ function Admin() {
 		<div>
 			<div class="navbar navMenu">
 				<Link to="view-idea">Home</Link>
+				<Link to="list-academic">Academic year</Link>
 				<Link to="list-category">Category</Link>
 				<Link to="list-department">Department</Link>
 				<Link to="account-user">AccountUser</Link>
@@ -95,6 +107,7 @@ function Staff() {
 		<div>
 			<div class="navbar navMenu">
 				<Link to="view-idea">Home</Link>
+				<Link to="list-academic">Academic year</Link>
 				<Link to="list-category">Category</Link>
 				<Link className="right" to="/login" onClick={() => Logout()}>
 					Log out

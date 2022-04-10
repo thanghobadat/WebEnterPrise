@@ -20,7 +20,7 @@ export const getListUserApi = createAsyncThunk(
 );
 export const postRegisterUserApi = createAsyncThunk(
   'user/postRegisterUserApi',
-  async (payload, rejectWithValue) => {
+  async (payload) => {
     await axios
       .post(`https://localhost:5001/api/Users/Register`, {
         userName: payload.userName,
@@ -35,7 +35,7 @@ export const postRegisterUserApi = createAsyncThunk(
         return res;
       })
       .catch((error) => {
-        return rejectWithValue(error);
+        console.log(error)
       });
   },
 );
@@ -60,10 +60,9 @@ export const putChangePasswordUserApi = createAsyncThunk(
 export const deleteUserApi = createAsyncThunk(
   'user/putChangePasswordUserApi',
   async (payload) => {
+    console.log(payload);
     await axios
-      .delete(`https://localhost:5001/api/Users/DeleteAccount`, {
-        id: payload,
-      })
+      .delete(`https://localhost:5001/api/Users/DeleteAccount?id=${payload}`)
       .then((res) => {
         // console.log('.listUserApi ~ res', res.data.resultObj);
         return res;
@@ -77,7 +76,6 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     listUserApi: [],
-    errorMss: '',
     loading: false,
   },
   reducers: {},

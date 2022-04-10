@@ -567,7 +567,7 @@ namespace Application.Catalog
                 var ideas = await _context.Ideas.Where(x => x.AcademicYearId == year.Id).ToListAsync();
                 var analyze = new AnalyzeIdeaByAcademicViewModel()
                 {
-                    AcademicYeahId = year.Id,
+                    AcademicYearId = year.Id,
                     Name = year.Name,
                     CountIdea = ideas.Count
                 };

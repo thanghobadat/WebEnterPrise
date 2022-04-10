@@ -39,7 +39,6 @@ export const loginSlice = createSlice({
     },
     [postLoginUserApi.fulfilled]: (state, action) => {
       state.loading = false;
-      console.log(action.payload);
     },
   },
 });

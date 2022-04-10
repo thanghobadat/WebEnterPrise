@@ -22,6 +22,7 @@ import ListAcademicYear from './features/pages/academicYear/listAcademicYear';
 import CreateAcademicYear from './features/pages/academicYear/CreateAcademicYear';
 import EditIdea from './features/pages/idea/edit-idea/EditIdea';
 import Analyze from './features/pages/analyze/analyze';
+import AssignCategorytoIdea from './features/pages/idea/assign-category-to-idea/AssignCategorytoIdea';
 function App() {
 	return (
 		<div className="App">
@@ -47,6 +48,10 @@ function App() {
 					<Route
 						path="list-assign-staff-qa/:id"
 						element={<ListStaffAndQA />}
+					></Route>
+					<Route
+						path="assign-category-to-idea/:id"
+						element={<AssignCategorytoIdea />}
 					></Route>
 					<Route path="update-category/:id" element={<Update />}></Route>
 					<Route

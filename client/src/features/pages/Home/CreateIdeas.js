@@ -19,12 +19,11 @@ const CreateIdeas = () => {
 
 	const createIdeasSubmit = async (userData) => {
 		const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
 		await axios.post(
 			`https://localhost:5001/api/Ideas/CreateIdea`,
 			userData,
 			config
-		);
+		); 
 	};
 
 	const uploadIdeasSubmit = (e) => {
@@ -36,7 +35,10 @@ const CreateIdeas = () => {
 		formData.append('IsAnonymously', anonymously);
 		formData.append('File', avatar);
 		createIdeasSubmit(formData);
-		navigate('/admin/view-idea');
+		setTimeout(()=>{
+			localStore.role === 'admin' ? navigate('/admin/view-idea'): navigate('/staff/view-idea');
+		},1000)
+		
 		message.success('Upload ideas success !!');
 	};
 

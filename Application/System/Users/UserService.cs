@@ -1,7 +1,6 @@
 ﻿using Data.EF;
 using Data.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -13,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModel.Common;
 using ViewModel.System.Users;
-
+using Microsoft.EntityFrameworkCore;
 namespace Application.System.Users
 {
     public class UserService : IUserService
@@ -250,4 +249,3 @@ namespace Application.System.Users
         }
     }
 }
-

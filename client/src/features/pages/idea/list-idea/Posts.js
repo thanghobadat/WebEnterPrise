@@ -22,7 +22,7 @@ function Posts() {
 
 	const [filters, setFilters] = useState({
 		pageIndex: 1,
-		pageSize: 3,
+		pageSize: 5,
 	});
 
 	const paramsString = queryString.stringify(filters);
@@ -203,7 +203,7 @@ function Posts() {
 							</button>
 						</h1>
 						<LinesEllipsis
-							maxLine="10"
+							maxLine="5"
 							ellipsis="..."
 							basedOn="letters"
 							text={post.content}

@@ -107,6 +107,9 @@ function Post() {
 							{idea.view} views | {idea.likeAmount}{' '}
 							like | {idea.dislikeAmount} dislike{' '}
 						</p>
+						<div style={{visibility: !idea.filePath  ? 'hidden' : 'visible'}}>
+						<a href={`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`} download>Click to download</a>
+					</div>
 					</div>
 				</div>
 			</div>

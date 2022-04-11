@@ -78,7 +78,7 @@ function ListAcademicYear() {
 					<Table
 						columns={columns}
 						dataSource={academicList}
-						pagination={{ pageSize: 3 }}
+						pagination={{ pageSize: 10 }}
 						scroll={{ y: 240 }}
 					/>
 				)}

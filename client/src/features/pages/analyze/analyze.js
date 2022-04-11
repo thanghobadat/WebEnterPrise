@@ -15,7 +15,7 @@ function Analyze() {
     labels:  listAnalyzeApi.map((data) => data.name),
     datasets: [
       {
-        label: "Users Gained",
+        label: "Ideas Gained",
         data: listAnalyzeApi.map((data) => data.countIdea),
         backgroundColor: [
           "rgba(75,192,192,1)",

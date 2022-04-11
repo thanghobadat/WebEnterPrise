@@ -1,7 +1,25 @@
+import { Button } from 'antd'
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './notFoundStyle.scss'
-export default function NotFound() {
+export default function NotFound () {
+	const user = JSON.parse(localStorage.getItem('user')); 
+  const navigate = useNavigate();
+  const onChangeLink = () => {
+    if (user.role === 'admin') {
+     return  navigate('/admin/view-idea')
+    }else if (user.role === 'staff') {
+     return  navigate('/staff/view-idea')
+    }else if (user.role === 'QACoordinator') {
+      return  navigate('/QACoordinator/view-idea')
+    }else if (user.role === 'QAManager') {
+      return  navigate('/QAManager/view-idea')
+    }
+  }
   return (
-   <img src='https://i.pinimg.com/originals/11/dc/96/11dc96d2e4daca3ea8ff6aa41299b5e1.gif' alt='404 Not Found'/>
+    <div>
+      <img src='https://media3.giphy.com/media/ZeeUrTADWgFUc/giphy.gif' alt='404 Not Found' />
+      <Button className='btnNotFound btn-warning'  onClick={onChangeLink}>Back to Home</Button>
+    </div>
   )
 }

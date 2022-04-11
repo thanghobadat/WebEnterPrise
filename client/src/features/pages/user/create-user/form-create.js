@@ -11,7 +11,6 @@ const FormCreate = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const errorMss = useSelector((state) => state.listUser);
   const rgPass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Z][a-zA-Z0-9!@#$%^&*]{7,15}$/;
   const rgPhone = /^[0][0-9]{2}[0-9]{3}[0-9]{4}$/;
   const { Option } = Select;
@@ -21,18 +20,8 @@ const FormCreate = () => {
   };
   const onFinish = (values) => {
     dispatch(postRegisterUserApi(values))
-      .unwrap()
-      .then((then) => console.log('then', then))
-      .catch((error) => {
-        // handle error here
-        console.log('error', error);
-      });
-    if (errorMss) {
-      message.error('errorMss');
-    } else {
-      message.success('This is a success message');
-      navigate(`/admin/account-user`);
-    }
+    message.success('This is a success message');
+    navigate(`/admin/account-user`);
   };
 
   const onFinishFailed = (errorInfo) => {

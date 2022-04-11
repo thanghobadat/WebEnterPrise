@@ -57,9 +57,7 @@ const CreateIdeas = () => {
 			<div className="bg-gradient-to-b from-blue-800 to-blue-600 h-96"></div>
 			<div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mb-12">
 				<div className="bg-white w-full shadow rounded p-8 sm:p-12 -mt-72">
-					<p className="text-3xl font-bold leading-7 text-center">
-						Create Ideas
-					</p>
+				<p className="text-3xl font-bold leading-7 text-center"> Create Ideas </p>
 					<form encType="multipart/form-data" onSubmit={uploadIdeasSubmit}>
 						<div>
 							<div className="w-full flex flex-col mt-8">

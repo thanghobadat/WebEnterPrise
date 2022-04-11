@@ -18,7 +18,14 @@ const Login = () => {
     if (user && user.role === 'admin') {
       message.success('Login Success!');
       return navigate(`/admin`);
-    } else if (user && user.role === 'staff') {
+    } else if (user && user.role === 'QACoordinator') {
+      message.success('Login Success!');
+      return navigate(`/QACoordinator`);
+    } else if (user && user.role === 'QAManager') {
+      message.success('Login Success!');
+      return navigate(`/QAManager`);
+    }
+    else if (user && user.role === 'staff') {
       message.success('Login Success!');
       return navigate(`/staff`);
     }

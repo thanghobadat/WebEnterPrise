@@ -11,6 +11,7 @@ export const postLoginUserApi = createAsyncThunk(
       .post(`https://localhost:5001/api/Users/Authenticate`, {
         userName: payload.username,
         password: payload.password,
+        rememberMe: false,
       })
       .then((res) => {
         // console.log('.listUserApi ~ res', res.data.resultObj);

@@ -19,22 +19,17 @@ function Posts() {
 		pageIndex: 1,
 		pageSize: 5,
 	});
-
 	const [filters, setFilters] = useState({
 		pageIndex: 1,
 		pageSize: 5,
 	});
-
 	const paramsString = queryString.stringify(filters);
-
-	let user;
+	let user = JSON.parse(localStorage.getItem('user'));
 
 	useEffect(() => {
-		user = JSON.parse(localStorage.getItem('user'));
 		setUserId(user.id);
 		getPostList();
 	}, [filters, numberFilters]);
-
 	const getPostList = async () => {
 		if (count === 0) {
 			await axios
@@ -65,11 +60,9 @@ function Posts() {
 				});
 		}
 	};
-
 	if (loading) {
 		return <p>Data is loading...</p>;
 	}
-
 	function handlePageChange(newPage) {
 		console.log('New page: ', newPage);
 		setFilters({
@@ -77,7 +70,6 @@ function Posts() {
 			pageIndex: newPage,
 		});
 	}
-
 	const handleLike = async (id, userId, like, dislike) => {
 		const config = { headers: { 'Content-Type': 'application/json' } };
 		const ideaId = id;
@@ -117,13 +109,19 @@ function Posts() {
 			getPostList();
 		}
 	};
-
 	const handleView = async (id) => {
 		await axios.put(`https://localhost:5001/api/Ideas/CountViewIdea?id=${id}`);
 		await axios.get(`https://localhost:5001/api/Ideas/GetIdeaById?id=${id}`);
-		navigate(`/admin/idea/${id}`);
+		if (user.role === 'admin') {
+			return navigate(`/admin/idea/${id}`);
+		} else if (user.role === 'staff') {
+			return navigate(`/staff/idea/${id}`);
+		}else if (user.role === 'QACoordinator') {
+			return navigate(`/QACoordinator/idea/${id}`);
+		}else if (user.role === 'QAManager') {
+			return navigate(`/QAManager/idea/${id}`);
+		}
 	};
-
 	const downloadFileHandler = async (filePath, filename) => {
 		try {
 			const url = `https://localhost:5001/api/Ideas/DownloadFile?fileName=${filePath}`;
@@ -138,7 +136,6 @@ function Posts() {
 			console.log('Failed to fetch department list', error.message);
 		}
 	};
-
 	return (
 		<div className="posts">
 			<div className="flex items-center">
@@ -159,7 +156,7 @@ function Posts() {
 			</div>
 			{postList.map((post) => (
 				<div className="post ListUser">
-					<div className="post__left">
+					{user.role === 'staff' ? <div className="post__left">
 						<CaretUpFilled
 							style={{
 								fontSize: '1.5rem',
@@ -179,14 +176,14 @@ function Posts() {
 								handleDisLike(post.id, userId, post.like, post.dislike);
 							}}
 						/>
-					</div>
+					</div>: <></>}
 					<div className="post__center"></div>
 					<div className="post__right">
 						<h1 className="post__info">
-							Posted by{' '}
-							{post.isAnonymously !== true ? post.userName : 'Anonymously'} at{' '}
+							Posted by
+							{post.isAnonymously !== true ? post.userName : 'Anonymously'} at
 							{post.createdAt.slice(0, 10)}
-							<button
+						{user.role === "staff" ? <button
 								style={{
 									marginLeft: 12,
 									fontSize: '1rem',
@@ -197,10 +194,9 @@ function Posts() {
 								}}
 								onClick={() => {
 									navigate(`/staff/edit-idea/${post.id}`);
-								}}
-							>
+								}}>
 								<span class="label label-danger">Edit idea</span>
-							</button>
+							</button> : <></>}	
 						</h1>
 						<LinesEllipsis
 							maxLine="5"
@@ -216,17 +212,8 @@ function Posts() {
 							className="post__info"
 							onClick={() => {
 								downloadFileHandler(post.filePath, 'fileDownload.zip');
-							}}
-							download
-						>
-							Download files
-						</button>
-						<a
-							style={{ marginLeft: 12, fontSize: '1rem' }}
-							onClick={() => {
-								handleView(post.id);
-							}}
-						>
+							}} download > Download files </button>
+						<a style={{ marginLeft: 12, fontSize: '1rem' }} onClick={() => {handleView(post.id);}}>
 							<span class="label label-danger">See more</span>
 						</a>
 					</div>

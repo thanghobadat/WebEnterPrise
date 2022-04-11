@@ -18,10 +18,9 @@ function Post() {
 	const userIdComment = localStore.id;
 	const [ideaComment, setIdeaComment] = useState([]);
 
-	let user;
+	let user = JSON.parse(localStorage.getItem('user'));
 
 	useEffect(() => {
-		user = JSON.parse(localStorage.getItem('user'));
 		setUserId(user.id);
 		getIdeaById();
 		getCommentById();
@@ -73,28 +72,32 @@ function Post() {
 		}
 	};
 	const handleAssign = async (id) => {
-		navigate(`/admin/assign-category-to-idea/${id}`);
+		if (user.role === "admin") {
+			return navigate(`/admin/assign-category-to-idea/${id}`);
+		}else if (user.role === "QACoordinator") {
+			return navigate(`/QACoordinator/assign-category-to-idea/${id}`);
+		}else if (user.role === "QAManager") {
+			return navigate(`/QAManager/assign-category-to-idea/${id}`);
+		}
 	};
 	return (
 		<>
 			<div className="posts">
 				<div className="post User">
-					
 					<div className="post__center"></div>
 					<div className="post__right">
 						<h1 className="post__info">
-							Posted by{' '}
-							{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at{' '}
+							Posted by
+							{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at
 							{formatDate(idea.createdAt)} 
-							
 							<span style={{marginLeft: '10px'}}>
 							- {idea.categories}
 							</span>
-							<button onClick={() => {
+							{user.role ==='staff' ? <></>:<button onClick={() => {
           							handleAssign(idea.id);
 								}} style={{marginLeft: '10px'}}>
 								Assign Category to Idea
-							</button>
+							</button>}
 						</h1>
 						<LinesEllipsis
 							maxLine="10"
@@ -104,8 +107,8 @@ function Post() {
 						></LinesEllipsis>
 						
 						<p className="post__info">
-							{idea.view} views | {idea.likeAmount}{' '}
-							like | {idea.dislikeAmount} dislike{' '}
+							{idea.view} views | {idea.likeAmount}
+							like | {idea.dislikeAmount} dislike
 						</p>
 						<div style={{visibility: !idea.filePath  ? 'hidden' : 'visible'}}>
 						<a href={`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`} download>Click to download</a>
@@ -114,8 +117,7 @@ function Post() {
 				</div>
 			</div>
 			{/* Comment */}
-			<div>
-				<section className="rounded-b-lg px-4 mt-4 ">
+			{user.role === 'staff' ? 	<section className="rounded-b-lg px-4 mt-4 ">
 					<div className="flex mx-auto items-center justify-center shadow-lg mx-8 mb-2 max-w-lg">
 						<form
 							className="w-full max-w-xl bg-white rounded-lg px-4 pt-2"
@@ -189,7 +191,8 @@ function Post() {
 							</div>
 						))}
 					</div>
-				</section>
+				</section>:<></> }<div>
+			
 			</div>
 		</>
 	);

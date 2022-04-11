@@ -36,7 +36,7 @@ const ListUser = () => {
   });
   useEffect(() => {
     dispatch(getListUserApi());
-  }, [dispatch, listUserApi]);
+  }, [listUserApi]);
   const columns = [
     {
       title: 'User Name',

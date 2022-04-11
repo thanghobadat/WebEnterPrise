@@ -33,7 +33,7 @@ namespace BackendApi.Controllers
             return Ok(resultToken);
         }
         [HttpPost("Register")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
 
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {

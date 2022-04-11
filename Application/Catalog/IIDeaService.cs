@@ -14,7 +14,7 @@ namespace Application.Catalog
         Task<ApiResult<IDeaViewModel>> GetIdeaById(int id);
         Task<ApiResult<IDeaViewModel>> GetIdeaByIdUser(int id, Guid userId);
         Task<ApiResult<bool>> CreateIdea(IdeaCreateRequest request);
-        Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, List<int> categoryIdeas);
+        Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, int categoryId);
         Task<ApiResult<bool>> LikeOrDislikeIdea(LikeOrDislikeRequest request);
         Task<ApiResult<bool>> CountViewIdea(int id);
         Task<ApiResult<bool>> CommentIdea(CommentCreateRequest request);

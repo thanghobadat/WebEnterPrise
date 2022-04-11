@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ViewModel.Catalog;
 
@@ -250,13 +249,10 @@ namespace UnitTest
         {
             // Arrange
             int id = 1;
-            List<int> categories = new List<int>()
-            {
-                13
-            };
+            int categoryId = 13;
 
             // Act
-            var result = await _ideaService.AddCategoryToIdea(id, categories);
+            var result = await _ideaService.AddCategoryToIdea(id, categoryId);
             // Assert
             Assert.IsTrue(result.ResultObj);
         }

@@ -23,6 +23,8 @@ namespace ViewModel.Catalog
         public string AcademicYearName { get; set; }
         public int LikeAmount { get; set; }
         public int DislikeAmount { get; set; }
+        public bool IsComment { get; set; }
+        public bool IsEdit { get; set; }
 
     }
 }

@@ -21,7 +21,8 @@ import Post from './features/pages/idea/view-idea/Post';
 import ListAcademicYear from './features/pages/academicYear/listAcademicYear';
 import CreateAcademicYear from './features/pages/academicYear/CreateAcademicYear';
 import EditIdea from './features/pages/idea/edit-idea/EditIdea';
-
+import Analyze from './features/pages/analyze/analyze';
+import AssignCategorytoIdea from './features/pages/idea/assign-category-to-idea/AssignCategorytoIdea';
 function App() {
 	return (
 		<div className="App">
@@ -48,11 +49,16 @@ function App() {
 						path="list-assign-staff-qa/:id"
 						element={<ListStaffAndQA />}
 					></Route>
+					<Route
+						path="assign-category-to-idea/:id"
+						element={<AssignCategorytoIdea />}
+					></Route>
 					<Route path="update-category/:id" element={<Update />}></Route>
 					<Route
 						path="update-department/:id"
 						element={<UpdateDepartment />}
 					></Route>
+					<Route path="analyze" element={<Analyze />}></Route>
 					<Route path="create-account-user" element={<FormCreate />}></Route>
 					<Route path="account-user" element={<ListUser />}></Route>
 					<Route path="list-academic" element={<ListAcademicYear />}></Route>
@@ -90,6 +96,7 @@ function Admin() {
 				<Link to="list-academic">Academic year</Link>
 				<Link to="list-category">Category</Link>
 				<Link to="list-department">Department</Link>
+				<Link to="analyze">Analyze</Link>
 				<Link to="account-user">AccountUser</Link>
 				<Link className="right" to="/login" onClick={() => Logout()}>
 					Log out

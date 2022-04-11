@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import './CategoryList.scss';
 import 'font-awesome/css/font-awesome.min.css';
 import queryString from 'query-string';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, Link } from 'react-router-dom';
-import { Button, Table, Col, Row, Modal } from 'antd';
+import { Button, Table, Col, Row, Modal, message } from 'antd';
 import { useParams } from 'react-router-dom';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Update from '../update-category/Update';
 
-function CategoryList() {
+function AssignCategorytoIdea() {
 	const [loading, setloading] = useState(true);
 	const navigate = useNavigate();
+    const [ideaId, setIdeaId] = useState();
+    const [arrayCategoryId, setArrayCategoryId] = useState([]);
 	const { id } = useParams();
 	const [categoryList, setCategoryList] = useState([]);
 	const [filters] = useState({
@@ -22,6 +21,7 @@ function CategoryList() {
 	const paramsString = queryString.stringify(filters);
 	useEffect(() => {
 		getCategoryList();
+        getIdeaById();
 	}, []);
 
 	const getCategoryList = async () => {
@@ -36,15 +36,34 @@ function CategoryList() {
 						key: index,
 						name: row.name,
 						description: row.description,
-						id: row.id,
+						cateId: row.id,
 					}))
 				);
 			});
 	};
-
+    
+    const getIdeaById = async () => {
+		await axios
+			.get(`https://localhost:5001/api/Ideas/GetIdeaById?id=${id}`)
+			.then((res) => {
+				setloading(false);
+				setIdeaId(res.data.resultObj.id);
+			});
+	};
+    const assignCategorytoIdea = async (cateId) => {
+        setArrayCategoryId(...arrayCategoryId, cateId)
+        console.log(arrayCategoryId)
+	};
+    const handleSubmit = async (arrayCategoryId) => {
+        const categoryId = arrayCategoryId;
+        await axios.put(
+			`https://localhost:5001/api/Ideas/AddCategoryToIdea`,
+            { ideaId, categoryId }
+		)
+    }
 	const columns = [
 		{
-			title: 'Name',
+			title: 'Category',
 			dataIndex: 'name',
 			width: 300,
 		},
@@ -55,60 +74,30 @@ function CategoryList() {
 		},
 		{
 			key: '5',
-			title: 'Actions',
+			title: 'Action',
 			width: 300,
 			render: (key) => {
 				return (
 					<>
-						<EditOutlined
-							onClick={() => {
-								handleUpdate(key.id);
-							}}
-						/>
-						<DeleteOutlined
-							onClick={() => {
-								onDeleteCategory(key.id);
-							}}
-							style={{ color: 'red', marginLeft: 12 }}
-						/>
+						<Button
+                            size='large'
+                            className='ant-btn-warning'
+                            onClick={() => assignCategorytoIdea(key.cateId)}>
+                            Assign
+                        </Button>
 					</>
 				);
 			},
 		},
 	];
 
-	const onDeleteCategory = (id) => {
-		Modal.confirm({
-			title: 'Are you sure, you want to delete this category record?',
-			okText: 'Yes',
-			okType: 'danger',
-			onOk: () => {
-				handleDelete(id);
-			},
-		});
-	};
-
-	const handleDelete = async (id) => {
-		await axios.delete(
-			`https://localhost:5001/api/Categories/DeleteCategory?id=${id}`
-		);
-		getCategoryList();
-	};
-
-	const handleUpdate = async (id) => {
-		navigate(`/admin/update-category/${id}`);
-	};
-
+	
 	return (
 		<div className="container ListUser">
 			<Row className="ListUser__title">
 				<Col span={20}>
-					<h2>Manager Category</h2>
-				</Col>
-				<Col span={4}>
-					<Button type="primary" size="large">
-						<Link to="/admin/create-category"> Create</Link>
-					</Button>
+					<h2>Assign category to idea</h2>
+                    <Button onClick={() => handleSubmit()}> Submit</Button>
 				</Col>
 			</Row>
 			<div>
@@ -123,8 +112,9 @@ function CategoryList() {
 					/>
 				)}
 			</div>
+            
 		</div>
 	);
 }
 
-export default CategoryList;
+export default AssignCategorytoIdea;

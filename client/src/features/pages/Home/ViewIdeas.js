@@ -5,7 +5,7 @@ const ViewIdeas = () => {
 	let user = JSON.parse(localStorage.getItem('user'));
 	return (
 		<div>
-			{user.role === 'admin' ? (
+			{user.role === 'staff' ? (
 				<div class="inline-block m-4">
 					<Link
 						className="block bg-blue hover:bg-blue-dark font-bold py-2 px-4 rounded no-underline border-solid border-2 text-black"
@@ -16,15 +16,8 @@ const ViewIdeas = () => {
 				</div>
 			) : (
 				<div class="inline-block m-4">
-					<Link
-						className="block bg-blue hover:bg-blue-dark font-bold py-2 px-4 rounded no-underline border-solid border-2 text-black"
-						to="/staff/create-idea"
-					>
-						Create Ideas
-					</Link>
 				</div>
 			)}
-
 			<Posts />
 		</div>
 	);

@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Post.css';
-import queryString from 'query-string';
 import axios from 'axios';
-import {
-	CaretDownFilled,
-	CaretUpFilled,
-	MessageTwoTone,
-	EyeTwoTone,
-} from '@ant-design/icons';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { useNavigate, useParams } from 'react-router-dom';
 import { message } from 'antd';
@@ -15,6 +8,7 @@ import { message } from 'antd';
 function Post() {
 	const { id } = useParams();
 	const [loading, setloading] = useState(true);
+	const navigate = useNavigate();
 	const [idea, setIdea] = useState([]);
 	const [userId, setUserId] = useState();
 	const [content, setContent] = useState('');
@@ -24,10 +18,9 @@ function Post() {
 	const userIdComment = localStore.id;
 	const [ideaComment, setIdeaComment] = useState([]);
 
-	let user;
+	let user = JSON.parse(localStorage.getItem('user'));
 
 	useEffect(() => {
-		user = JSON.parse(localStorage.getItem('user'));
 		setUserId(user.id);
 		getIdeaById();
 		getCommentById();
@@ -42,44 +35,7 @@ function Post() {
 			});
 	};
 
-	const handleLike = async (id, userId, like, dislike) => {
-		const config = { headers: { 'Content-Type': 'application/json' } };
-		const ideaId = id;
-		if (like === false && dislike === false) {
-			await axios.put(
-				`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
-				{ ideaId, userId, number: 2 },
-				config
-			);
-			like = true;
-		} else if (like === false && dislike === true) {
-			await axios.put(
-				`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
-				{ ideaId, userId, number: 1 },
-				config
-			);
-			getIdeaById();
-		}
-	};
-	const handleDisLike = async (id, userId, like, dislike) => {
-		const config = { headers: { 'Content-Type': 'application/json' } };
-		const ideaId = id;
-		if (like === false && dislike === false) {
-			await axios.put(
-				`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
-				{ ideaId, userId, number: -2 },
-				config
-			);
-			getIdeaById();
-		} else if (like === true && dislike === false) {
-			await axios.put(
-				`https://localhost:5001/api/Ideas/LikeOrDislikeIdea`,
-				{ ideaId, userId, number: -1 },
-				config
-			);
-			getIdeaById();
-		}
-	};
+	
 	const formatDate = (createdAt) => {
 		const options = { year: 'numeric', month: 'long', day: 'numeric' };
 		return new Date(createdAt).toLocaleDateString(undefined, options);
@@ -115,38 +71,33 @@ function Post() {
 			console.log('Failed to fetch department list', error.message);
 		}
 	};
-
+	const handleAssign = async (id) => {
+		if (user.role === "admin") {
+			return navigate(`/admin/assign-category-to-idea/${id}`);
+		}else if (user.role === "QACoordinator") {
+			return navigate(`/QACoordinator/assign-category-to-idea/${id}`);
+		}else if (user.role === "QAManager") {
+			return navigate(`/QAManager/assign-category-to-idea/${id}`);
+		}
+	};
 	return (
 		<>
 			<div className="posts">
 				<div className="post User">
-					<div className="post__left">
-						<CaretUpFilled
-							style={{
-								fontSize: '1.5rem',
-								color: idea.like === false ? 'black' : 'green',
-							}}
-							onClick={() => {
-								handleLike(idea.id, userId, idea.like, idea.dislike);
-							}}
-						/>
-
-						<CaretDownFilled
-							style={{
-								fontSize: '1.5rem',
-								color: idea.dislike === false ? 'black' : 'red',
-							}}
-							onClick={() => {
-								handleDisLike(idea.id, userId, idea.like, idea.dislike);
-							}}
-						/>
-					</div>
 					<div className="post__center"></div>
 					<div className="post__right">
 						<h1 className="post__info">
-							Posted by{' '}
-							{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at{' '}
-							{formatDate(idea.createdAt)}
+							Posted by
+							{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at
+							{formatDate(idea.createdAt)} 
+							<span style={{marginLeft: '10px'}}>
+							- {idea.categories}
+							</span>
+							{user.role ==='staff' ? <></>:<button onClick={() => {
+          							handleAssign(idea.id);
+								}} style={{marginLeft: '10px'}}>
+								Assign Category to Idea
+							</button>}
 						</h1>
 						<LinesEllipsis
 							maxLine="10"
@@ -154,23 +105,19 @@ function Post() {
 							basedOn="letters"
 							text={idea.content}
 						></LinesEllipsis>
-						<div>
-							<img
-								src={`http://localhost:5001/Files/c31f6040-0e56-4478-8bae-0bdcd473bb90.jpg`}
-								alt=""
-							/>
-						</div>
+						
 						<p className="post__info">
-							<MessageTwoTone style={{ marginTop: 10, fontSize: '1.5rem' }} />
-							{idea.comments_count} Comments | {idea.view} views | {idea.like}{' '}
-							like | {idea.dislike} dislike{' '}
+							{idea.view} views | {idea.likeAmount}
+							like | {idea.dislikeAmount} dislike
 						</p>
+						<div style={{visibility: !idea.filePath  ? 'hidden' : 'visible'}}>
+						<a href={`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`} download>Click to download</a>
+					</div>
 					</div>
 				</div>
 			</div>
 			{/* Comment */}
-			<div>
-				<section className="rounded-b-lg px-4 mt-4 ">
+			{user.role === 'staff' ? 	<section className="rounded-b-lg px-4 mt-4 ">
 					<div className="flex mx-auto items-center justify-center shadow-lg mx-8 mb-2 max-w-lg">
 						<form
 							className="w-full max-w-xl bg-white rounded-lg px-4 pt-2"
@@ -244,7 +191,8 @@ function Post() {
 							</div>
 						))}
 					</div>
-				</section>
+				</section>:<></> }<div>
+			
 			</div>
 		</>
 	);

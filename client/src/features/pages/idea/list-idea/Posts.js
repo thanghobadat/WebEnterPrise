@@ -180,10 +180,10 @@ function Posts() {
 					<div className="post__center"></div>
 					<div className="post__right">
 						<h1 className="post__info">
-							Posted by
-							{post.isAnonymously !== true ? post.userName : 'Anonymously'} at
+							Posted by {' '}
+							{post.isAnonymously !== true ? post.userName : 'Anonymously'} at {' '}
 							{post.createdAt.slice(0, 10)}
-						{user.role === "staff" ? <button
+						{user.role === "staff" ? post.isEdit === true ? <button
 								style={{
 									marginLeft: 12,
 									fontSize: '1rem',
@@ -196,7 +196,7 @@ function Posts() {
 									navigate(`/staff/edit-idea/${post.id}`);
 								}}>
 								<span class="label label-danger">Edit idea</span>
-							</button> : <></>}	
+							</button>: '' : <></>}	
 						</h1>
 						<LinesEllipsis
 							maxLine="5"

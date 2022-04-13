@@ -50,12 +50,9 @@ function AssignCategorytoIdea() {
 				setIdeaId(res.data.resultObj.id);
 			});
 	};
+    
     const assignCategorytoIdea = async (cateId) => {
-        setArrayCategoryId(...arrayCategoryId, cateId)
-        console.log(arrayCategoryId)
-	};
-    const handleSubmit = async (arrayCategoryId) => {
-        const categoryId = arrayCategoryId;
+        const categoryId = cateId;
         await axios.put(
 			`https://localhost:5001/api/Ideas/AddCategoryToIdea`,
             { ideaId, categoryId }

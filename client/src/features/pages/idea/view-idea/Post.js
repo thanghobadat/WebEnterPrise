@@ -17,7 +17,7 @@ function Post() {
 	var localStore = JSON.parse(retrievedObject);
 	const userIdComment = localStore.id;
 	const [ideaComment, setIdeaComment] = useState([]);
-
+	const [categoriesString, setCategoryString] = useState([]);
 	let user = JSON.parse(localStorage.getItem('user'));
 
 	useEffect(() => {
@@ -32,6 +32,8 @@ function Post() {
 			.then((res) => {
 				setloading(false);
 				setIdea(res.data.resultObj);
+				setCategoryString(res.data.resultObj.categories.join(', '));
+
 			});
 	};
 
@@ -82,6 +84,9 @@ function Post() {
 	};
 	return (
 		<>
+		<div className='p-10'>
+
+	
 			<div className="posts">
 				<div className="post User">
 					<div className="post__center"></div>
@@ -104,17 +109,17 @@ function Post() {
 						></LinesEllipsis>
 						
 						<p className="post__info">
-							{idea.view} views | {idea.likeAmount}
+							{idea.view} views | {idea.likeAmount} {' '}
 							like | {idea.dislikeAmount} dislike
 						</p>
 						<div style={{visibility: !idea.filePath  ? 'hidden' : 'visible'}}>
-						<a href={`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`} download>Click to download</a>
+						<a href={`https://localhost:5001/api/Ideas/DownloadFile?fileName=${idea.filePath}`} download >Click to download</a>
 					</div>
 					</div>
 				</div>
 			</div>
 			{/* Comment */}
-			{user.role === 'staff' ? 	<section className="rounded-b-lg px-4 mt-4 ">
+			{idea.isComment === true ? <div>{user.role === 'staff' ? 	<section className="rounded-b-lg px-4 mt-4 ">
 					<div className="flex mx-auto items-center justify-center shadow-lg mx-8 mb-2 max-w-lg">
 						<form
 							className="w-full max-w-xl bg-white rounded-lg px-4 pt-2"
@@ -160,7 +165,11 @@ function Post() {
 							</div>
 						</form>
 					</div>
-					<div id="task-comments" className="pt-4 pb-4">
+					
+				</section>:<></> }
+				</div>
+				: <></>}
+				<div id="task-comments" className="pt-4 pb-4">
 						{ideaComment.map((comment) => (
 							<div className="bg-white rounded-lg p-6 flex flex-col justify-center items-center md:items-start shadow-lg mb-4">
 								<div className="flex flex-row justify-center mr-2">
@@ -171,6 +180,7 @@ function Post() {
 										className="rounded-full w-10 h-10 mr-4 shadow-lg mb-4"
 										src="https://cdn1.iconfinder.com/data/icons/technology-devices-2/100/Profile-512.png"
 									/>
+									
 									{comment.isAnonymously === false ? (
 										<h3 className="font-semibold text-lg text-center md:text-left ">
 											{comment.name}
@@ -181,15 +191,15 @@ function Post() {
 										</h3>
 									)}
 								</div>
-								<p className="text-gray-600 text-lg text-center md:text-left ">
+								<p className="break-words text-gray-600 text-lg text-center md:text-left ">
 									Content: {comment?.content}
 								</p>
 							</div>
 						))}
 					</div>
-				</section>:<></> }<div>
+			<div>
 			
-			</div>
+			</div>	</div>
 		</>
 	);
 }

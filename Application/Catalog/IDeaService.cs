@@ -32,7 +32,7 @@ namespace Application.Catalog
             _storageService = storageService;
         }
 
-        public async Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, List<int> categoryIdeas)
+        public async Task<ApiResult<bool>> AddCategoryToIdea(int ideaId, int categoryId)
         {
             var idea = await _context.Ideas.FindAsync(ideaId);
             if (idea == null)
@@ -40,22 +40,21 @@ namespace Application.Catalog
                 return new ApiErrorResult<bool>("Idea doesn't exist");
             }
 
-            foreach (var id in categoryIdeas)
-            {
-                var category = await _context.Categories.FindAsync(id);
-                if (category == null)
-                {
-                    return new ApiErrorResult<bool>("category doesn't exist");
-                }
 
-                var ideaCategory = new IdeaCategory()
-                {
-                    IdeaId = ideaId,
-                    CategoryId = id
-                };
-                await _context.IdeaCategories.AddAsync(ideaCategory);
-                await _context.SaveChangesAsync();
+            var category = await _context.Categories.FindAsync(categoryId);
+            if (category == null)
+            {
+                return new ApiErrorResult<bool>("category doesn't exist");
             }
+
+            var ideaCategory = new IdeaCategory()
+            {
+                IdeaId = ideaId,
+                CategoryId = categoryId
+            };
+            await _context.IdeaCategories.AddAsync(ideaCategory);
+            await _context.SaveChangesAsync();
+
             return new ApiSuccessResult<bool>(true);
         }
 
@@ -77,6 +76,7 @@ namespace Application.Catalog
             {
                 return new ApiErrorResult<bool>("User does not exits");
             }
+
 
             var comment = new Comment()
             {
@@ -165,7 +165,10 @@ namespace Application.Catalog
                 Content = request.Content,
                 UserId = request.UserId,
                 IsAnonymously = request.IsAnonymously,
-                AcademicYearId = academicYear.Id
+                AcademicYearId = academicYear.Id,
+                CreatedAt = DateTime.Now,
+                EditDate = DateTime.Now.AddDays(7),
+                FinalDate = DateTime.Now.AddDays(11)
             };
             if (request.File != null)
             {
@@ -244,7 +247,8 @@ namespace Application.Catalog
                 FinalDate = idea.FinalDate,
                 UserId = idea.UserId,
                 AcademicYearId = idea.AcademicYearId,
-                Categories = new List<string>()
+                Categories = new List<string>(),
+                IsComment = true
             };
 
             foreach (var item in categoryIdeas)
@@ -260,6 +264,10 @@ namespace Application.Catalog
             var dislikes = await _context.LikeOrDislikes.Where(x => x.IsDislike == true && x.IdeaId == ideaVM.Id).ToListAsync();
             ideaVM.DislikeAmount = dislikes.Count;
             ideaVM.UpVote = like.Count - dislikes.Count;
+            if (DateTime.Now > idea.FinalDate)
+            {
+                ideaVM.IsComment = false;
+            }
 
             return new ApiSuccessResult<IDeaViewModel>(ideaVM);
         }
@@ -320,7 +328,8 @@ namespace Application.Catalog
                     FinalDate = x.FinalDate,
                     UserId = x.UserId,
                     AcademicYearId = x.AcademicYearId,
-                    Categories = new List<string>()
+                    Categories = new List<string>(),
+                    IsEdit = DateTime.Now < x.EditDate
                 }).ToList();
 
             foreach (var item in data)
@@ -391,7 +400,8 @@ namespace Application.Catalog
                     FinalDate = x.FinalDate,
                     UserId = x.UserId,
                     Categories = new List<string>(),
-                    AcademicYearId = x.AcademicYearId
+                    AcademicYearId = x.AcademicYearId,
+                    IsEdit = DateTime.Now < x.EditDate
                 }).ToList();
 
             foreach (var item in data)

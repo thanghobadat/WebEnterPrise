@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace ViewModel.Catalog
+﻿namespace ViewModel.Catalog
 {
     public class AddCategoryToIdeaRequest
     {
         public int IdeaId { get; set; }
-        public List<int> CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }

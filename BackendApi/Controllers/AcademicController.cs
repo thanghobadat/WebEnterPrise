@@ -1,4 +1,5 @@
 ﻿using Application.Catalog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ViewModel.Catalog;

@@ -8,8 +8,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Button, Table, Col, Row, Modal } from 'antd';
 import { useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Update from '../update-category/Update';
-
 function CategoryList() {
 	const [loading, setloading] = useState(true);
 	const navigate = useNavigate();
@@ -98,7 +96,7 @@ function CategoryList() {
 	};
 
 	const handleUpdate = async (id) => {
-		navigate(`/admin/update-category/${id}`);
+		navigate(`/QAManager/update-category/${id}`);
 	};
 
 	return (
@@ -109,7 +107,7 @@ function CategoryList() {
 				</Col>
 				<Col span={4}>
 					<Button type="primary" size="large">
-						<Link to="/admin/create-category"> Create</Link>
+						<Link to="/QAManager/create-category"> Create</Link>
 					</Button>
 				</Col>
 			</Row>

@@ -20,7 +20,7 @@ const Create = () => {
 			{ name, description },
 			config
 		);
-		navigate('/admin/list-category');
+		navigate('/QAManager/list-category');
 		message.success('Create category success !!');
 	};
 	

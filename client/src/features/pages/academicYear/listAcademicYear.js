@@ -3,11 +3,12 @@ import 'font-awesome/css/font-awesome.min.css';
 import queryString from 'query-string';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate, Link } from 'react-router-dom';
-import { Button, Table, Col, Row, Modal } from 'antd';
+import {Link } from 'react-router-dom';
+import { Button, Table, Col, Row} from 'antd';
 import moment from 'moment';
 import '../department/list-department/DepartmentList.scss';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import './academicStyle.scss';
+
 
 function ListAcademicYear() {
 	const [loading, setloading] = useState(true);
@@ -61,7 +62,7 @@ function ListAcademicYear() {
 
 	return (
 		<div className="container ListUser">
-			<Row className="ListUser__title">
+			<Row className="List__Academic">
 				<Col span={20}>
 					<h2>Manager academic year</h2>
 				</Col>

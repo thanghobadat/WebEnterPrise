@@ -92,18 +92,14 @@ function Post() {
 					<div className="post__center"></div>
 					<div className="post__right">
 						<h1 className="post__info">
-							Posted by {' '}
-							{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at {' '}
-							{formatDate(idea.createdAt)} 
-							{categoriesString ? <span style={{marginLeft: '10px'}}>
-							- {categoriesString}
-							</span> : <></>}
-							
-							{user.role ==='staff' ? <></>:<button onClick={() => {
-          							handleAssign(idea.id);
-								}} className='ml-4 border rounded-md p-2 text-green-500'>
+							Posted by
+							{idea.isAnonymously !== true ? idea.userName : 'Anonymously'} at: {formatDate(idea.createdAt)} 
+							<span style={{marginLeft: '10px'}}>
+							- {idea.categories}
+							</span>
+							{user.role ==='QAManager' ? <button onClick={() => {handleAssign(idea.id);}} style={{marginLeft: '10px'}}>
 								Assign Category to Idea
-							</button>}
+							</button> : <></>}
 						</h1>
 						<LinesEllipsis
 							maxLine="10"
@@ -195,7 +191,6 @@ function Post() {
 										</h3>
 									)}
 								</div>
-
 								<p className="break-words text-gray-600 text-lg text-center md:text-left ">
 									Content: {comment?.content}
 								</p>

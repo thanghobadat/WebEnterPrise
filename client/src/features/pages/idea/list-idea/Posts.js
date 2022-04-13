@@ -156,7 +156,7 @@ function Posts() {
 			</div>
 			{postList.map((post) => (
 				<div className="post ListUser">
-					{user.role === 'staff' ? <div className="post__left">
+					{user.role === 'staff' || user.role === 'QACoordinator' ? <div className="post__left">
 						<CaretUpFilled
 							style={{
 								fontSize: '1.5rem',
@@ -208,11 +208,12 @@ function Posts() {
 							{post.view} views | {post.likeAmount} like | {post.dislikeAmount}{' '}
 							dislike{' '}
 						</p>
-						<button
+					{user.role === 'staff' || user.role === 'QACoordinator' ? <><button
 							className="post__info"
 							onClick={() => {
 								downloadFileHandler(post.filePath, 'fileDownload.zip');
 							}} download > Download files </button>
+						</> : null}
 						<a style={{ marginLeft: 12, fontSize: '1rem' }} onClick={() => {handleView(post.id);}}>
 							<span class="label label-danger">See more</span>
 						</a>

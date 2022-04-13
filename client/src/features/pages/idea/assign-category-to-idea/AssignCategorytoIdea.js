@@ -60,6 +60,7 @@ function AssignCategorytoIdea() {
 			`https://localhost:5001/api/Ideas/AddCategoryToIdea`,
             { ideaId, categoryId }
 		)
+			navigate(`/QAManager/idea/${id}`)
     }
 	const columns = [
 		{
@@ -80,24 +81,22 @@ function AssignCategorytoIdea() {
 				return (
 					<>
 						<Button
-                            size='large'
-                            className='ant-btn-warning'
-                            onClick={() => assignCategorytoIdea(key.cateId)}>
-                            Assign
-                        </Button>
+              size='large'
+              className='ant-btn-warning'
+              onClick={() => assignCategorytoIdea(key.cateId)}>
+              Assign
+            </Button>
 					</>
 				);
 			},
 		},
 	];
 
-	
 	return (
 		<div className="container ListUser">
 			<Row className="ListUser__title">
 				<Col span={20}>
 					<h2>Assign category to idea</h2>
-                    <Button onClick={() => handleSubmit()}> Submit</Button>
 				</Col>
 			</Row>
 			<div>
@@ -112,7 +111,6 @@ function AssignCategorytoIdea() {
 					/>
 				)}
 			</div>
-            
 		</div>
 	);
 }

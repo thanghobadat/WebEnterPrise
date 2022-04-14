@@ -10,8 +10,8 @@ import { useParams } from 'react-router-dom';
 function AssignCategorytoIdea() {
 	const [loading, setloading] = useState(true);
 	const navigate = useNavigate();
-    const [ideaId, setIdeaId] = useState();
-    const [arrayCategoryId, setArrayCategoryId] = useState([]);
+	const [ideaId, setIdeaId] = useState();
+	const [arrayCategoryId, setArrayCategoryId] = useState([]);
 	const { id } = useParams();
 	const [categoryList, setCategoryList] = useState([]);
 	const [filters] = useState({
@@ -21,7 +21,7 @@ function AssignCategorytoIdea() {
 	const paramsString = queryString.stringify(filters);
 	useEffect(() => {
 		getCategoryList();
-        getIdeaById();
+		getIdeaById();
 	}, []);
 
 	const getCategoryList = async () => {
@@ -41,8 +41,8 @@ function AssignCategorytoIdea() {
 				);
 			});
 	};
-    
-    const getIdeaById = async () => {
+
+	const getIdeaById = async () => {
 		await axios
 			.get(`https://localhost:5001/api/Ideas/GetIdeaById?id=${id}`)
 			.then((res) => {
@@ -50,14 +50,17 @@ function AssignCategorytoIdea() {
 				setIdeaId(res.data.resultObj.id);
 			});
 	};
-    
-    const assignCategorytoIdea = async (cateId) => {
-        const categoryId = cateId;
-        await axios.put(
+
+	const assignCategorytoIdea = async (cateId) => {
+		const categoryId = cateId;
+		await axios.put(
 			`https://localhost:5001/api/Ideas/AddCategoryToIdea`,
-            { ideaId, categoryId }
+			{ ideaId, categoryId }
 		)
-    }
+		message.success('Assign category to idea success !!');
+		navigate(`/admin/idea/${id}`)
+
+	}
 	const columns = [
 		{
 			title: 'Category',
@@ -77,18 +80,18 @@ function AssignCategorytoIdea() {
 				return (
 					<>
 						<Button
-                            size='large'
-                            className='ant-btn-warning'
-                            onClick={() => assignCategorytoIdea(key.cateId)}>
-                            Assign
-                        </Button>
+							size='large'
+							className='ant-btn-warning'
+							onClick={() => assignCategorytoIdea(key.cateId)}>
+							Assign
+						</Button>
 					</>
 				);
 			},
 		},
 	];
 
-	
+
 	return (
 		<div className="container ListUser">
 			<Row className="ListUser__title">
@@ -108,7 +111,7 @@ function AssignCategorytoIdea() {
 					/>
 				)}
 			</div>
-            
+
 		</div>
 	);
 }

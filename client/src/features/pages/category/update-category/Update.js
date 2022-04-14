@@ -33,7 +33,7 @@ const Update = () => {
 			{ id, name, description },
 			config
 		);
-		navigate('/admin/list-category');
+		navigate('/QAManager/list-category');
 		message.success('Update category success !!');
 	};
 
